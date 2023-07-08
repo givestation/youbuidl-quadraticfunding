@@ -70,10 +70,10 @@ const CreateProject = () => {
     setSocialUrl('https://twitter.com');
     setTag('music');
     setMinContributionAmount(
-      web3.utils.parseInt(web3.utils.toWei('1000000000000000000', 'ether'))
+      web3.utils.toBigInt(web3.utils.toWei('10000', 'ether')).toString()
     );
     setTargetContribution(
-      web3.utils.parseInt(web3.utils.toWei('1000000000000000', 'ether'))
+      web3.utils.toBigInt(web3.utils.toWei('100000', 'ether')).toString()
     );
     setExpectedLaunchDate('123456789');
   };
@@ -96,7 +96,7 @@ const CreateProject = () => {
 
   const onMinContributionChange = (e) => {
     setMinContributionAmount(
-      web3.utils.parseInt(web3.utils.toWei(e.target.value, 'ether'))
+      web3.utils.toBigInt(web3.utils.toWei(e.target.value, 'ether'))
     );
   };
 
@@ -106,12 +106,12 @@ const CreateProject = () => {
 
   const onTargetContributionChange = (e) => {
     setTargetContribution(
-      web3.utils.parseInt(web3.utils.toWei(e.target.value, 'ether'))
+      web3.utils.toBigInt(web3.utils.toWei(e.target.value, 'ether'))
     );
   };
 
   const onExpectedLaunchDateChange = (e) => {
-    setExpectedLaunchDate(web3.utils.parseInt(e.target.value));
+    setExpectedLaunchDate(web3.utils.toBigInt(e.target.value));
   };
 
   const {
