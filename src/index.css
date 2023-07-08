@@ -1,0 +1,29 @@
+@font-face {
+  font-family: Inter;
+  src: url("/public/assets/fonts/Poppins.ttf") format("opentype");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .rounded-4xl {
+    border-radius: 32px;
+  }
+  .ml-76 {
+    margin-left: 19rem;
+  }
+  .ml-66 {
+    margin-left: 17rem;
+  }
+  .border-12 {
+    border-width: 12px;
+  }
+  .top-18 {
+    top: 4.5rem;
+  }
+  .shadow-details {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+}
