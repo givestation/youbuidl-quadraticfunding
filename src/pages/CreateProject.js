@@ -59,24 +59,24 @@ const CreateProject = () => {
   const [projectCoverUrl, setProjectCoverUrl] = useState('');
   const [tag, setTag] = useState('');
 
-  const setDetails = () => {
-    setProjectCoverUrl(
-      'https://res.cloudinary.com/dvwdyqvzt/image/upload/v1687254410/bejniaugl0bz5a5wlhh7.jpg'
-    );
-    setProjectDescription('This is some project description');
-    setProjectTitle('This is some projec title');
-    setWebsiteUrl('https://website.com');
-    setGithubUrl('https://github.com');
-    setSocialUrl('https://twitter.com');
-    setTag('music');
-    setMinContributionAmount(
-      web3.utils.toBigInt(web3.utils.toWei('10000', 'ether'))
-    );
-    setTargetContribution(
-      web3.utils.toBigInt(web3.utils.toWei('100000', 'ether'))
-    );
-    setExpectedLaunchDate('123456789');
-  };
+  // const setDetails = () => {
+  //   setProjectCoverUrl(
+  //     'https://res.cloudinary.com/dvwdyqvzt/image/upload/v1687254410/bejniaugl0bz5a5wlhh7.jpg'
+  //   );
+  //   setProjectDescription('This is some project description');
+  //   setProjectTitle('This is some projec title');
+  //   setWebsiteUrl('https://website.com');
+  //   setGithubUrl('https://github.com');
+  //   setSocialUrl('https://twitter.com');
+  //   setTag('music');
+  //   setMinContributionAmount(
+  //     web3.utils.toBigInt(web3.utils.toWei('10000', 'ether'))
+  //   );
+  //   setTargetContribution(
+  //     web3.utils.toBigInt(web3.utils.toWei('100000', 'ether'))
+  //   );
+  //   setExpectedLaunchDate('123456789');
+  // };
 
   const onProjectDescriptionChangeHandler = (e) => {
     setProjectDescription(e.target.value);
@@ -200,7 +200,7 @@ const CreateProject = () => {
       </Modals>
       <div className='max-w-4xl mx-auto space-y-4 md:space-y-8 '>
         <div className='flex items-center justify-between'>
-          <button onClick={setDetails}>Fill up form</button>
+          <button >Fill up form</button>
           <div className='flex items-center space-x-2'>
             <h1 className='text-Raisin-Black font-semibold text-lg'>
               Submit a Buidl
