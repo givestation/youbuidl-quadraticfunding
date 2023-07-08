@@ -330,10 +330,11 @@ const CreateProject = () => {
             <option value='music'>Music</option>
             <option value='sports'>Sports</option>
           </select>
-          <textarea
+          <input
             onChange={onMinContributionChange}
             className='w-full bg-Pure-White rounded-2xl p-3 outline-none shadow-details'
             rows={2}
+            type='number'
             placeholder='Minimum Contribution Amount'
           />
           <div className='flex items-center w-full flex-col sm:flex-row md:space-x-0 md:space-y-4 lg:space-y-0 lg:space-x-4 sm:space-x-4 md:flex-col lg:flex-row space-y-3 sm:space-y-0'>
@@ -390,11 +391,13 @@ const CreateProject = () => {
             <input
               onChange={onTargetContributionChange}
               className='flex-1 w-full sm:w-auto rounded-2xl p-3 outline-none shadow-details'
+              type='number'
               placeholder='Target'
             />
             <input
               onChange={onExpectedLaunchDateChange}
               className='flex-1 w-full sm:w-auto rounded-2xl p-3 outline-none shadow-details'
+              type='number'
               placeholder='Expected Launch Date'
             />
           </div>
