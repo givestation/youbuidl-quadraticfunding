@@ -70,10 +70,10 @@ const CreateProject = () => {
     setSocialUrl('https://twitter.com');
     setTag('music');
     setMinContributionAmount(
-      web3.utils.parseInt(web3.utils.toWei('10', 'ether'))
+      web3.utils.parseInt(web3.utils.toWei('1000000000000000000', 'ether'))
     );
     setTargetContribution(
-      web3.utils.parseInt(web3.utils.toWei('10', 'ether'))
+      web3.utils.parseInt(web3.utils.toWei('1000000000000000', 'ether'))
     );
     setExpectedLaunchDate('123456789');
   };
