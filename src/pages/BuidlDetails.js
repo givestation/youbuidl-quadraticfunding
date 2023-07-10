@@ -97,10 +97,29 @@ const BuidlDetails = () => {
   const [contributedAmount, setContributedAmount] = useState(0);
 
 
-  const [selectedCrypto, setSelectedCrypto] = useState("usdc");
+  const [selectedCrypto, setSelectedCrypto] = useState("USDT");
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0x");
 
-  const cryptos = ["DAI", "USDC", "USDT", "GVST", "BNB"];
+  const cryptosBNB = [{name:"BUSD", address:"0xBUSD5474e89094c44da98b954eedeac495271d0f"},
+                  {name:"USDC", address:"0xUSDC6991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "},
+                  {name:"BNB", address:"0xBNB75474e89094c44da98b954eedeac495271d0f"}];
 
+  const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
+                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
+                  {name:"ETH", address:"0xBNB75474e89094c44da98b954eedeac495271d0f"}];
+
+  const cryptosArbi = [
+                  {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
+                  {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
+                ];
+
+  const cryptosOpti = [
+                  {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
+                  {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
+                ];
+                
   const onContributedAmount = (e) => {
     setContributedAmount( e.target.value );
   };
@@ -115,7 +134,7 @@ const BuidlDetails = () => {
     functionName: 'contribute',
     args: [
       projectStarter,
-      selectedCrypto,
+      selectedCryptoAddress,
       contributedAmount,
     ],
   });
@@ -128,7 +147,6 @@ const BuidlDetails = () => {
   } = useContractWrite(contributeConfig);
 
   const contributeSmart = async () => {
-    
     console.log(contributeConfigError,"this is usePreparedContractwrite error!")
     contribute?.();
     if(contributeresult === true){
@@ -140,7 +158,7 @@ const BuidlDetails = () => {
   };
 
 
-  console.log("current currency", selectedCrypto, contributedAmount);
+  console.log("current currency", selectedCrypto, contributedAmount, selectedCryptoAddress);
   return (
     <>
 
@@ -502,14 +520,15 @@ const BuidlDetails = () => {
                       <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
                         <div className="font-medium text-sm text-Light-Slate-Gray">
                           {
-                            cryptos.map((crypto) => crypto !== selectedCrypto && <Menu.Item key={crypto}
+                            (chain.id === 97 ? cryptosBNB : (chain.id === 5 ? cryptosETH : (chain.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
                               onClick={() => {
-                                setSelectedCrypto(crypto);
+                                setSelectedCrypto(crypto.name);
+                                setSelectedCryptoAddress(crypto.address);
                               }}
                               as="div"
                               className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
                             >
-                              <img src={`/assets/icons/${crypto}.svg`} alt={crypto} />
+                              <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
                             </Menu.Item>
                             )
                           }
