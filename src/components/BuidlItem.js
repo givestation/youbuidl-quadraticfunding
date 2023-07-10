@@ -97,7 +97,7 @@ const BuidlItem = ({ contractAddress }) => {
       github = projectDetails[12];
       projectCover = projectDetails[13];
     }else{
-      console.log("asdfsdf");
+      console.log("projectDetails is undefined");
 
     }
   
