@@ -1,34 +1,160 @@
 import { useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
+import {  useContractRead,usePrepareContractWrite,useContractWrite } from 'wagmi';
+import { formatEther } from 'viem';
+
+import ProjectContractInterface from '../contracts/abi/Project.json';
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
+import { useNetwork } from 'wagmi';
+import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+
+
+const addressBnb = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
+const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+
 
 const BuidlDetails = () => {
-  const navigate = useNavigate();
+  const { chain, chains } = useNetwork()
+
+  let contractConfig = {};
+  if (chain === undefined){
+
+    console.log("plz connect metamask")
+  }else{
+    contractConfig = {
+      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      abi: CrowdFundingContractInterface,
+    };
+  }
+  //get networkId
+  const navigate  = useNavigate();
+  const currentLocation  = useLocation();
+  const contractAddress = currentLocation.pathname?.slice(8,50);
+
+  console.log(contractAddress + "currentlocation");
+  let defaultEthLink = chain?.id === 97 ? "https://testnet.bscscan.com/address/" 
+                  : (chain?.id === 5 ? "https://goerli.etherscan.io/address/" 
+                  : (chain?.id === 420 ? "https://goerli-optimism.etherscan.io/address/"
+                  : "https://goerli.arbiscan.io/address/"));
+  
+
+  const projectContractConfig = {
+    address: contractAddress,
+    abi: ProjectContractInterface,
+  };
+
+  const { data: projectDetails } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'getProjectDetails',
+  });
+
+
+  let projectStarter; 
+  let minContribution ;
+  let projectDeadline;
+  let goalAmount ;
+  let completedTime ;
+  let currentAmount ;
+  let title;
+  let desc ;
+  let currentState; 
+  let balance ;
+  let website ;
+  let social ;
+  let github;
+  let projectCover;
+  console.log('goalAmount', projectDetails);
+
+  if(projectDetails !== undefined ){
+    projectStarter = projectDetails[0];
+    minContribution = projectDetails[1];
+    projectDeadline = projectDetails[2];
+    goalAmount = projectDetails[3];
+    completedTime = projectDetails[4];
+    currentAmount = projectDetails[5];
+    title = projectDetails[6];
+    desc = projectDetails[7];
+    currentState = projectDetails[8];
+    balance = projectDetails[9];
+    website = projectDetails[10];
+    social = projectDetails[11];
+    github = projectDetails[12];
+    projectCover = projectDetails[13];
+  }else{
+    console.log("asdfsdf");
+
+  }
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   // Congrats Modal State
   const [showCongratsModal, showShowCongratsModal] = useState(false);
 
+  // set amount of token
+  const [contributedAmount, setContributedAmount] = useState(0);
+
 
   const [selectedCrypto, setSelectedCrypto] = useState("usdc");
 
-  const cryptos = ["dai", "usdc", "usdt", "gvst", "bnb"];
+  const cryptos = ["DAI", "USDC", "USDT", "GVST", "BNB"];
+
+  const onContributedAmount = (e) => {
+    setContributedAmount( e.target.value );
+  };
+
+
+  const {
+    config: contributeConfig,
+    error: contributeConfigError,
+    isError: isContributeConfigError,
+  } = usePrepareContractWrite({
+    ...contractConfig,
+    functionName: 'contribute',
+    args: [
+      projectStarter,
+      selectedCrypto,
+      contributedAmount,
+    ],
+  });
+
+  const {
+    data: contributeReturnData,
+    write: contribute,
+    error: contributeError,
+    isSuccess: contributeresult,
+  } = useContractWrite(contributeConfig);
+
+  const contributeSmart = async () => {
+    
+    console.log(contributeConfigError,"this is usePreparedContractwrite error!")
+    contribute?.();
+    if(contributeresult === true){
+      setShowDetailsModal(false);
+      showShowCongratsModal(true);
+    }
+    
+    console.log(contributeError,"!!!this is useContractWrite error")
+  };
+
+
+  console.log("current currency", selectedCrypto, contributedAmount);
   return (
     <>
+
       {/* Details Modal */}
       <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
         <div className="max-w-sm rounded-2xl bg-Pure-White">
           <img
-            src="https://images.pexels.com/photos/1178758/pexels-photo-1178758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src={projectCover ? projectCover : "https://images.pexels.com/photos/1178758/pexels-photo-1178758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
             alt="dog"
           />
           <div className="px-3 pt-3 pb-1.5 space-y-4">
             <div className="space-y-1">
               <h1 className="flex items-center space-x-2 text-Rich-Black font-normal text-sm">
-                <span>Grant title - Web3 Community Dapp</span>
+                <span>Grant title - {title}</span>
                 <svg
                   width="17"
                   height="17"
@@ -43,7 +169,7 @@ const BuidlDetails = () => {
                 </svg>
               </h1>
               <h3 className="text-Rich-Black font-normal text-sm">
-                Creator - 0x009...00frt
+                Creator - {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(38, 42)}
               </h3>
               <p className="bg-Chinese-Blue inline text-Pure-White rounded-lg text-xs py-0.5 px-4">
                 WEB3
@@ -55,12 +181,12 @@ const BuidlDetails = () => {
                   Contributing
                 </h2>
                 <h2 className="font-medium text-base flex-1 text-center">
-                  0.0045 USDT
+                  {contributedAmount}
                 </h2>
               </div>
               <div className="flex justify-center ">
                 <h2 className="font-medium text-base flex-1 text-center">
-                  USDC Reward
+                  {selectedCrypto} Reward
                 </h2>
                 <h2 className="font-medium text-base flex-1 text-center">
                   0.0045
@@ -92,8 +218,8 @@ const BuidlDetails = () => {
               </button>
               <button
                 onClick={() => {
-                  setShowDetailsModal(false);
-                  showShowCongratsModal(true);
+                  contributeSmart();
+                  
                 }}
                 className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
               >
@@ -141,13 +267,13 @@ const BuidlDetails = () => {
           <div className=" w-full relative">
             <img
               className=" max-h-96 w-full object-cover"
-              src="https://images.pexels.com/photos/1178758/pexels-photo-1178758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={projectCover ? projectCover : "https://images.pexels.com/photos/1178758/pexels-photo-1178758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
               alt="dog"
             />
             <div className="absolute bottom-4 px-4 sm:px-10">
               <div className="flex items-center space-x-1">
                 <h1 className="text-Pure-White font-semibold text-xl">
-                  Rescuing Romania’s Street Dogs
+                  {title}
                 </h1>
                 <svg
                   width="17"
@@ -165,7 +291,7 @@ const BuidlDetails = () => {
               <div className="flex items-center space-x-1">
                 <img src="/assets/images/avatar-4.png" alt="avatar" />
                 <h3 className="text-Bright-Gray font-medium text-xs">
-                  Cameron.eth{" "}
+                  {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(38, 42)}
                 </h3>
               </div>
             </div>
@@ -202,7 +328,7 @@ const BuidlDetails = () => {
                 </svg>
               </div>
               <a
-                href="/"
+                href = {defaultEthLink?.concat("",contractAddress)}
                 className="bg-Chinese-Blue text-Pure-White rounded-md text-xs py-0.5 px-2"
               >
                 view on explorer
@@ -216,9 +342,9 @@ const BuidlDetails = () => {
                   Raised so far
                 </h4>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
-                  $6800.00
+                  ${formatEther(currentAmount == undefined ? 0 : currentAmount ) || 0}
                   <span className="text-Philipine-Gray font-normal text-sm">
-                    85%
+                    0%
                   </span>
                 </h1>
               </div>
@@ -227,7 +353,7 @@ const BuidlDetails = () => {
                   Target
                 </h4>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
-                  $8000.00
+                  ${formatEther(goalAmount === undefined ? 0 : goalAmount)}
                 </h1>
               </div>
             </div>
@@ -288,7 +414,7 @@ const BuidlDetails = () => {
                   />
                 </svg>
                 <h3 className="text-Vampire-Black font-normal text-lg">
-                  28 days left
+                  {completedTime} days left
                 </h3>
               </div>
             </div>
@@ -298,14 +424,7 @@ const BuidlDetails = () => {
                 Description
               </h1>
               <p className="text-Nickle font-normal text-sm sm:text-base">
-                Lorem ipsum dolor sit amet consectetur. Pharetra odio dictumst
-                lacus ipsum. Quis aliquam orci pulvinar eu elementum mauris
-                vivamus.. Lorem ipsum dolor sit amet consectetur. Pharetra odio
-                dictumst lacus ipsum. Quis aliquam orci pulvinar eu elementum
-                mauris vivamus.Lorem ipsum dolor sit amet consectetur. Pharetra
-                odio dictumst lacus ipsum. Quis aliquam orci pulvinar eu
-                elementum mauris vivamus..Lorem ipsum dolor sit amet
-                consectetur. Phare... ggg
+                {desc}
                 <br />
                 <span className="text-Vampire-Black font-semibold cursor-pointer text-base">
                   Read more
@@ -358,7 +477,7 @@ const BuidlDetails = () => {
 
 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[124px]  " placeholder="Enter amount" />
+                  <input className="outline-none max-w-[124px]  " placeholder="Enter amount"  onChange={onContributedAmount}/>
                   <Menu as="div" className="relative">
                     <div className="h-8">
                       <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">

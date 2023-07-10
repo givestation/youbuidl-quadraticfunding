@@ -1,10 +1,20 @@
 import { Link } from 'react-router-dom';
 import ProjectContractInterface from '../contracts/abi/Project.json';
-import {  useContractRead } from 'wagmi';
+import {  useContractRead, useNetwork } from 'wagmi';
 import { formatEther } from 'viem';
 import { useState, useEffect} from 'react';
+import { Loader } from './Loader'
 
 const BuidlItem = ({ contractAddress }) => {
+  const { chain, chains } = useNetwork()
+  
+
+  let defaultEthLink = chain?.id === 97 ? "https://testnet.bscscan.com/address/" 
+                  : (chain?.id === 5 ? "https://goerli.etherscan.io/address/" 
+                  : (chain?.id === 420 ? "https://goerli-optimism.etherscan.io/address/"
+                  : "https://goerli.arbiscan.io/address/"));
+
+  
   console.log("contract addresss", contractAddress)
   const projectContractConfig = {
     address: contractAddress,
@@ -87,7 +97,7 @@ const BuidlItem = ({ contractAddress }) => {
       github = projectDetails[12];
       projectCover = projectDetails[13];
     }else{
-      console.log("asdfsdf")
+      console.log("asdfsdf");
 
     }
   
@@ -114,6 +124,7 @@ const BuidlItem = ({ contractAddress }) => {
 
 
   return (
+    
     <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
       <img className='w-full object-cover' src={projectCover} alt='code' />
       <div className='p-2 space-y-2'>
@@ -168,7 +179,7 @@ const BuidlItem = ({ contractAddress }) => {
           <div className='flex items-center space-x-1'>
             <img src='/assets/images/avatar-4.png' alt='avatar' />
             <a
-              href='https://etherscan.io/'
+              href = {defaultEthLink?.concat("",contractAddress)}
               className='text-Davy-Grey font-medium text-xs'
             >
               {projectStarter?.slice(0, 15)}...

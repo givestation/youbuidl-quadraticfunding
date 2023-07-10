@@ -155,12 +155,13 @@ const CreateProject = () => {
         body: formData,
       })
         .then((response) => {
+          console.log("success");
+          showShowCongratsModal(true);
           return response.text();
         })
         .then((data) => {
           const parsedData = JSON.parse(data);
           const cloudinaryImgUrl = parsedData.url;
-
           setProjectCoverUrl(cloudinaryImgUrl);
         });
     }
@@ -187,7 +188,7 @@ const CreateProject = () => {
               Congratulation!
             </h1>
             <h4 className='text-Bright-Gray/90 font-normal text-sm'>
-              You have succesfully created a new Buidl.
+              You have succesfully uploaded a new picture.
             </h4>
           </div>
           <button
@@ -206,7 +207,7 @@ const CreateProject = () => {
               Submit a Buidl
             </h1>
             <span className='bg-Chinese-Blue text-Pure-White px-1 sm:px-8 rounded-lg py-1 text-xs'>
-              Optimism
+              {chain?.name}
             </span>
           </div>
           <div className='flex items-center space-x-4'>
