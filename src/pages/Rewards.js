@@ -128,7 +128,7 @@ const Rewards = () => {
                 projects.
               </p>
               <h1 className="text-Pure-Black font-semibold text-2xl sm:text-3xl">
-                100 USDT, 5000 GVST
+                0.3 BNB, 6 MATIC
               </h1>
             </div>
             <img

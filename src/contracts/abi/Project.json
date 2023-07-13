@@ -87,6 +87,12 @@
       },
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "withdrawToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
@@ -271,6 +277,16 @@
         "internalType": "address payable",
         "name": "_reciptent",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_withdrawToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_requestId",
+        "type": "uint256"
       }
     ],
     "name": "createWithdrawRequest",
@@ -332,6 +348,25 @@
   },
   {
     "inputs": [],
+    "name": "getContractBNBBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
     "name": "getContractBalance",
     "outputs": [
       {
@@ -617,6 +652,50 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_requestId",
+        "type": "uint256"
+      }
+    ],
+    "name": "showRewardUser",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "withdrawToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "noOfVotes",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isCompleted",
+        "type": "bool"
+      },
+      {
+        "internalType": "address payable",
+        "name": "reciptent",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "socialUrl",
     "outputs": [
@@ -690,7 +769,7 @@
       },
       {
         "internalType": "contract IERC20",
-        "name": "tokenToWithdraw",
+        "name": "_withdrawToken",
         "type": "address"
       }
     ],
@@ -713,6 +792,11 @@
         "internalType": "string",
         "name": "description",
         "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "withdrawToken",
+        "type": "address"
       },
       {
         "internalType": "uint256",

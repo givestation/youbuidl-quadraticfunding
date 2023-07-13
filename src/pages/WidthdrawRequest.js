@@ -1,11 +1,21 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, Fragment } from "react";
+import { useNavigate , useLocation} from "react-router-dom";
 import Contributers from "../components/Contributers";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
+import { Menu, Transition } from "@headlessui/react";
+import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
+import ProjectContractInterface from '../contracts/abi/Project.json';
+
+
+
 
 const WidthdrawRequest = () => {
+  const { chain, chains } = useNetwork();
+  const { address, connector, isConnected } = useAccount();
   const navigate = useNavigate();
+  const currentLocation  = useLocation();
+  const contractAddress = currentLocation.pathname?.slice(8,50);
 
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -15,6 +25,115 @@ const WidthdrawRequest = () => {
 
   // State for Vote Button
   const [isUserVoted, setIsUserVoted] = useState(false);
+
+  const [wrAmount, setWRAmount] = useState(0);
+  const [selectedCrypto, setSelectedCrypto] = useState("USDT");
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0x");
+
+ 
+
+  const cryptosBNB = [{name:"BUSD", address:"0xBUSD5474e89094c44da98b954eedeac495271d0f"},
+                  {name:"USDC", address:"0xUSDC6991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "}
+                  ];
+
+  const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
+                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
+                  {name:"ETH", address:"0xBNB75474e89094c44da98b954eedeac495271d0f"}];
+
+  const cryptosArbi = [
+                  {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
+                  {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
+                ];
+
+  const cryptosOpti = [
+                  {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
+                  {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
+                ];
+  
+  const onWRequestAmount = (e) => {
+    setWRAmount( e.target.value );
+  };
+
+  const projectContractConfig = {
+    address: contractAddress,
+    abi: ProjectContractInterface,
+  };
+
+  const { data: projectDetails } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'getProjectDetails',
+  });
+
+
+  let projectStarter; 
+  let minContribution ;
+  let projectDeadline;
+  let goalAmount ;
+  let completedTime ;
+  let currentAmount ;
+  let title;
+  let desc ;
+  let currentState; 
+  let balance ;
+  let website ;
+  let social ;
+  let github;
+  let projectCover;
+  console.log('goalAmount', projectDetails);
+
+  if(projectDetails !== undefined ){
+    projectStarter = projectDetails[0];
+    minContribution = projectDetails[1];
+    projectDeadline = projectDetails[2];
+    goalAmount = projectDetails[3];
+    completedTime = projectDetails[4];
+    currentAmount = projectDetails[5];
+    title = projectDetails[6];
+    desc = projectDetails[7];
+    currentState = projectDetails[8];
+    balance = projectDetails[9];
+    website = projectDetails[10];
+    social = projectDetails[11];
+    github = projectDetails[12];
+    projectCover = projectDetails[13];
+  }else{
+    console.log("asdfsdf");
+
+  }
+
+  // STRING
+  const [projectWRDescription, setProjectWRDescription] = useState('');
+
+  const onProjectWRDescriptionChangeHandler = (e) => {
+    setProjectWRDescription(e.target.value);
+  };
+
+
+  const {
+    config: withdrawRequestConfig,
+    error: withdrawRequestConfigError,
+    isError: isWithdrawRequestConfigError,
+  } = usePrepareContractWrite({
+    ...projectContractConfig,
+    functionName: 'createWithdrawRequest',
+    args: [
+      projectWRDescription,
+      wrAmount,
+      projectStarter,
+      selectedCryptoAddress,
+      
+    ],
+  });
+
+  const {
+    data: contributeReturnData,
+    write: contribute,
+    error: contributeError,
+    isSuccess: contributeresult,
+  } = useContractWrite(withdrawRequestConfig);
+
   return (
     <>
       {/* Details Modal */}
@@ -24,26 +143,31 @@ const WidthdrawRequest = () => {
             <div className="max-w-xs mx-auto py-5 space-y-4">
               <div className="space-y-1 ">
                 <h1 className="font-normal text-base ">
-                  700 USDT Requested for withdrawal by
+                  {wrAmount} {selectedCrypto} Requested for withdrawal by
                 </h1>
                 <div className="flex items-center space-x-1">
                   <img src="/assets/images/avatar-4.png" alt="avatar" />
                   <h3 className="text-Davy-Grey font-medium text-xs">
-                    Cameron.eth{" "}
+                    {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(39, 42)}
                   </h3>
-                  <a
+                  {/* <a
                     href="/"
                     className="bg-Chinese-Blue text-Pure-White rounded-md text-xs py-0.5 px-2"
                   >
                     view on explorer
-                  </a>
+                  </a> */}
                 </div>
               </div>
 
               <div className="text-Eire-Black space-y-0.5">
                 <div className="flex justify-between ">
+                    <h2 className="font-normal text-base ">Request Desc</h2>
+                    <h2 className="font-normal text-base ">{projectWRDescription?.slice(0,15)}...</h2>
+                </div>
+
+                <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Amount Requested</h2>
-                  <h2 className="font-normal text-base ">7000 USDT</h2>
+                  <h2 className="font-normal text-base ">{wrAmount} {selectedCrypto}</h2>
                 </div>
 
                 <div className="flex justify-between ">
@@ -52,7 +176,7 @@ const WidthdrawRequest = () => {
                 </div>
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Receipient Address</h2>
-                  <h2 className="font-normal text-base ">0x765..hy7</h2>
+                  <h2 className="font-normal text-base ">{projectStarter?.slice(0, 6) + "..." + projectStarter?.slice(40, 42)}</h2>
                 </div>
               </div>
             </div>
@@ -187,58 +311,13 @@ const WidthdrawRequest = () => {
                   <h1 className="text-Davy-Grey text-lg font-semibold">
                     Build a Web3 AI marketplace
                   </h1>
-                  <h4 className="text-Davy-Grey text-base font-normal">
-                    225% up to AU$ 5,000
-                    <br />
-                    jhgfjjhghjkkkhg hdhhrrhrh
-                    <br />
-                    jhgfjjhghjkkkhg
-                  </h4>
+                  <textarea
+                    onChange={onProjectWRDescriptionChangeHandler}
+                    className='w-full bg-Pure-White rounded-2xl p-3 outline-none shadow-details'
+                    rows={5}
+                    placeholder='description for withdrawal request'
+                  />
 
-                  <div className="flex items-center justify-between sm:justify-start space-x-2">
-                    <div className="flex items-center space-x-2">
-
-                      <div className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer">
-                        <svg
-                          width="27"
-                          height="31"
-                          viewBox="0 0 27 31"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M18.6154 29.8334V24.5573C18.6635 23.9072 18.5809 23.2537 18.3731 22.6401C18.1653 22.0266 17.8371 21.4672 17.4102 20.999C21.4359 20.5218 25.6667 18.8994 25.6667 11.4556C25.6663 9.55213 24.9778 7.72168 23.7436 6.34307C24.328 4.67776 24.2867 2.83703 23.6282 1.20328C23.6282 1.20328 22.1154 0.726107 18.6154 3.22102C15.6769 2.37414 12.5795 2.37414 9.64102 3.22102C6.14102 0.726107 4.6282 1.20328 4.6282 1.20328C3.9697 2.83703 3.92838 4.67776 4.51281 6.34307C3.26938 7.7319 2.58015 9.5789 2.58973 11.4965C2.58973 18.8858 6.8205 20.5082 10.8461 21.0399C10.4243 21.5034 10.099 22.0561 9.89141 22.6621C9.68378 23.2682 9.59846 23.9139 9.64102 24.5573V29.8334M9.64102 25.7434C3.23076 27.7884 3.23076 22.335 0.666656 21.6534L9.64102 25.7434Z"
-                            stroke="#006ED4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                      <div className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer">
-                        <svg
-                          width="27"
-                          height="31"
-                          viewBox="0 0 27 31"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M18.6154 29.8334V24.5573C18.6635 23.9072 18.5809 23.2537 18.3731 22.6401C18.1653 22.0266 17.8371 21.4672 17.4102 20.999C21.4359 20.5218 25.6667 18.8994 25.6667 11.4556C25.6663 9.55213 24.9778 7.72168 23.7436 6.34307C24.328 4.67776 24.2867 2.83703 23.6282 1.20328C23.6282 1.20328 22.1154 0.726107 18.6154 3.22102C15.6769 2.37414 12.5795 2.37414 9.64102 3.22102C6.14102 0.726107 4.6282 1.20328 4.6282 1.20328C3.9697 2.83703 3.92838 4.67776 4.51281 6.34307C3.26938 7.7319 2.58015 9.5789 2.58973 11.4965C2.58973 18.8858 6.8205 20.5082 10.8461 21.0399C10.4243 21.5034 10.099 22.0561 9.89141 22.6621C9.68378 23.2682 9.59846 23.9139 9.64102 24.5573V29.8334M9.64102 25.7434C3.23076 27.7884 3.23076 22.335 0.666656 21.6534L9.64102 25.7434Z"
-                            stroke="#006ED4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-
-                    </div>
-                    <a
-                      href="/"
-                      className="bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5 px-2"
-                    >
-                      view on explorer
-                    </a>
-                  </div>
                 </div>
               </div>
 
@@ -270,13 +349,18 @@ const WidthdrawRequest = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Contract Balance </h4>
-                    <h2 className="font-bold">700 USDT</h2>
+                    <h2 className="font-bold">500 USDT</h2>
+                    <h2 className="font-bold">300 BUSD</h2>
+                    <h2 className="font-bold">200 USDC</h2>
+                    
                   </div>
                 </div>
 
                 <div className="flex w-full sm:w-auto justify-between sm:justify-start items-center space-x-8 sm:space-x-2">
                   <svg
-                    onClick={() => { setIsUserVoted(!isUserVoted); }}
+                    onClick={() => {if(projectStarter === address) {
+                      setIsUserVoted(false)
+                    }else{ setIsUserVoted(!isUserVoted); }}}
                     width="36"
                     height="36"
                     viewBox="0 0 36 36"
@@ -310,10 +394,50 @@ const WidthdrawRequest = () => {
               </div>
 
               <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                <div className="bg-Eire-Black w-full sm:w-auto flex-1 rounded-xl py-2 px-4 flex items-center justify-between">
-                  <h2 className="text-Pure-White/60 flex-1 ">Withdraw Request</h2>
-                  <input className="bg-Eire-Black text-Pure-White outline-none w-14 sm:w-16 text-right" placeholder="0" />
-                </div>
+                
+                <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
+                  <input className="outline-none max-w-[150px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestAmount}/>
+                  <Menu as="div" className="relative">
+                    <div className="h-8">
+                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
+                        <img src={`/assets/icons/${selectedCrypto}.svg`} alt={selectedCrypto} />
+                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
+                          <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
+                          </svg>
+                        </div>
+                      </Menu.Button>
+                    </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
+                          <div className="font-medium text-sm text-Light-Slate-Gray">
+                            {
+                              (chain.id === 97 ? cryptosBNB : (chain.id === 5 ? cryptosETH : (chain.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                                onClick={() => {
+                                  setSelectedCrypto(crypto.name);
+                                  setSelectedCryptoAddress(crypto.address);
+                                }}
+                                as="div"
+                                className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
+                              >
+                                <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
+                              </Menu.Item>
+                              )
+                            }
+                            </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
                 <button
                   onClick={() => {
                     setShowDetailsModal(true);
@@ -326,6 +450,7 @@ const WidthdrawRequest = () => {
             </div>
           </div>
         </div>
+
         <div className="hidden xl:block max-w-xs w-full  sticky top-18 right-0 self-start	">
           <Contributers heading="All Contributors" />
         </div>

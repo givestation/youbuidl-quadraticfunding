@@ -73,7 +73,7 @@ const router = createBrowserRouter([
         element: <BuidlDetails />,
       },
       {
-        path: '/widthdraw-request',
+        path: '/buidls/:slug/widthdraw-request',
         element: <WidthdrawRequest />,
       },
       {

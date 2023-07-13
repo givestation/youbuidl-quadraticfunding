@@ -9,6 +9,7 @@ import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import { useNetwork } from 'wagmi';
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+import Loader from '../components/Loader';
 
 
 const addressBnb = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
@@ -90,6 +91,9 @@ const BuidlDetails = () => {
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
+  // Loading modal
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
+
   // Congrats Modal State
   const [showCongratsModal, showShowCongratsModal] = useState(false);
 
@@ -102,13 +106,13 @@ const BuidlDetails = () => {
 
   const cryptosBNB = [{name:"BUSD", address:"0xBUSD5474e89094c44da98b954eedeac495271d0f"},
                   {name:"USDC", address:"0xUSDC6991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "},
-                  {name:"BNB", address:"0xBNB75474e89094c44da98b954eedeac495271d0f"}];
+                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "}
+                  ];
 
   const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
                   {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
-                  {name:"ETH", address:"0xBNB75474e89094c44da98b954eedeac495271d0f"}];
+                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"}
+                 ];
 
   const cryptosArbi = [
                   {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
@@ -119,7 +123,7 @@ const BuidlDetails = () => {
                   {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
                   {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
                 ];
-                
+
   const onContributedAmount = (e) => {
     setContributedAmount( e.target.value );
   };
@@ -149,11 +153,12 @@ const BuidlDetails = () => {
   const contributeSmart = async () => {
     console.log(contributeConfigError,"this is usePreparedContractwrite error!")
     contribute?.();
+   
     if(contributeresult === true){
       setShowDetailsModal(false);
       showShowCongratsModal(true);
+      
     }
-    
     console.log(contributeError,"!!!this is useContractWrite error")
   };
 
@@ -163,6 +168,7 @@ const BuidlDetails = () => {
     <>
 
       {/* Details Modal */}
+      <Loader showModal={showLoadingModal} setShowModal={setShowLoadingModal}/>
       <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
         <div className="max-w-sm rounded-2xl bg-Pure-White">
           <img
@@ -551,7 +557,8 @@ const BuidlDetails = () => {
         </div>
         <div className="flex justify-center">
           <Link
-            to="/widthdraw-request"
+           
+            to={`/buidls/${contractAddress}/widthdraw-request`}
             className="text-Nickle text-center flex items-center space-x-2"
           >
             <span> No withdrawal request for this campaign</span>

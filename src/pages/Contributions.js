@@ -1,6 +1,31 @@
 import ContributionItem from "../components/ContributionItem";
+import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+import {
+  useNetwork,
+  useContractRead
+} from 'wagmi';
 
 const Contributions = () => {
+  const { chain, chains } = useNetwork()
+  const addressBnb = "0x6b44Ec411bc5e3acaf03853D82e16235b4a607C1";
+  const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
+  const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+
+  let crowdFundingContractConfig = {};
+  if (chain === undefined){
+
+    console.log("plz connect metamask")
+  }else{
+    crowdFundingContractConfig = {
+      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      abi: CrowdFundingContractInterface,
+    };
+  }
+
+  const { data: returnAllProjects } = useContractRead({
+    ...crowdFundingContractConfig,
+    functionName: 'returnAllProjects',
+  });
   return (
     <div className="max-w-5xl mx-auto space-y-4 md:space-y-6 ">
       <div className="flex items-center justify-between">
@@ -99,10 +124,10 @@ const Contributions = () => {
         </div>
       </div>
       <div className="space-y-2 md:space-y-4">
-        <ContributionItem />
-        <ContributionItem />
-        <ContributionItem />
-        <ContributionItem />
+        {returnAllProjects?.map((each ,index) => (
+            <ContributionItem key={index} contractAddress={each}  />
+          ))}
+        
       </div>
     </div>
   );

@@ -4,19 +4,19 @@ import CategoriesSelector from '../components/CategoriesSelector';
 import Contributers from '../components/Contributers';
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import {
-  
   useContractRead,
- 
   useNetwork
 } from 'wagmi';
 
 
 
+
 const Dashboard = () => {
   const { chain, chains } = useNetwork()
-  const addressBnb = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+  const addressBnb = "0x6b44Ec411bc5e3acaf03853D82e16235b4a607C1";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
   const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+
 
   // console.log(chain + "asdfasfdasd")
   
@@ -63,6 +63,7 @@ const Dashboard = () => {
   console.log('ALL PROJECTS', returnAllProjects);
   
   return (
+    
     <div className='max-w-7xl mx-auto flex relative flex-col space-y-4 xl:space-y-0 xl:flex-row'>
       <div className='flex-1 overflow-hidden space-y-4 md:space-y-6 xl:mr-4'>
         <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-b from-Liberty to-Spanish-Violet   py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
@@ -71,6 +72,7 @@ const Dashboard = () => {
             src='/assets/images/pattren.png'
             alt='pattren'
           />
+         
           <div className='flex-1 xl:mt-0 text-left space-y-4 xl:space-y-2 z-10'>
             <div>
               <div className='flex items-center  justify-between'>

@@ -7,14 +7,14 @@ import {
 } from 'wagmi';
 
 const crowdFundingContractConfig = {
-  address: '0x0cac952a900172370E9fAf3a189C9E7b15cb30B4',
+  address: '0x6b44Ec411bc5e3acaf03853D82e16235b4a607C1',
   abi: CrowdFundingContractInterface,
 };
 
 const Projects = () => {
 
   const { chain, chains } = useNetwork()
-  const addressBnb = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+  const addressBnb = "0x6b44Ec411bc5e3acaf03853D82e16235b4a607C1";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
   const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
 
