@@ -1,49 +1,89 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useNavigate,useLocation } from "react-router-dom";
 import {  useContractRead,usePrepareContractWrite,useContractWrite } from 'wagmi';
 import { formatEther } from 'viem';
-
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import { useNetwork } from 'wagmi';
+import { useNetwork,useAccount } from 'wagmi';
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+import Erc20Json from '../contracts/abi/ERC20.json';
 import Loader from '../components/Loader';
+import web3 from 'web3';
 
-
-const addressBnb = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
 const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
 const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
 
-
 const BuidlDetails = () => {
-  const { chain, chains } = useNetwork()
-
-  let contractConfig = {};
-  if (chain === undefined){
-
-    console.log("plz connect metamask")
-  }else{
-    contractConfig = {
-      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
-      abi: CrowdFundingContractInterface,
-    };
-  }
-  //get networkId
   const navigate  = useNavigate();
+  const { chain, chains } = useNetwork();
+  const { address, connector, isConnected } = useAccount();
   const currentLocation  = useLocation();
-  const contractAddress = currentLocation.pathname?.slice(8,50);
+  const projectContractAddress = currentLocation.pathname?.slice(8,50);
+  // Details Modal State
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  // Loading modal
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
+  // Congrats Contributed Modal State
+  const [contributedCongratsModal, setContributedCongratsModal] = useState(true);
+  // Congrats Approved Modal State
+  const [approvedCongratsModal, setApprovedCongratsModal] = useState(true);
+  // set token
+  const [contributedAmount, setContributedAmount] = useState(0);
+  const [selectedCrypto, setSelectedCrypto] = useState("BUSD");
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0xc66bC634d5b35DbcbBaa62D97559843788036c7d");
 
-  console.log(contractAddress + "currentlocation");
+  const cryptosBNB = [{name:"BUSD", address:"0xc66bC634d5b35DbcbBaa62D97559843788036c7d"},
+                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"},
+                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"}
+                  ];
+
+  const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
+                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"}
+                 ];
+
+  const cryptosArbi = [
+                  {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
+                  {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
+                ];
+
+  const cryptosOpti = [
+                  {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
+                  {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
+                ];
+ 
+
   let defaultEthLink = chain?.id === 97 ? "https://testnet.bscscan.com/address/" 
                   : (chain?.id === 5 ? "https://goerli.etherscan.io/address/" 
                   : (chain?.id === 420 ? "https://goerli-optimism.etherscan.io/address/"
                   : "https://goerli.arbiscan.io/address/"));
-  
 
+
+//====================Crowdfunding contractConfig===============
+let contractConfig = {};
+if (chain === undefined){
+  console.log("plz connect metamask")
+}else{
+  contractConfig = {
+    address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+    abi: CrowdFundingContractInterface,
+  };
+  console.log("ContractConfig Data",contractConfig)
+}
+
+//===========stable token Contract Config================
+let erc20ContractConfig = {};
+erc20ContractConfig = {
+  address: selectedCryptoAddress,
+  abi: Erc20Json,
+};
+  
+//===========project Contract config==============
   const projectContractConfig = {
-    address: contractAddress,
+    address: projectContractAddress,
     abi: ProjectContractInterface,
   };
 
@@ -51,7 +91,7 @@ const BuidlDetails = () => {
     ...projectContractConfig,
     functionName: 'getProjectDetails',
   });
-
+  console.log('ProjectDetails', projectDetails);
 
   let projectStarter; 
   let minContribution ;
@@ -67,7 +107,6 @@ const BuidlDetails = () => {
   let social ;
   let github;
   let projectCover;
-  console.log('goalAmount', projectDetails);
 
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
@@ -85,50 +124,17 @@ const BuidlDetails = () => {
     github = projectDetails[12];
     projectCover = projectDetails[13];
   }else{
-    console.log("asdfsdf");
-
+    console.log("projecteDetails is undefined!!!");
   }
-  // Details Modal State
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
+//=============verify information of project=======
+  const { data: isVerified } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'isVerified',
+  });
 
-  // Loading modal
-  const [showLoadingModal, setShowLoadingModal] = useState(false);
+  console.log("this project is verified?",isVerified)
 
-  // Congrats Modal State
-  const [showCongratsModal, showShowCongratsModal] = useState(false);
-
-  // set amount of token
-  const [contributedAmount, setContributedAmount] = useState(0);
-
-
-  const [selectedCrypto, setSelectedCrypto] = useState("USDT");
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0x");
-
-  const cryptosBNB = [{name:"BUSD", address:"0xBUSD5474e89094c44da98b954eedeac495271d0f"},
-                  {name:"USDC", address:"0xUSDC6991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "}
-                  ];
-
-  const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
-                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"}
-                 ];
-
-  const cryptosArbi = [
-                  {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
-                  {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
-                ];
-
-  const cryptosOpti = [
-                  {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
-                  {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
-                ];
-
-  const onContributedAmount = (e) => {
-    setContributedAmount( e.target.value );
-  };
-
-
+ //=============Contribute  token===========
   const {
     config: contributeConfig,
     error: contributeConfigError,
@@ -137,7 +143,7 @@ const BuidlDetails = () => {
     ...contractConfig,
     functionName: 'contribute',
     args: [
-      projectStarter,
+      projectContractAddress,
       selectedCryptoAddress,
       contributedAmount,
     ],
@@ -147,28 +153,82 @@ const BuidlDetails = () => {
     data: contributeReturnData,
     write: contribute,
     error: contributeError,
-    isSuccess: contributeresult,
+    isLoading: contributedLoading,
+    isSuccess: contributedSucess,
   } = useContractWrite(contributeConfig);
 
-  const contributeSmart = async () => {
-    console.log(contributeConfigError,"this is usePreparedContractwrite error!")
-    contribute?.();
-   
-    if(contributeresult === true){
-      setShowDetailsModal(false);
-      showShowCongratsModal(true);
-      
+  //=============Approve stable token===========
+  const {
+    config: erc20ApproveContractConfig,
+    error: erc20ApproveConfigError,
+    isError: isErc20ContractConfigError,
+  } = usePrepareContractWrite({
+    ...erc20ContractConfig,
+    functionName: 'approve',
+    args: [
+      projectContractAddress,
+      contributedAmount,
+    ],
+  });
+
+  const {
+    data: erc20ApproveReturnData,
+    write: approve,
+    error: Erc20ApproveError,
+    isLoading: approvedLoading,
+    isSuccess: approvedSuccess,
+  } = useContractWrite(erc20ApproveContractConfig);
+
+  //===========verify Project====================
+
+  const {
+    config: verifyProjectConfig,
+    error: verifyProjectConfigError,
+    isError: isVerifyProjectConfigError,
+  } = usePrepareContractWrite({
+    ...projectContractConfig,
+    functionName: 'setVerification',
+    args: [
+      true
+    ],
+  });
+
+  const {
+    data: verifyProjectReturnData,
+    write: setVerification,
+    error: verifyProjectError,
+    isSuccess
+  } = useContractWrite(verifyProjectConfig);
+
+  useEffect(() => {
+    if(isVerified == false){
+      setVerification?.();
     }
-    console.log(contributeError,"!!!this is useContractWrite error")
+  },[projectDetails]);
+
+//==========main functions==============
+
+  const onContributedAmount = (e) => {
+    setContributedAmount(
+      web3.utils.toBigInt(web3.utils.toWei(e.target.value, 'ether'))
+    );
+  };
+  
+  const approveToken = async () => {
+    console.log("args for approve", projectContractAddress, contributedAmount)
+    approve?.();
+  }
+
+  const contributeSmart = async () => {
+    console.log( "args for Contribute Functions!", projectContractAddress, selectedCryptoAddress, contributedAmount )
+    contribute?.();
   };
 
-
   console.log("current currency", selectedCrypto, contributedAmount, selectedCryptoAddress);
+  console.log("for contribute",contributeConfigError)
+
   return (
     <>
-
-      {/* Details Modal */}
-      <Loader showModal={showLoadingModal} setShowModal={setShowLoadingModal}/>
       <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
         <div className="max-w-sm rounded-2xl bg-Pure-White">
           <img
@@ -242,47 +302,89 @@ const BuidlDetails = () => {
               </button>
               <button
                 onClick={() => {
+                  approveToken();
+                }}
+                className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => {
                   contributeSmart();
-                  
                 }}
                 className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
               >
                 Contribute
               </button>
+              
             </div>
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
         </div>
       </Modals>
 
-      {/* Congrats Modal */}
-      <Modals
-        showModal={showCongratsModal}
-        setShowModal={showShowCongratsModal}
-      >
-        <CongratsModalWrapper>
-          {" "}
-          <div className="space-y-2 py-6">
-            <h1 className="text-Bright-Gray font-medium text-xl">
-              Congratulation!
-            </h1>
-            <h4 className="text-Bright-Gray/90 font-normal text-sm">
-              You have successfully contributed{" "}
-              <span className="font-semibold"> 0.45 USDT</span> to this project.
-              <br />
-              Kindly check the reward page to claim your{" "}
-              <span className="font-semibold"> GVST</span>
-            </h4>
-          </div>
-          <button
-            onClick={() => showShowCongratsModal(false)}
-            className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
-          >
-            Close
-          </button>
-        </CongratsModalWrapper>
-      </Modals>
+      {/* Approved Modal loading and congratulation */}
+      {approvedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
+      {approvedSuccess && 
+        <Modals
+          showModal={approvedCongratsModal}
+          setShowModal={setApprovedCongratsModal}
+        >
+          <CongratsModalWrapper>
+            {" "}
+            <div className="space-y-2 py-6">
+              <h1 className="text-Bright-Gray font-medium text-xl">
+                Congratulation!
+              </h1>
+              <h4 className="text-Bright-Gray/90 font-normal text-sm">
+                You have successfully approved {contributedAmount} {selectedCrypto}
+                <span className="font-semibold"> 0.45 USDT</span> to this project.
+                <br />
+                Kindly check the reward page to claim your{" "}
+                <span className="font-semibold"> GVST</span>
+              </h4>
+            </div>
+            <button
+              onClick={() => setApprovedCongratsModal(false)}
+              className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
+            >
+              Close
+            </button>
+          </CongratsModalWrapper>
+        </Modals>
+      }
 
+      {/* Contributed Modal loading and congratulation*/}
+      {contributedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
+      {contributedSucess && 
+        <Modals
+          showModal={contributedCongratsModal}
+          setShowModal={setContributedCongratsModal}
+        >
+          <CongratsModalWrapper>
+            {" "}
+            <div className="space-y-2 py-6">
+              <h1 className="text-Bright-Gray font-medium text-xl">
+                Congratulation!
+              </h1>
+              <h4 className="text-Bright-Gray/90 font-normal text-sm">
+                You have successfully contributed {contributedAmount} {selectedCrypto}
+                <span className="font-semibold"> 0.45 USDT</span> to this project.
+                <br />
+                Kindly check the reward page to claim your{" "}
+                <span className="font-semibold"> GVST</span>
+              </h4>
+            </div>
+            <button
+              onClick={() => setContributedCongratsModal(false)}
+              className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
+            >
+              Close
+            </button>
+          </CongratsModalWrapper>
+        </Modals>
+      }
+      
       <div className="space-y-4  max-w-5xl mx-auto">
         <h1 className="text-Raisin-Black font-semibold text-xl">
           Buidl Details
@@ -352,7 +454,7 @@ const BuidlDetails = () => {
                 </svg>
               </div>
               <a
-                href = {defaultEthLink?.concat("",contractAddress)}
+                href = {defaultEthLink?.concat("",projectContractAddress)}
                 className="bg-Chinese-Blue text-Pure-White rounded-md text-xs py-0.5 px-2"
               >
                 view on explorer
@@ -366,7 +468,7 @@ const BuidlDetails = () => {
                   Raised so far
                 </h4>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
-                  ${formatEther(currentAmount == undefined ? 0 : currentAmount ) || 0}
+                  ${formatEther(currentAmount === undefined ? 0 : currentAmount ) || 0}
                   <span className="text-Philipine-Gray font-normal text-sm">
                     0%
                   </span>
@@ -556,12 +658,13 @@ const BuidlDetails = () => {
           </div>
         </div>
         <div className="flex justify-center">
+          {address === projectStarter}
           <Link
            
-            to={`/buidls/${contractAddress}/widthdraw-request`}
+            to={(address === projectStarter) ? `/buidls/${projectContractAddress}/widthdraw-request` : `/buidls/${projectContractAddress}/widthdraw`} 
             className="text-Nickle text-center flex items-center space-x-2"
           >
-            <span> No withdrawal request for this campaign</span>
+            <span>{address === projectStarter ? "No withdrawal request for this campaign" : "Withdrawal request for this campaign"}</span>
             <svg
               width="16"
               height="16"

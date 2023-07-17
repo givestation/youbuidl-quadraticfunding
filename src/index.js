@@ -28,6 +28,7 @@ import Contributions from './pages/Contributions';
 import MintDomain from './pages/MintDomain';
 import CreateProject from './pages/CreateProject';
 import WidthdrawRequest from './pages/WidthdrawRequest';
+import Withdraw from './pages/Withdraw';
 
 const { chains, publicClient } = configureChains(
   [bscTestnet, goerli, optimismGoerli, arbitrumGoerli],
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: '/buidls/:slug/widthdraw-request',
         element: <WidthdrawRequest />,
+      },
+      {
+        path: '/buidls/:slug/widthdraw',
+        element: <Withdraw />,
       },
       {
         path: '/donations',

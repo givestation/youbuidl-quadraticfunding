@@ -7,8 +7,8 @@ import { Menu, Transition } from "@headlessui/react";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../contracts/abi/Project.json';
 
-const WidthdrawRequest = () => {
 
+const Widthdraw = () => {
   const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const navigate = useNavigate();
@@ -17,7 +17,6 @@ const WidthdrawRequest = () => {
 
   // STRING
   const [projectWRDescription, setProjectWRDescription] = useState('');
-
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   // Congrats Modal State
@@ -26,12 +25,12 @@ const WidthdrawRequest = () => {
   const [isUserVoted, setIsUserVoted] = useState(false);
 
   const [wrAmount, setWRAmount] = useState(0);
-  const [selectedCrypto, setSelectedCrypto] = useState("BUSD");
+  const [selectedCrypto, setSelectedCrypto] = useState("USDT");
   const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0x");
 
-  const cryptosBNB = [{name:"BUSD", address:"0xc66bC634d5b35DbcbBaa62D97559843788036c7d"},
-                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"},
-                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D "}
+  const cryptosBNB = [{name:"BUSD", address:"0xBUSD5474e89094c44da98b954eedeac495271d0f"},
+                  {name:"USDC", address:"0xUSDC6991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "}
                   ];
 
   const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
@@ -49,10 +48,7 @@ const WidthdrawRequest = () => {
                   {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
                 ];
   
-  const onWRequestAmount = (e) => {
-    setWRAmount( e.target.value );
-  };
-//===========Project Contract Config===========
+  //=============Project Contract Config=================
   const projectContractConfig = {
     address: projectContractAddress,
     abi: ProjectContractInterface,
@@ -62,7 +58,7 @@ const WidthdrawRequest = () => {
     ...projectContractConfig,
     functionName: 'getProjectDetails',
   });
-  console.log('projectDetails value', projectDetails);
+  console.log('projectdetails', projectDetails);
 
   let projectStarter; 
   let minContribution ;
@@ -78,7 +74,7 @@ const WidthdrawRequest = () => {
   let social ;
   let github;
   let projectCover;
-  
+
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
     minContribution = projectDetails[1];
@@ -95,10 +91,10 @@ const WidthdrawRequest = () => {
     github = projectDetails[12];
     projectCover = projectDetails[13];
   }else{
-    console.log("projectDetails is undefined!!!");
+    console.log("projectdetails is undefined!!!");
   }
 
-//===============Witdraw Request Config=============
+  //=============withdraw requested amount========
   const {
     config: withdrawRequestConfig,
     error: withdrawRequestConfigError,
@@ -115,14 +111,18 @@ const WidthdrawRequest = () => {
   });
 
   const {
-    data: withdrawRequestReturnData,
-    write: createWithdrawRequest,
-    error: withdrawRequestError,
-    isSuccess: withdrawRequestresult,
+    data: contributeReturnData,
+    write: contribute,
+    error: contributeError,
+    isSuccess: contributeresult,
   } = useContractWrite(withdrawRequestConfig);
 
+  //==============main functions===========
   const onProjectWRDescriptionChangeHandler = (e) => {
     setProjectWRDescription(e.target.value);
+  };
+  const onWRequestAmount = (e) => {
+    setWRAmount( e.target.value );
   };
 
   return (
@@ -339,10 +339,9 @@ const WidthdrawRequest = () => {
                     />
                   </svg>
                   <div className="text-Light-Slate-Gray">
-                    <h4 className="font-medium">Contract Balance </h4>
-                    <h2 className="font-bold">500 USDT</h2>
-                    <h2 className="font-bold">300 BUSD</h2>
-                    <h2 className="font-bold">200 USDC</h2>
+                    <h4 className="font-medium">Withdraw Balance</h4>
+                    <h2 className="font-bold">500 {selectedCrypto}</h2>
+                    
                     
                   </div>
                 </div>
@@ -385,57 +384,13 @@ const WidthdrawRequest = () => {
               </div>
 
               <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                
-                <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[150px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestAmount}/>
-                  <Menu as="div" className="relative">
-                    <div className="h-8">
-                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
-                        <img src={`/assets/icons/${selectedCrypto}.svg`} alt={selectedCrypto} />
-                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
-                          <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
-                          </svg>
-                        </div>
-                      </Menu.Button>
-                    </div>
-
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
-                          <div className="font-medium text-sm text-Light-Slate-Gray">
-                            {
-                              (chain.id === 97 ? cryptosBNB : (chain.id === 5 ? cryptosETH : (chain.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
-                                onClick={() => {
-                                  setSelectedCrypto(crypto.name);
-                                  setSelectedCryptoAddress(crypto.address);
-                                }}
-                                as="div"
-                                className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
-                              >
-                                <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
-                              </Menu.Item>
-                              )
-                            }
-                            </div>
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
-                  </div>
                 <button
                   onClick={() => {
                     setShowDetailsModal(true);
                   }}
-                  className="flex-1 bg-gradient-to-r w-full sm:w-auto from-Chinese-Blue to-Celestial-Blue text-Pure-White rounded-xl py-2"
+                  className="flex-1 bg-gradient-to-r  sm:w-auto from-Chinese-Blue to-Celestial-Blue text-Pure-White rounded-xl py-2"
                 >
-                  Withdraw Request
+                  Withdraw
                 </button>
               </div>
             </div>
@@ -450,4 +405,4 @@ const WidthdrawRequest = () => {
   );
 };
 
-export default WidthdrawRequest;
+export default Widthdraw;

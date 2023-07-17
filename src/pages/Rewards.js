@@ -3,38 +3,111 @@ import TotalBalance from "../components/TotalBalance";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import CryptoDropdown from "../components/CryptoDropdown";
+import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+import { formatEther } from 'viem';
+import web3 from 'web3';
+import Loader from '../components/Loader';
+import {
+  useContractRead,
+  useNetwork,
+  useAccount,
+  usePrepareContractWrite,
+  useContractWrite
+} from 'wagmi';
 
 const Rewards = () => {
+  const { chain, chains } = useNetwork()
+  const { address, connector, isConnected } = useAccount();
+  const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
+  const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
+  const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+
+  // Loading modal
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-
   // Congrats Modal State
-  const [showCongratsModal, showShowCongratsModal] = useState(false);
+  const [showCongratsModal, showShowCongratsModal] = useState(true);
+  // setRewardUser
+  const [rewardUser, setRewardUser] = useState(0);
+  // setEtherRamount
+  const [etherRAmount, setEtherRAmount] = useState(0);
 
-  // Amount Input State
-  const [amount, setAmount] = useState(102328);
+  //===============crowdfunding Contract config===============
+  let crowdFundingContractConfig = {};
+  if (chain === undefined){
+    console.log("plz connect metamask")
+  }else{
+    crowdFundingContractConfig = {
+      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      abi: CrowdFundingContractInterface,
+    };
+  }
+//=============show Reward of user
+  const { data: showRewardUserData } = useContractRead({
+    ...crowdFundingContractConfig,
+    functionName: 'showRewardUser',
+    args: [
+      address
+    ],
+  });
+  console.log("reward show", showRewardUserData)
+//================user can Withdraw reward==============
+  const {
+    config: userRewardConfig,
+    error: userRewardConfigError,
+    isError: isUserRewardConfigError,
+  } = usePrepareContractWrite({
+    ...crowdFundingContractConfig,
+    functionName: 'withdrawUserRewards',
+    args: [
+      etherRAmount
+    ],
+  });
+ 
+  const {
+    data: userRewardReturnData,
+    write: withdrawUserRewards,
+    error: userRewardReturnError,
+    isLoading,
+    isSuccess 
+  } = useContractWrite(userRewardConfig);
+
+  //==============main functions===========
+  const onEtherRmount = (e) => {
+    setEtherRAmount(
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
+    );
+  };
+
+  const rewardWithdraw = () =>{
+   console.log("args for withdraw reward", etherRAmount)
+    withdrawUserRewards?.();
+  }
+
+  // console.log( "reward Error!",userRewardConfigError)
 
   return (
     <>
-
+       {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
       {/* Details Modal */}
       <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
+      
         <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
           <div className="px-3 pt-3 pb-1.5 space-y-4">
             <div className="max-w-xs mx-auto py-5 space-y-4">
-              <div>
+            
+              {/* <div>
                 <CryptoDropdown classes={"left-0"} />
 
-              </div>
+              </div> */}
 
               <div className="text-Eire-Black space-y-0.5">
                 <div className="flex justify-between items-center space-x-14 ">
                   <h2 className="font-normal text-base  flex-1">Enter
                     Amount</h2>
-                  <input onChange={(e) => {
-                    setAmount(e.target.value);
-                  }}
-                    className="bg-Anti-Flash-White outline-none max-w-[120px] text-center text-Light-Slate-Gray rounded-2xl p-3" value={amount.toLocaleString()} />
+                  <input onChange={onEtherRmount}
+                    className="bg-Anti-Flash-White outline-none max-w-[120px] text-center text-Light-Slate-Gray rounded-2xl p-3" />
                 </div>
 
                 <div className="flex justify-between ">
@@ -61,8 +134,8 @@ const Rewards = () => {
               </button>
               <button
                 onClick={() => {
-                  setShowDetailsModal(false);
-                  showShowCongratsModal(true);
+                  rewardWithdraw();
+                  
                 }}
                 className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
               >
@@ -75,8 +148,8 @@ const Rewards = () => {
       </Modals>
 
       {/* Congrats Modal */}
-      <Modals
-        showModal={showCongratsModal}
+      {isSuccess && <Modals
+        showModal={true}
         setShowModal={showShowCongratsModal}
       >
         <CongratsModalWrapper>
@@ -86,7 +159,8 @@ const Rewards = () => {
               Congratulation!
             </h1>
             <h4 className="text-Bright-Gray/90 font-normal text-base">
-              You have successfully Widthdraw <span className="font-bold">$700</span> to your wallet.
+              You have successfully Widthdraw { etherRAmount === undefined ? 0 : formatEther(etherRAmount) } 
+              <span className="font-bold">$700</span> to your wallet.
             </h4>
           </div>
           <button
@@ -97,6 +171,7 @@ const Rewards = () => {
           </button>
         </CongratsModalWrapper>
       </Modals>
+      }
 
 
       <div className="max-w-7xl mx-auto w-full space-y-4 md:space-y-8 flex flex-col items-center">
@@ -128,7 +203,7 @@ const Rewards = () => {
                 projects.
               </p>
               <h1 className="text-Pure-Black font-semibold text-2xl sm:text-3xl">
-                0.3 BNB, 6 MATIC
+                { showRewardUserData === undefined ? 0 : formatEther(showRewardUserData) } {chain.name}
               </h1>
             </div>
             <img
@@ -138,7 +213,7 @@ const Rewards = () => {
             />
           </div>
           <div className="w-auto">
-            <TotalBalance />
+            <TotalBalance/>
           </div>
         </div>
         <button onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">

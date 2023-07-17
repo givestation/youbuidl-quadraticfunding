@@ -13,7 +13,7 @@ import {
 
 const Dashboard = () => {
   const { chain, chains } = useNetwork()
-  const addressBnb = "0x6b44Ec411bc5e3acaf03853D82e16235b4a607C1";
+  const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
   const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
 

@@ -5,38 +5,43 @@ import {
   useContractWrite,
   usePrepareContractWrite,
   useNetwork,
+  useWaitForTransaction
 } from 'wagmi';
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import web3 from 'web3';
+import Loader from '../components/Loader';
 
-const addressBnb = "0x6b44Ec411bc5e3acaf03853D82e16235b4a607C1";
+const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
 const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
 const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
 
+const cryptosBNB = [{name:"BUSD", address:"0xc66bC634d5b35DbcbBaa62D97559843788036c7d"},
+                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"},
+                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"}
+                  ];
 
+const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
+                {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
+                {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"}
+                ];
+
+const cryptosArbi = [
+                {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
+                {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
+              ];
+
+const cryptosOpti = [
+                {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
+                {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
+              ];
 
 const CLOUDINARY_UPLOAD_URL =
   'https://api.cloudinary.com/v1_1/dvwdyqvzt/image/upload';
 
 const CreateProject = () => {
   const { chain, chains } = useNetwork()
-
-  let contractConfig = {};
-  if (chain === undefined){
-
-    console.log("plz connect metamask")
-  }else{
-    contractConfig = {
-      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
-      abi: CrowdFundingContractInterface,
-    };
-  }
-  // const contractConfig = {
-  //   address: addressBnb,
-  //   abi: CrowdFundingContractInterface,
-  // };
-
-  
+  // Loading modal
+  const [showLoadingModal, setShowLoadingModal] = useState(false);  
   // STRING
   const [projectDescription, setProjectDescription] = useState('');
   // STRING
@@ -53,11 +58,82 @@ const CreateProject = () => {
   const [targetContribution, setTargetContribution] = useState(0);
   // TIMESTAMP
   const [expectedLaunchDate, setExpectedLaunchDate] = useState(0);
-  // Congrats Modal State
-  const [showCongratsModal, showShowCongratsModal] = useState(false);
+  // Congrats Upload Picture State
+  const [showUploadCongratsModal, setUploadCongratsModal] = useState(false);
+  // Congrats Create Project State
+  const [showProjectCongratsModal, setCreateProjectCongratsModal] = useState(true);
   // const [image, setImage] = useState(null);
   const [projectCoverUrl, setProjectCoverUrl] = useState('');
   const [tag, setTag] = useState('');
+
+  //=========Crowdfunding Contract Config==========
+  let contractConfig = {};
+  if (chain === undefined){
+    console.log("plz connect metamask")
+  }else{
+    contractConfig = {
+      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      abi: CrowdFundingContractInterface,
+    };
+  }
+
+  //==========creatProject function==========
+  const {
+    config: createProjectConfig,
+    error: createProjectConfigError,
+    isError: isCreateProjectConfigError,
+  } = usePrepareContractWrite({
+    ...contractConfig,
+    functionName: 'createProject',
+    args: [
+      minContributionAmount,
+      expectedLaunchDate,
+      targetContribution,
+      projectTitle,
+      projectDescription,
+      websiteUrl,
+      socialUrl,
+      githubUrl,
+      projectCoverUrl,
+      tag,
+      
+    ],
+  });
+
+  const {
+    data: createProjectReturnData,
+    write: createProject,
+    error: createProjectError,
+    isLoading,
+    isSuccess
+  } = useContractWrite(createProjectConfig);
+
+//===============main functions part==========
+  const handleImageUpload = (e) => {
+    if (e.target.files) {
+      // setImage(e.target.files[0]);
+      const image = e.target.files[0];
+      if (!image) return;
+      const formData = new FormData();
+      formData.append('file', image);
+      formData.append('upload_preset', 'sjcclscl');
+
+      fetch(CLOUDINARY_UPLOAD_URL, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => {
+          console.log("picture uploaded success");
+          setUploadCongratsModal(true);
+          return response.text();
+        })
+        .then((data) => {
+          const parsedData = JSON.parse(data);
+          const cloudinaryImgUrl = parsedData.url;
+          setProjectCoverUrl(cloudinaryImgUrl);
+        });
+    }
+  };
 
   const setDetails = () => {
     setProjectCoverUrl(
@@ -114,73 +190,18 @@ const CreateProject = () => {
     setExpectedLaunchDate(web3.utils.toBigInt(e.target.value));
   };
 
-  const {
-    config: createProjectConfig,
-    error: createProjectConfigError,
-    isError: isCreateProjectConfigError,
-  } = usePrepareContractWrite({
-    ...contractConfig,
-    functionName: 'createProject',
-    args: [
-      minContributionAmount,
-      expectedLaunchDate,
-      targetContribution,
-      projectTitle,
-      projectDescription,
-      websiteUrl,
-      socialUrl,
-      githubUrl,
-      projectCoverUrl,
-      tag,
-    ],
-  });
-
-  const {
-    data: createProjectReturnData,
-    write: createProject,
-    error: createProjectError,
-  } = useContractWrite(createProjectConfig);
-
-  const handleImageUpload = (e) => {
-    if (e.target.files) {
-      // setImage(e.target.files[0]);
-      const image = e.target.files[0];
-      if (!image) return;
-      const formData = new FormData();
-      formData.append('file', image);
-      formData.append('upload_preset', 'sjcclscl');
-
-      fetch(CLOUDINARY_UPLOAD_URL, {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => {
-          console.log("success");
-          showShowCongratsModal(true);
-          return response.text();
-        })
-        .then((data) => {
-          const parsedData = JSON.parse(data);
-          const cloudinaryImgUrl = parsedData.url;
-          setProjectCoverUrl(cloudinaryImgUrl);
-        });
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(createProjectConfigError,"!!!plz fix this error")
     createProject?.();
     console.log(createProjectError,"!!!when you creat project, you are wrong")
   };
 
   return (
     <>
-      
-      {/* Congrats Modal */}
+      {/* Congrats upload Success Modal */}
       <Modals
-        showModal={showCongratsModal}
-        setShowModal={showShowCongratsModal}
+        showModal={showUploadCongratsModal}
+        setShowModal={setUploadCongratsModal}
       >
         <CongratsModalWrapper>
           {' '}
@@ -193,13 +214,42 @@ const CreateProject = () => {
             </h4>
           </div>
           <button
-            onClick={() => showShowCongratsModal(false)}
+            onClick={() => setUploadCongratsModal(false)}
             className='bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6'
           >
             Close
           </button>
         </CongratsModalWrapper>
       </Modals>
+
+      {/* Congrats create project Modal */}
+      {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
+      {isSuccess && 
+        <Modals
+          showModal={showProjectCongratsModal}
+          setShowModal={setCreateProjectCongratsModal}
+        >
+          <CongratsModalWrapper>
+            {' '}
+            <div className='space-y-2 py-10'>
+              <h1 className='text-Bright-Gray font-medium text-xl'>
+                Congratulation!
+              </h1>
+              <h4 className='text-Bright-Gray/90 font-normal text-sm'>
+                You have succesfully created a new project.
+              </h4>
+            </div>
+            <button
+              onClick={() => setCreateProjectCongratsModal(false)}
+              className='bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6'
+            >
+              Close
+            </button>
+          </CongratsModalWrapper>
+        </Modals>
+      }
+      
+
       <div className='max-w-4xl mx-auto space-y-4 md:space-y-8 '>
         <div className='flex items-center justify-between'>
           <button onClick={setDetails}>Fill up form</button>

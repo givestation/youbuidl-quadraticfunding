@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import ProjectContractInterface from '../contracts/abi/Project.json';
-import {  useContractRead, useNetwork } from 'wagmi';
+import {  useContractRead, useNetwork, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { formatEther } from 'viem';
 import { useState, useEffect} from 'react';
 import { Loader } from './Loader'
@@ -26,6 +26,8 @@ const BuidlItem = ({ contractAddress }) => {
     functionName: 'getProjectDetails',
   });
 
+  
+
   const { data: isRevealed } = useContractRead({
     ...projectContractConfig,
     functionName: 'isRevealed',
@@ -46,7 +48,9 @@ const BuidlItem = ({ contractAddress }) => {
   useEffect(() => {
     console.log("adfsdf")
   },[projectDetails]);
-  console.log(projectDetails  )
+  console.log(projectDetails  );
+
+ 
 
    
   // let projectStarter = projectDetails[0];
