@@ -18,9 +18,10 @@ import {
 const Rewards = () => {
   const { chain, chains } = useNetwork()
   const { address, connector, isConnected } = useAccount();
-  const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
+  const addressBnb = "0x37A466c7BD057eB5a8C5c0f0b4aaB8b837B37342";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
-  const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+  const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+  const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
 
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
@@ -39,11 +40,11 @@ const Rewards = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : addressArbi)),
       abi: CrowdFundingContractInterface,
     };
   }
-//=============show Reward of user
+//=============show Reward of user========
   const { data: showRewardUserData } = useContractRead({
     ...crowdFundingContractConfig,
     functionName: 'showRewardUser',
@@ -86,6 +87,7 @@ const Rewards = () => {
   }
 
   // console.log( "reward Error!",userRewardConfigError)
+  console.log(chain?.nativeCurrency,"current network info")
 
   return (
     <>
@@ -159,8 +161,8 @@ const Rewards = () => {
               Congratulation!
             </h1>
             <h4 className="text-Bright-Gray/90 font-normal text-base">
-              You have successfully Widthdraw { etherRAmount === undefined ? 0 : formatEther(etherRAmount) } 
-              <span className="font-bold">$700</span> to your wallet.
+              You have successfully Withdraw { etherRAmount === undefined ? 0 : formatEther?.(etherRAmount) } 
+              <span className="font-bold">{chain?.nativeCurrency?.symbol}</span> to your wallet.
             </h4>
           </div>
           <button
@@ -199,11 +201,12 @@ const Rewards = () => {
             <div className="flex-1 pl-6">
               <p className="text-Old-Silver font-normal text-base">
                 Congratulations, you have earned{" "}
-                <span className="font-extrabold">500 USDT</span> for funding 5
-                projects.
+                <span className="font-extrabold">
+                  { showRewardUserData === undefined ? 0 : formatEther(showRewardUserData) } {chain?.nativeCurrency?.symbol}
+                </span> 
               </p>
               <h1 className="text-Pure-Black font-semibold text-2xl sm:text-3xl">
-                { showRewardUserData === undefined ? 0 : formatEther(showRewardUserData) } {chain.name}
+                { showRewardUserData === undefined ? 0 : formatEther(showRewardUserData) } {chain?.nativeCurrency?.symbol}
               </h1>
             </div>
             <img
@@ -217,7 +220,7 @@ const Rewards = () => {
           </div>
         </div>
         <button onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
-          Widthdraw
+          Withdraw
         </button>
       </div>
     </>

@@ -11,28 +11,29 @@ import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import web3 from 'web3';
 import Loader from '../components/Loader';
 
-const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
+const addressBnb = "0x37A466c7BD057eB5a8C5c0f0b4aaB8b837B37342";
 const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
-const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
 
-const cryptosBNB = [{name:"BUSD", address:"0xc66bC634d5b35DbcbBaa62D97559843788036c7d"},
-                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"},
-                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"}
+const cryptosBNB = [
+                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"},
+                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"}
                   ];
 
-const cryptosETH = [{name:"DAI", address:"0x6b175474e89094c44da98b954eedeac495271d0f"},
-                {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"}
+const cryptosETH = [
+                {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
+                {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"}
                 ];
 
 const cryptosArbi = [
-                {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
-                {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
-              ];
+                    {name:"USDT", address:"0xusdtarbi8d2ee523a2206206994597c13d831ec7"},
+                    {name:"USDC", address:"0xusdcarbic6218b36c1d19d4a2e9eb0ce3606eb48"}
+                    ];
 
 const cryptosOpti = [
-                {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
                 {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
+                {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"}
               ];
 
 const CLOUDINARY_UPLOAD_URL =
@@ -72,7 +73,7 @@ const CreateProject = () => {
     console.log("plz connect metamask")
   }else{
     contractConfig = {
-      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : addressArbi)),
       abi: CrowdFundingContractInterface,
     };
   }
@@ -96,6 +97,7 @@ const CreateProject = () => {
       githubUrl,
       projectCoverUrl,
       tag,
+      ...(chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.address)
       
     ],
   });

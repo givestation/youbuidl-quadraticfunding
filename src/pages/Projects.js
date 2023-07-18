@@ -7,16 +7,17 @@ import {
 } from 'wagmi';
 
 const crowdFundingContractConfig = {
-  address: '0x70207e6063189A905771739499F2A3991a03E4c0',
+  address: '0x37A466c7BD057eB5a8C5c0f0b4aaB8b837B37342',
   abi: CrowdFundingContractInterface,
 };
 
 const Projects = () => {
 
   const { chain, chains } = useNetwork()
-  const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
+  const addressBnb = "0x37A466c7BD057eB5a8C5c0f0b4aaB8b837B37342";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
-  const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+  const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+  const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
 
   let crowdFundingContractConfig = {};
   if (chain === undefined){
@@ -24,7 +25,7 @@ const Projects = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : addressArbi)),
       abi: CrowdFundingContractInterface,
     };
   }

@@ -55,7 +55,7 @@ const Header = ({ setShowSideBar }) => {
             placeholder='search'
           />
         </div>
-        <div className='relative cursor-pointer'>
+        {/* <div className='relative cursor-pointer'>
           <svg
             width='35'
             height='34'
@@ -88,7 +88,7 @@ const Header = ({ setShowSideBar }) => {
           <h5 className='absolute top-1 -right-2.5 text-xs bg-Red-RYB text-Pure-White px-1.5 rounded-full'>
             +8
           </h5>
-        </div>
+        </div> */}
         <div className='flex items-center md:space-x-4'>
           <div className='hidden md:block text-right'>
             {/* <ConnectButton /> */}

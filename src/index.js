@@ -27,8 +27,10 @@ import Projects from './pages/Projects';
 import Contributions from './pages/Contributions';
 import MintDomain from './pages/MintDomain';
 import CreateProject from './pages/CreateProject';
-import WidthdrawRequest from './pages/WidthdrawRequest';
+import WithdrawRequest from './pages/WithdrawRequest';
+import VoteForRequest from './pages/VoteForRequest';
 import Withdraw from './pages/Withdraw';
+
 
 const { chains, publicClient } = configureChains(
   [bscTestnet, goerli, optimismGoerli, arbitrumGoerli],
@@ -70,16 +72,20 @@ const router = createBrowserRouter([
         element: <Projects />,
       },
       {
-        path: '/buidls/:slug',
+        path: '/buidls/:slug/:index',
         element: <BuidlDetails />,
       },
       {
-        path: '/buidls/:slug/widthdraw-request',
-        element: <WidthdrawRequest />,
+        path: '/buidls/:slug/:index/withdraw-request',
+        element: <WithdrawRequest />,
       },
       {
-        path: '/buidls/:slug/widthdraw',
+        path: '/buidls/:slug/:index/withdraw',
         element: <Withdraw />,
+      },
+      {
+        path: '/buidls/:slug/:index/voteForWR',
+        element: <VoteForRequest />,
       },
       {
         path: '/donations',

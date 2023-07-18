@@ -12,10 +12,12 @@ import {
 
 
 const Dashboard = () => {
+  let index = 0;
   const { chain, chains } = useNetwork()
-  const addressBnb = "0x70207e6063189A905771739499F2A3991a03E4c0";
+  const addressBnb = "0x37A466c7BD057eB5a8C5c0f0b4aaB8b837B37342";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
-  const addressArbi = "0xBFb60BEE0E53B70C8B118026711Bb488c63ECA83";
+  const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
+  const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
 
 
   // console.log(chain + "asdfasfdasd")
@@ -31,7 +33,7 @@ const Dashboard = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
+      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : addressArbi)),
       abi: CrowdFundingContractInterface,
     };
   }
@@ -211,9 +213,12 @@ const Dashboard = () => {
         </div>
         <CategoriesSelector />
         <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-8 p-0.5'>
-          {returnAllProjects?.map((each ,index) => (
-            <BuidlItem key={index} contractAddress={each}  />
-          ))}
+          
+          {returnAllProjects?.map((each ,index) => {
+            console.log(index,"EE==========================================================")
+            return (
+            <BuidlItem index={index} contractAddress={each}  />
+          )})}
         </div>
       </div>
       <div className=' hidden xl:block xl:max-w-xs w-full space-y-4 md:space-y-6'>
@@ -223,7 +228,7 @@ const Dashboard = () => {
           </h1>
         </div>
         <div className=' xl:sticky top-18 right-0'>
-          <Contributers heading='Recent contributions' />
+          {/* <Contributers heading='Recent contributions' /> */}
         </div>
       </div>
     </div>

@@ -17,6 +17,16 @@
         "type": "address"
       },
       {
+        "internalType": "address",
+        "name": "_usdt",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_usdc",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "_minimumContribution",
         "type": "uint256"
@@ -388,6 +398,16 @@
         "type": "address"
       },
       {
+        "internalType": "address payable",
+        "name": "usdtA",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "usdcA",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "minContribution",
         "type": "uint256"
@@ -659,7 +679,7 @@
         "type": "uint256"
       }
     ],
-    "name": "showRewardUser",
+    "name": "showDetailOfWR",
     "outputs": [
       {
         "internalType": "string",
@@ -679,6 +699,16 @@
       {
         "internalType": "uint256",
         "name": "noOfVotes",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "percentOfVotes",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "contributors",
         "type": "uint256"
       },
       {

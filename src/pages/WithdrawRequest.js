@@ -6,54 +6,57 @@ import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import { Menu, Transition } from "@headlessui/react";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../contracts/abi/Project.json';
+import { formatEther } from 'viem';
 import Loader from '../components/Loader';
 
+const WithdrawRequest = () => {
 
-
-const Withdraw = () => {
   const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const navigate = useNavigate();
   const currentLocation  = useLocation();
   const projectContractAddress = currentLocation.pathname?.slice(8,50);
-  const projectId = currentLocation.pathname?.slice(51,52)
+  const projectId = currentLocation.pathname?.slice(51,52);
 
   // STRING
   const [projectWRDescription, setProjectWRDescription] = useState('');
+ // Loading modal
+ const [showLoadingModal, setShowLoadingModal] = useState(false);
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   // Congrats Modal State
-  const [showCongratsModal, showShowCongratsModal] = useState(false);
+  const [showCongratsModal, showShowCongratsModal] = useState(true);
   // State for Vote Button
   const [isUserVoted, setIsUserVoted] = useState(false);
-  // Loading modal
- const [showLoadingModal, setShowLoadingModal] = useState(false);
 
   const [wrAmount, setWRAmount] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDT");
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0x");
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D");
 
   const cryptosBNB = [
-                  {name:"USDC", address:"0xUSDC6991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "}
+                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"},
+                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"}
                   ];
 
   const cryptosETH = [
-                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
                   {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
+                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"}
                   ];
 
   const cryptosArbi = [
-                  {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
-                  {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
+                  {name:"USDT", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
+                  {name:"USDc", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
                 ];
 
   const cryptosOpti = [
-                  {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
-                  {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
+                  {name:"USDT", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
+                  {name:"USDC", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
                 ];
   
-  //=============Project Contract Config=================
+  const onWRequestAmount = (e) => {
+    setWRAmount( e.target.value );
+  };
+//===========Project Contract Config===========
   const projectContractConfig = {
     address: projectContractAddress,
     abi: ProjectContractInterface,
@@ -63,7 +66,7 @@ const Withdraw = () => {
     ...projectContractConfig,
     functionName: 'getProjectDetails',
   });
-  console.log('projectdetails', projectDetails);
+  console.log('projectDetails value', projectDetails);
 
   let projectStarter; 
   let minContribution ;
@@ -79,7 +82,7 @@ const Withdraw = () => {
   let social ;
   let github;
   let projectCover;
-
+  
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
     minContribution = projectDetails[3];
@@ -96,59 +99,157 @@ const Withdraw = () => {
     github = projectDetails[14];
     projectCover = projectDetails[15];
   }else{
-    console.log("projectdetails is undefined!!!");
+    console.log("projectDetails is undefined!!!");
   }
 
-//=============withdraw request check=======
-  const { data: wrChecking } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'showDetailOfWR',
-    args:[
-      projectId
-    ]
-  });
+//==============get USDT and USDC balance=============
 
-  console.log("this project is withdraw request?",wrChecking)
+const { data: getUSDTBalance } = useContractRead({
+  ...projectContractConfig,
+  functionName: 'getContractBalance',
+  args : [
+    (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi)))[0].address
+  ]
+});
+console.log("USDT's balance",getUSDTBalance);
 
-  //=============vote for withdraw requested========
+const { data: getUSDCBalance } = useContractRead({
+  ...projectContractConfig,
+  functionName: 'getContractBalance',
+  args : [
+    (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi)))[1].address
+  ]
+});
+console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
+
+//===============Witdraw Request Config=============
   const {
-    config: withdrawConfig,
-    error: withdrawConfigError,
-    isError: isWithdrawConfigError,
+    config: withdrawRequestConfig,
+    error: withdrawRequestConfigError,
+    isError: isWithdrawRequestConfigError,
   } = usePrepareContractWrite({
     ...projectContractConfig,
-    functionName: 'withdrawRequestedAmount',
+    functionName: 'createWithdrawRequest',
     args: [
-      projectId,
-      (wrChecking !== undefined ? wrChecking?.[1] : 0)
-      
+      projectWRDescription,
+      wrAmount,
+      projectStarter,
+      selectedCryptoAddress,
+      projectId
     ],
   });
 
   const {
-    data: withdrawReturnData,
-    write: withdrawRequestedAmount,
-    error: withdrawError,
+    data: withdrawRequestReturnData,
+    write: createWithdrawRequest,
+    error: withdrawRequestError,
     isLoading,
     isSuccess
-  } = useContractWrite(withdrawConfig);
+  } = useContractWrite(withdrawRequestConfig);
 
-  //==============main functions===========
   const onProjectWRDescriptionChangeHandler = (e) => {
     setProjectWRDescription(e.target.value);
   };
-  const onWRequestAmount = (e) => {
-    setWRAmount( e.target.value );
-  };
-  const withdrawToken = () => {
-    console.log("for args Withdrawal ",projectId,wrChecking?.[1]);
-    withdrawRequestedAmount?.();
+
+  const withdrawRequest = () => {
+    console.log("withdrawRequest args!!",projectWRDescription, wrAmount, projectStarter, selectedCryptoAddress,projectId)
+    createWithdrawRequest?.();
   }
 
   return (
     <>
-      {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
+      {/* Details Modal */}
+      <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
+        <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
+          <div className="px-3 pt-3 pb-1.5 space-y-4">
+            <div className="max-w-xs mx-auto py-5 space-y-4">
+              <div className="space-y-1 ">
+                <h1 className="font-normal text-base ">
+                  {wrAmount} {selectedCrypto} Requested for withdrawal by
+                </h1>
+                <div className="flex items-center space-x-1">
+                  <img src="/assets/images/avatar-4.png" alt="avatar" />
+                  <h3 className="text-Davy-Grey font-medium text-xs">
+                    {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(39, 42)}
+                  </h3>
+                  {/* <a
+                    href="/"
+                    className="bg-Chinese-Blue text-Pure-White rounded-md text-xs py-0.5 px-2"
+                  >
+                    view on explorer
+                  </a> */}
+                </div>
+              </div>
 
+              <div className="text-Eire-Black space-y-0.5">
+                <div className="flex justify-between ">
+                    <h2 className="font-normal text-base ">Request Desc</h2>
+                    <h2 className="font-normal text-base ">{projectWRDescription?.slice(0,15)}...</h2>
+                </div>
+
+                <div className="flex justify-between ">
+                  <h2 className="font-normal text-base ">Amount Requested</h2>
+                  <h2 className="font-normal text-base ">{wrAmount} {selectedCrypto}</h2>
+                </div>
+
+                {/* <div className="flex justify-between ">
+                  <h2 className="font-normal text-base ">Total Votes</h2>
+                  <h2 className="font-normal text-base ">3,211</h2>
+                </div> */}
+                <div className="flex justify-between ">
+                  <h2 className="font-normal text-base ">Receipient Address</h2>
+                  <h2 className="font-normal text-base ">{projectStarter?.slice(0, 6) + "..." + projectStarter?.slice(40, 42)}</h2>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4 font-semibold text-base">
+              <button
+                onClick={() => setShowDetailsModal(false)}
+                className="text-Chinese-Blue border-2 border-Chinese-Blue flex-1 py-2 rounded-4xl"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  withdrawRequest()
+                }}
+                className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
+              >
+                Withdraw
+              </button>
+            </div>
+            <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
+          </div>
+        </div>
+      </Modals>
+
+      {/* Congrats Modal */}
+      {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
+      {isSuccess && 
+        <Modals
+          showModal={showCongratsModal}
+          setShowModal={showShowCongratsModal}
+        >
+          <CongratsModalWrapper>
+            {" "}
+            <div className="space-y-2 py-6">
+              <h1 className="text-Bright-Gray font-medium text-xl">
+                Congratulation!
+              </h1>
+              <h4 className="text-Bright-Gray/90 font-normal text-sm">
+                Your Request has been Submitted for Withdraw Request.
+              </h4>
+            </div>
+            <button
+              onClick={() => showShowCongratsModal(false)}
+              className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
+            >
+              Close
+            </button>
+          </CongratsModalWrapper>
+        </Modals>
+      }
+      
       <div className="flex relative">
         <div className="flex-1 space-y-4 md:space-y-6 mr-4">
           <div className="flex items-center justify-between">
@@ -186,7 +287,7 @@ const Withdraw = () => {
               </div>
 
               <h1 className="font-semibold text-sm sm:text-lg text-Raisin-Black">
-                Withdrawal requested amount
+                Withdrawal request for Build a Web3 Marketplace
               </h1>
             </div>
             <svg
@@ -234,10 +335,13 @@ const Withdraw = () => {
                   <h1 className="text-Davy-Grey text-lg font-semibold">
                     Build a Web3 AI marketplace
                   </h1>
-                  <p className="text-Nickle font-normal text-sm sm:text-base">
-                    {wrChecking?.[0]}
-                    <br />
-                  </p>
+                  <textarea
+                    onChange={onProjectWRDescriptionChangeHandler}
+                    className='w-full bg-Pure-White rounded-2xl p-3 outline-none shadow-details'
+                    rows={5}
+                    placeholder='description for withdrawal request'
+                  />
+
                 </div>
               </div>
 
@@ -268,57 +372,66 @@ const Withdraw = () => {
                     />
                   </svg>
                   <div className="text-Light-Slate-Gray">
-                    <h4 className="font-medium">Amount for Withdrawal</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[2])} {selectedCrypto}</h2>
-                    
+                    <h4 className="font-medium">Contract Balance </h4>
+                    <h2 className="font-bold">{getUSDTBalance === undefined ? 0 :formatEther?.(getUSDTBalance)} USDT</h2>
+                    <h2 className="font-bold">{getUSDCBalance === undefined ? 0 :formatEther?.(getUSDCBalance)} USDC</h2>
                     
                   </div>
-                </div>
-
-                <div className="flex w-full sm:w-auto justify-between sm:justify-start items-center space-x-8 sm:space-x-2">
-                  <svg
-                    
-                    width="36"
-                    height="36"
-                    viewBox="0 0 36 36"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12.6734 11.3778C12.7109 13.8622 12.7501 17.4109 12.7501 21.3751C12.7501 26.656 12.6804 31.1998 12.6382 33.4721C13.0889 33.5376 13.5665 33.604 14.0678 33.6699C17.6517 34.141 22.4646 34.5882 27.3542 34.485C29.5677 34.4383 31.686 33.1964 32.4885 31.0221C34.4866 25.6083 34.6108 18.7003 34.4501 14.4575C34.3476 11.7507 32.0715 9.72351 29.3798 9.88686C27.7456 9.98609 25.9679 10.1345 23.9883 10.3165C24.0146 9.08871 23.9998 7.75709 23.9056 6.43977C23.7742 4.60385 22.8156 2.64614 20.8103 2.04179C20.0977 1.82704 19.3763 1.69739 18.737 1.61895C17.0074 1.40678 15.594 2.61648 15.1388 4.14094C14.5633 6.06812 13.6485 8.95904 12.6734 11.3778Z"
-                      fill={"#43489D" }
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M3.67456 34.606C4.30883 34.7581 5.09203 34.875 6 34.875C6.90797 34.875 7.69117 34.7581 8.32545 34.606C9.96292 34.2136 10.7429 32.701 10.7741 31.3256C10.8164 29.4687 10.875 26.2228 10.875 22.5C10.875 18.7772 10.8164 15.5313 10.7741 13.6744C10.7429 12.299 9.96292 10.7863 8.32545 10.3939C7.69117 10.2419 6.90797 10.125 6 10.125C5.09203 10.125 4.30883 10.2419 3.67456 10.3939C2.0371 10.7863 1.25714 12.299 1.22584 13.6744C1.1836 15.5313 1.125 18.7772 1.125 22.5C1.125 26.2228 1.1836 29.4687 1.22584 31.3256C1.25714 32.701 2.0371 34.2136 3.67456 34.606ZM7.5 27.75C7.5 26.9216 6.82843 26.25 6 26.25C5.17157 26.25 4.5 26.9216 4.5 27.75V29.25C4.5 30.0784 5.17157 30.75 6 30.75C6.82843 30.75 7.5 30.0784 7.5 29.25V27.75Z"
-                      fill={"#43489D" }
-                    />
-                  </svg>
-
-                  <div className="text-Light-Slate-Gray relative">
-                    <h4 className="font-medium">Total Votes</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[5])} ({Number(wrChecking?.[4])})%</h2>
-                    {
-                      
-                      <p
-                        className="bg-Spring-Frost absolute top-1 -left-14 sm:left-auto sm:-right-14 text-Pure-Black rounded-lg text-xs py-0.5 px-2"
-                      >voted
-                      </p>
-                    }
-                  </div>
-                 
                 </div>
               </div>
 
               <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                
+                <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
+                  <input className="outline-none max-w-[150px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestAmount}/>
+                  <Menu as="div" className="relative">
+                    <div className="h-8">
+                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
+                        <img src={`/assets/icons/${selectedCrypto}.svg`} alt={selectedCrypto} />
+                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
+                          <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
+                          </svg>
+                        </div>
+                      </Menu.Button>
+                    </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
+                          <div className="font-medium text-sm text-Light-Slate-Gray">
+                            {
+                              (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                                onClick={() => {
+                                  setSelectedCrypto(crypto.name);
+                                  setSelectedCryptoAddress(crypto.address);
+                                }}
+                                as="div"
+                                className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
+                              >
+                                <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
+                              </Menu.Item>
+                              )
+                            }
+                            </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
                 <button
                   onClick={() => {
-                    withdrawToken();
+                    setShowDetailsModal(true);
                   }}
-                  className="flex-1 bg-gradient-to-r  sm:w-auto from-Chinese-Blue to-Celestial-Blue text-Pure-White rounded-xl py-2"
+                  className="flex-1 bg-gradient-to-r w-full sm:w-auto from-Chinese-Blue to-Celestial-Blue text-Pure-White rounded-xl py-2"
                 >
-                  Withdraw
+                  Withdraw Request
                 </button>
               </div>
             </div>
@@ -333,4 +446,4 @@ const Withdraw = () => {
   );
 };
 
-export default Withdraw;
+export default WithdrawRequest;

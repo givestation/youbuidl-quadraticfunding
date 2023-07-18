@@ -44,19 +44,19 @@ const ContributionItem = ({ contractAddress }) => {
  
     if(projectDetails !== undefined ){
       projectStarter = projectDetails[0];
-      minContribution = projectDetails[1];
-      projectDeadline = projectDetails[2];
-      goalAmount = projectDetails[3];
-      completedTime = projectDetails[4];
-      currentAmount = projectDetails[5];
-      title = projectDetails[6];
-      desc = projectDetails[7];
-      currentState = projectDetails[8];
-      balance = projectDetails[9];
-      website = projectDetails[10];
-      social = projectDetails[11];
-      github = projectDetails[12];
-      projectCover = projectDetails[13];
+      minContribution = projectDetails[3];
+      projectDeadline = projectDetails[4];
+      goalAmount = projectDetails[5];
+      completedTime = projectDetails[6];
+      currentAmount = projectDetails[7];
+      title = projectDetails[8];
+      desc = projectDetails[9];
+      currentState = projectDetails[10];
+      balance = projectDetails[11];
+      website = projectDetails[12];
+      social = projectDetails[13];
+      github = projectDetails[14];
+      projectCover = projectDetails[15];
     }else{
       console.log("projectDetails is undefined");
 

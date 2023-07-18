@@ -10,7 +10,7 @@ import Loader from '../components/Loader';
 
 
 
-const Withdraw = () => {
+const VoteForRequest = () => {
   const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const navigate = useNavigate();
@@ -112,26 +112,24 @@ const Withdraw = () => {
 
   //=============vote for withdraw requested========
   const {
-    config: withdrawConfig,
-    error: withdrawConfigError,
-    isError: isWithdrawConfigError,
+    config: voteRequestConfig,
+    error: voteRequestConfigError,
+    isError: isVoteRequestConfigError,
   } = usePrepareContractWrite({
     ...projectContractConfig,
-    functionName: 'withdrawRequestedAmount',
+    functionName: 'voteWithdrawRequest',
     args: [
-      projectId,
-      (wrChecking !== undefined ? wrChecking?.[1] : 0)
-      
+      projectId
     ],
   });
 
   const {
-    data: withdrawReturnData,
-    write: withdrawRequestedAmount,
-    error: withdrawError,
+    data: voteRequestReturnData,
+    write: voteWithdrawRequest,
+    error: voteRequestError,
     isLoading,
     isSuccess
-  } = useContractWrite(withdrawConfig);
+  } = useContractWrite(voteRequestConfig);
 
   //==============main functions===========
   const onProjectWRDescriptionChangeHandler = (e) => {
@@ -140,9 +138,9 @@ const Withdraw = () => {
   const onWRequestAmount = (e) => {
     setWRAmount( e.target.value );
   };
-  const withdrawToken = () => {
-    console.log("for args Withdrawal ",projectId,wrChecking?.[1]);
-    withdrawRequestedAmount?.();
+  const voteRequest = () => {
+    console.log("request vote",projectId)
+    voteWithdrawRequest?.();
   }
 
   return (
@@ -186,7 +184,7 @@ const Withdraw = () => {
               </div>
 
               <h1 className="font-semibold text-sm sm:text-lg text-Raisin-Black">
-                Withdrawal requested amount
+                VOTE for Build a Web3 Marketplace Withdrawal request
               </h1>
             </div>
             <svg
@@ -268,7 +266,7 @@ const Withdraw = () => {
                     />
                   </svg>
                   <div className="text-Light-Slate-Gray">
-                    <h4 className="font-medium">Amount for Withdrawal</h4>
+                    <h4 className="font-medium">Amount of Requested</h4>
                     <h2 className="font-bold">{Number(wrChecking?.[2])} {selectedCrypto}</h2>
                     
                     
@@ -276,6 +274,11 @@ const Withdraw = () => {
                 </div>
 
                 <div className="flex w-full sm:w-auto justify-between sm:justify-start items-center space-x-8 sm:space-x-2">
+                  <button
+                    disabled={isSuccess}
+                    onClick={() => {
+                      voteRequest()
+                    }}>
                   <svg
                     
                     width="36"
@@ -286,21 +289,22 @@ const Withdraw = () => {
                   >
                     <path
                       d="M12.6734 11.3778C12.7109 13.8622 12.7501 17.4109 12.7501 21.3751C12.7501 26.656 12.6804 31.1998 12.6382 33.4721C13.0889 33.5376 13.5665 33.604 14.0678 33.6699C17.6517 34.141 22.4646 34.5882 27.3542 34.485C29.5677 34.4383 31.686 33.1964 32.4885 31.0221C34.4866 25.6083 34.6108 18.7003 34.4501 14.4575C34.3476 11.7507 32.0715 9.72351 29.3798 9.88686C27.7456 9.98609 25.9679 10.1345 23.9883 10.3165C24.0146 9.08871 23.9998 7.75709 23.9056 6.43977C23.7742 4.60385 22.8156 2.64614 20.8103 2.04179C20.0977 1.82704 19.3763 1.69739 18.737 1.61895C17.0074 1.40678 15.594 2.61648 15.1388 4.14094C14.5633 6.06812 13.6485 8.95904 12.6734 11.3778Z"
-                      fill={"#43489D" }
+                      fill={isSuccess ? "#43489D" : "#ADADAD"}
                     />
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
                       d="M3.67456 34.606C4.30883 34.7581 5.09203 34.875 6 34.875C6.90797 34.875 7.69117 34.7581 8.32545 34.606C9.96292 34.2136 10.7429 32.701 10.7741 31.3256C10.8164 29.4687 10.875 26.2228 10.875 22.5C10.875 18.7772 10.8164 15.5313 10.7741 13.6744C10.7429 12.299 9.96292 10.7863 8.32545 10.3939C7.69117 10.2419 6.90797 10.125 6 10.125C5.09203 10.125 4.30883 10.2419 3.67456 10.3939C2.0371 10.7863 1.25714 12.299 1.22584 13.6744C1.1836 15.5313 1.125 18.7772 1.125 22.5C1.125 26.2228 1.1836 29.4687 1.22584 31.3256C1.25714 32.701 2.0371 34.2136 3.67456 34.606ZM7.5 27.75C7.5 26.9216 6.82843 26.25 6 26.25C5.17157 26.25 4.5 26.9216 4.5 27.75V29.25C4.5 30.0784 5.17157 30.75 6 30.75C6.82843 30.75 7.5 30.0784 7.5 29.25V27.75Z"
-                      fill={"#43489D" }
+                      fill={isSuccess ? "#43489D" : "#ADADAD"}
                     />
                   </svg>
+                  </button>
 
                   <div className="text-Light-Slate-Gray relative">
                     <h4 className="font-medium">Total Votes</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[5])} ({Number(wrChecking?.[4])})%</h2>
+                    <h2 className="font-bold">{Number(wrChecking?.[5])} ({Number(wrChecking?.[4])})% </h2>
                     {
-                      
+                      isSuccess &&
                       <p
                         className="bg-Spring-Frost absolute top-1 -left-14 sm:left-auto sm:-right-14 text-Pure-Black rounded-lg text-xs py-0.5 px-2"
                       >voted
@@ -311,16 +315,16 @@ const Withdraw = () => {
                 </div>
               </div>
 
-              <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              {/* <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
                 <button
                   onClick={() => {
-                    withdrawToken();
+                    setShowDetailsModal(true);
                   }}
                   className="flex-1 bg-gradient-to-r  sm:w-auto from-Chinese-Blue to-Celestial-Blue text-Pure-White rounded-xl py-2"
                 >
                   Withdraw
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -333,4 +337,4 @@ const Withdraw = () => {
   );
 };
 
-export default Withdraw;
+export default VoteForRequest;
