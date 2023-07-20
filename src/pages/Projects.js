@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import BuidlItem from "../components/BuidlItem";
 import CategoriesSelector from "../components/CategoriesSelector";
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
@@ -18,6 +20,9 @@ const Projects = () => {
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
   const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
   const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
+
+   // set tag of project
+   const [tagOfProject, setTagOfProject] = useState('popular');
 
   let crowdFundingContractConfig = {};
   if (chain === undefined){
@@ -131,11 +136,13 @@ const Projects = () => {
           </svg>
         </div>
       </div>
-      <CategoriesSelector />
+      <CategoriesSelector onSubmit = {(args) => {
+          setTagOfProject(args)
+        }}/>
 
       <div className="grid  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       {returnAllProjects?.map((each ,index) => (
-            <BuidlItem key={index} contractAddress={each}  />
+            <BuidlItem index={index} contractAddress={each} tag={tagOfProject} />
           ))}
       </div>
     </div>

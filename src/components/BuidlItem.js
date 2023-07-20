@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import ProjectContractInterface from '../contracts/abi/Project.json';
-import {  useContractRead, useNetwork, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import {  useContractRead, useNetwork,useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { formatEther } from 'viem';
 import { useState, useEffect} from 'react';
 import { Loader } from './Loader'
 
-const BuidlItem = ({ contractAddress , index}) => {
+const BuidlItem = ({ contractAddress , index, tag}) => {
+  const { address, connector, isConnected } = useAccount();
+
   console.log(contractAddress , index,"contractAddress , key")
   const { chain, chains } = useNetwork()
   
@@ -44,6 +46,14 @@ const BuidlItem = ({ contractAddress , index}) => {
     functionName: 'filterTags',
   });
 
+  const { data: realContribitors } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'contributiors',
+    args:[
+      address
+    ]
+  });
+  console.log("this client is contributed?",realContribitors)
   console.log('IS REVEALED', isRevealed);
   console.log('IS VERIFIED', isVerified);
   useEffect(() => {
@@ -127,6 +137,7 @@ const BuidlItem = ({ contractAddress , index}) => {
 
 
   return (
+    tag === filterTags || tag === 'popular' ?
     
     <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
       <img className='w-full object-cover' src={projectCover} alt='code' />
@@ -161,7 +172,7 @@ const BuidlItem = ({ contractAddress , index}) => {
         </div>
         <div className='space-y-1'>
           <div className='bg-Steel-Blue h-2 rounded-md w-full relative'>
-            <div className={`w-[85%] h-full bg-Chinese-Blue rounded-md`}></div>
+            <div className={`w-[${Number(currentAmount)/Number(goalAmount)*100}%] h-full bg-Chinese-Blue rounded-md`}></div>
           </div>
           <div className='flex items-center justify-between'>
             <h3 className='text-Philipine-Gray font-normal text-xs'>
@@ -180,7 +191,7 @@ const BuidlItem = ({ contractAddress , index}) => {
         </div>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-1'>
-            <img src='/assets/images/avatar-4.png' alt='avatar' />
+            <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
             <a
               href = {defaultEthLink?.concat("",contractAddress)}
               className='text-Davy-Grey font-medium text-xs'
@@ -212,6 +223,7 @@ const BuidlItem = ({ contractAddress , index}) => {
         </div>
       </div>
     </div>
+    : ''
   );
 };
 

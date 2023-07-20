@@ -437,10 +437,6 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
             </div>
           </div>
         </div>
-
-        <div className="hidden xl:block max-w-xs w-full  sticky top-18 right-0 self-start	">
-          <Contributers heading="All Contributors" />
-        </div>
       </div>
     </>
   );

@@ -298,7 +298,7 @@ const Withdraw = () => {
 
                   <div className="text-Light-Slate-Gray relative">
                     <h4 className="font-medium">Total Votes</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[5])} ({Number(wrChecking?.[4])})%</h2>
+                    <h2 className="font-bold">{Number(wrChecking?.[3])} ({(Number(wrChecking?.[3]) / Number(wrChecking?.[5]) * 100).toFixed(0)})%</h2>
                     {
                       
                       <p
@@ -323,10 +323,6 @@ const Withdraw = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="hidden xl:block max-w-xs w-full  sticky top-18 right-0 self-start	">
-          <Contributers heading="All Contributors" />
         </div>
       </div>
     </>

@@ -31,6 +31,8 @@ const Rewards = () => {
   const [showCongratsModal, showShowCongratsModal] = useState(true);
   // setRewardUser
   const [rewardUser, setRewardUser] = useState(0);
+  // setPriceBNB
+  const [priceBNB, setPriceBNB] = useState(0);
   // setEtherRamount
   const [etherRAmount, setEtherRAmount] = useState(0);
 
@@ -79,11 +81,21 @@ const Rewards = () => {
     setEtherRAmount(
       web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
     );
+    getPriceBNB(e.target.value);
+    
+    
   };
 
   const rewardWithdraw = () =>{
    console.log("args for withdraw reward", etherRAmount)
     withdrawUserRewards?.();
+  }
+
+  const getPriceBNB = async (amount) => {
+    const api_call = await fetch(`https://www.binance.com/api/v3/ticker/price?symbol=BNBUSDT`);
+    const priceBnb = await api_call.json();
+    setPriceBNB(priceBnb?.price * amount);
+    console.log(priceBnb?.price,amount,"===============");
   }
 
   // console.log( "reward Error!",userRewardConfigError)
@@ -114,7 +126,7 @@ const Rewards = () => {
 
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Value USD</h2>
-                  <h2 className="font-normal text-base ">$127,000</h2>
+                  <h2 className="font-normal text-base ">${Number(priceBNB).toFixed(2) }</h2>
                 </div>
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Status</h2>
@@ -135,11 +147,13 @@ const Rewards = () => {
                 Cancel
               </button>
               <button
+                disabled={showRewardUserData === undefined ? true : false}
                 onClick={() => {
                   rewardWithdraw();
                   
                 }}
                 className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
+                // #ADADAD
               >
                 Withdraw
               </button>

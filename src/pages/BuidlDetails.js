@@ -26,6 +26,8 @@ const BuidlDetails = () => {
   const projectId = currentLocation.pathname?.slice(51,52);
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  // Details Modal State
+  const [showDescModal, setShowDescModal] = useState(false);
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   // Congrats Approved Modal State
@@ -131,6 +133,23 @@ erc20ContractConfig = {
   }else{
     console.log("projecteDetails is undefined!!!");
   }
+
+  const { data: filterTags } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'filterTags',
+  });
+
+  const { data: realContributors } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'contributiors',
+    args:[
+      address
+    ]
+  });
+
+  console.log("this client is contributed?",realContributors)
+  console.log('tags of this project', filterTags);
+
 //=============verify information of project=======
   const { data: isVerified } = useContractRead({
     ...projectContractConfig,
@@ -347,6 +366,28 @@ erc20ContractConfig = {
         </div>
       </Modals>
 
+      <Modals showModal={showDescModal} setShowModal={setShowDescModal}>
+      
+        <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
+          <div className="px-3 pt-3 pb-1.5 space-y-4">
+            
+            <div className="max-w-xs mx-auto py-5 space-y-4">
+              {desc}
+            </div>
+            <div className="flex items-center space-x-4 font-semibold text-base">
+              <button
+                onClick={() => setShowDescModal(false)}
+                className="text-Chinese-Blue border-2 border-Chinese-Blue flex-1 py-2 rounded-4xl"
+              >
+                Cancel
+              </button>
+              
+            </div>
+            <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
+          </div>
+        </div>
+      </Modals>
+
       {/* Approved Modal loading and congratulation */}
       {approvedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
       {approvedSuccess && 
@@ -436,7 +477,7 @@ erc20ContractConfig = {
                 </svg>
               </div>
               <div className="flex items-center space-x-1">
-                <img src="/assets/images/avatar-4.png" alt="avatar" />
+                <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
                 <h3 className="text-Bright-Gray font-medium text-xs">
                   {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(38, 42)}
                 </h3>
@@ -491,7 +532,7 @@ erc20ContractConfig = {
                 <h1 className="text-Vampire-Black font-semibold text-xl">
                   ${formatEther(currentAmount === undefined ? 0 : currentAmount ) || 0}
                   <span className="text-Philipine-Gray font-normal text-sm">
-                    0%
+                     {(Number(currentAmount)/Number(goalAmount)*100).toFixed(2)}%
                   </span>
                 </h1>
               </div>
@@ -507,7 +548,7 @@ erc20ContractConfig = {
 
             <div className="bg-Steel-Blue h-2 rounded-md w-full relative">
               <div
-                className={`w-[85%] h-full bg-Chinese-Blue rounded-md`}
+                className={`w-[${Number(currentAmount)/Number(goalAmount)*100}%] h-full bg-Chinese-Blue rounded-md`}
               ></div>
             </div>
 
@@ -571,17 +612,20 @@ erc20ContractConfig = {
                 Description
               </h1>
               <p className="text-Nickle font-normal text-sm sm:text-base">
-                {desc}
+                {desc?.slice(0,50)}...
                 <br />
                 <span className="text-Vampire-Black font-semibold cursor-pointer text-base">
-                  Read more
+                  <button
+                  onClick={() => {
+                    setShowDescModal(true);
+                  }}>Read more</button>
                 </span>
               </p>
             </div>
 
             <div className="flex w-full items-center justify-between flex-col space-y-4 sm:space-y-0 sm:flex-row">
               <div className="flex items-center space-x-2">
-                <div className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer">
+                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" href={github}>
                   <svg
                     width="27"
                     height="31"
@@ -596,8 +640,8 @@ erc20ContractConfig = {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </div>
-                <div className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer">
+                </a>
+                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" href={social}>
                   <svg
                     width="29"
                     height="29"
@@ -618,7 +662,7 @@ erc20ContractConfig = {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </div>
+                </a>
               </div>
               <div className="flex w-full sm:w-auto flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
 
@@ -701,10 +745,10 @@ erc20ContractConfig = {
             </svg>
           </Link> :
           <Link
-            to={wrChecking?.[0] !== '' ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
+            to={wrChecking?.[0] !== '' && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
             className="text-Nickle text-center flex items-center space-x-2"
           >
-            <span>{ wrChecking?.[0] !== '' ? "Withdrawal request for this campaign"  : "Creator didn't request for withdraw"}</span>
+            <span>{ wrChecking?.[0] !== '' && realContributors !== 0n ? "you voted about Withdrawal request for this campaign"  : (realContributors === 0n ? "you cann't take part in vote" : "Creator didn't request for withdraw")}</span>
             <svg
               width="16"
               height="16"

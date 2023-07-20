@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Link } from 'react-router-dom';
 import BuidlItem from '../components/BuidlItem';
 import CategoriesSelector from '../components/CategoriesSelector';
@@ -18,6 +20,9 @@ const Dashboard = () => {
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
   const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
   const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
+
+  // set tag of project
+  const [tagOfProject, setTagOfProject] = useState('popular');
 
 
   // console.log(chain + "asdfasfdasd")
@@ -48,19 +53,6 @@ const Dashboard = () => {
     ...crowdFundingContractConfig,
     functionName: 'returnAllProjects',
   });
-
-  // const contractRead = useContractRead(
-  //   {
-  //     addressOrName: '0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713',
-  //     contractInterface: CrowdFundingContractInterface,
-  //   },
-  //   'getHunger',
-  //   {
-  //     onSuccess(data) {
-  //       console.log('Success', data)
-  //     },
-  //   },
-  // )
 
   console.log('ALL PROJECTS', returnAllProjects);
   
@@ -211,13 +203,15 @@ const Dashboard = () => {
             </svg>
           </div>
         </div>
-        <CategoriesSelector />
+        <CategoriesSelector onSubmit = {(args) => {
+          setTagOfProject(args)
+        }}/>
         <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-8 p-0.5'>
           
           {returnAllProjects?.map((each ,index) => {
             console.log(index,"EE==========================================================")
             return (
-            <BuidlItem index={index} contractAddress={each}  />
+            <BuidlItem index={index} contractAddress={each} tag={tagOfProject} />
           )})}
         </div>
       </div>
