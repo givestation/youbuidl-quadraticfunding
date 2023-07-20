@@ -33,7 +33,7 @@ import Withdraw from './pages/Withdraw';
 
 
 const { chains, publicClient } = configureChains(
-  [bscTestnet, goerli, optimismGoerli, arbitrumGoerli],
+  [bscTestnet, goerli, optimismGoerli, arbitrumGoerli,polygonMumbai,zkSyncTestnet],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),
