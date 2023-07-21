@@ -12,7 +12,7 @@ import Erc20Json from '../contracts/abi/ERC20.json';
 import Loader from '../components/Loader';
 import web3 from 'web3';
 
-const addressBnb = "0x37A466c7BD057eB5a8C5c0f0b4aaB8b837B37342";
+const addressBnb = "0xBE27F0cd50b6AfbC66Be759f4577B9bBE027dED7";
 const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
 const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
 const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
@@ -239,7 +239,7 @@ erc20ContractConfig = {
     if(isVerified == false){
       setVerification?.();
     }
-  },[projectDetails]);
+  },[]);
 
 //==========main functions==============
 
@@ -284,6 +284,7 @@ erc20ContractConfig = {
   console.log("for contribute",contributeConfigError)
   console.log(showDetailsModal,approvedCongratsModal,"let see after modal cancel!")
   console.log(address,projectStarter,"===========================")
+  console.log((Number(currentAmount)/Number(goalAmount)*100).toFixed(2),"-===============")
 
   return (
     <>
@@ -548,7 +549,7 @@ erc20ContractConfig = {
 
             <div className="bg-Steel-Blue h-2 rounded-md w-full relative">
               <div
-                className={`w-[${Number(currentAmount)/Number(goalAmount)*100}%] h-full bg-Chinese-Blue rounded-md`}
+                className={`w-[${Number(currentAmount) !== 0 ? Number(currentAmount)/Number(goalAmount)*100 : 0}%] h-full bg-Chinese-Blue rounded-md`}
               ></div>
             </div>
 
@@ -725,10 +726,10 @@ erc20ContractConfig = {
         <div className="flex justify-center">
           {address === projectStarter ? 
           <Link
-            to={wrChecking?.[0] === '' ? `/buidls/${projectContractAddress}/${projectId}/withdraw-request` : `/buidls/${projectContractAddress}/${projectId}/withdraw`} 
+            to={wrChecking?.[0] === undefined || wrChecking?.[0] === '' ? `/buidls/${projectContractAddress}/${projectId}/withdraw-request` : `/buidls/${projectContractAddress}/${projectId}/withdraw`} 
             className="text-Nickle text-center flex items-center space-x-2"
           >
-            <span>{wrChecking?.[0] === '' ? "No withdrawal request for this campaign" : "you created withdraw request"}</span>
+            <span>{wrChecking?.[0] === undefined || wrChecking?.[0] === '' ? "No withdrawal request for this campaign" : "you created withdraw request"}</span>
             <svg
               width="16"
               height="16"
@@ -745,10 +746,10 @@ erc20ContractConfig = {
             </svg>
           </Link> :
           <Link
-            to={wrChecking?.[0] !== '' && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
+            to={(wrChecking?.[0] !== undefined || wrChecking?.[0] !== '') && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
             className="text-Nickle text-center flex items-center space-x-2"
           >
-            <span>{ wrChecking?.[0] !== '' && realContributors !== 0n ? "you voted about Withdrawal request for this campaign"  : (realContributors === 0n ? "you cann't take part in vote" : "Creator didn't request for withdraw")}</span>
+            <span>{ (wrChecking?.[0] !== undefined || wrChecking?.[0] !== '') && realContributors !== 0n ? "you can vote about Withdrawal request for this campaign"  : (realContributors === 0n ? "you cann't take part in vote" : "Creator didn't request for withdraw")}</span>
             <svg
               width="16"
               height="16"

@@ -135,6 +135,7 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
       wrAmount,
       projectStarter,
       selectedCryptoAddress,
+      selectedCrypto,
       projectId
     ],
   });

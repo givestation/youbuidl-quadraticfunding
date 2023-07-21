@@ -34,8 +34,8 @@ const Withdraw = () => {
   const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0x");
 
   const cryptosBNB = [
-                  {name:"USDC", address:"0xUSDC6991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                  {name:"USDT", address:"0xUSDT7f958d2ee523a2206206994597c13d831ec7 "}
+                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"},
+                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D "}
                   ];
 
   const cryptosETH = [
@@ -142,6 +142,7 @@ const Withdraw = () => {
   };
   const withdrawToken = () => {
     console.log("for args Withdrawal ",projectId,wrChecking?.[1]);
+    console.log("=============withdraw error========",withdrawConfigError)
     withdrawRequestedAmount?.();
   }
 
@@ -269,7 +270,7 @@ const Withdraw = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount for Withdrawal</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[2])} {selectedCrypto}</h2>
+                    <h2 className="font-bold">{Number(wrChecking?.[3])} {wrChecking?.[2]}</h2>
                     
                     
                   </div>
@@ -298,7 +299,7 @@ const Withdraw = () => {
 
                   <div className="text-Light-Slate-Gray relative">
                     <h4 className="font-medium">Total Votes</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[3])} ({(Number(wrChecking?.[3]) / Number(wrChecking?.[5]) * 100).toFixed(0)})%</h2>
+                    <h2 className="font-bold">{Number(wrChecking?.[4])} ({(Number(wrChecking?.[4]) / Number(wrChecking?.[5]) * 100).toFixed(0)})%</h2>
                     {
                       
                       <p

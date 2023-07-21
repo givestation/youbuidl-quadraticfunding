@@ -171,6 +171,12 @@
       },
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "tokenName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
@@ -292,6 +298,11 @@
         "internalType": "address",
         "name": "_withdrawToken",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_tokenName",
+        "type": "string"
       },
       {
         "internalType": "uint256",
@@ -692,6 +703,11 @@
         "type": "address"
       },
       {
+        "internalType": "string",
+        "name": "tokenName",
+        "type": "string"
+      },
+      {
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
@@ -699,11 +715,6 @@
       {
         "internalType": "uint256",
         "name": "noOfVotes",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "percentOfVotes",
         "type": "uint256"
       },
       {
@@ -827,6 +838,11 @@
         "internalType": "address",
         "name": "withdrawToken",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "tokenName",
+        "type": "string"
       },
       {
         "internalType": "uint256",
