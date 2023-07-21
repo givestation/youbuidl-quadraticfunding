@@ -81,6 +81,7 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
   let minContribution ;
   let projectDeadline;
   let goalAmount ;
+  let noOfContributors;
   let completedTime ;
   let currentAmount ;
   let title;
@@ -96,9 +97,9 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
  
     if(projectDetails !== undefined ){
       projectStarter = projectDetails[0];
-      minContribution = projectDetails[3];
-      projectDeadline = projectDetails[4];
-      goalAmount = projectDetails[5];
+      projectDeadline = projectDetails[3];
+      goalAmount = projectDetails[4];
+      noOfContributors= projectDetails[5];
       completedTime = projectDetails[6];
       currentAmount = projectDetails[7];
       title = projectDetails[8];
@@ -113,10 +114,6 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
       console.log("projectDetails is undefined");
 
     }
-  
-
-
-
 
   // const projectStarter = 1241234135123124;
   // const minContribution = 1241234135123124;
@@ -134,6 +131,7 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
   // const projectCover = 1241234135123124;
 
   console.log('tags', filterTags);
+  console.log((Number(currentAmount)/Number(goalAmount)*100).toFixed(2),"=-===-=-=-=-")
 
 
   return (
@@ -172,7 +170,9 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
         </div>
         <div className='space-y-1'>
           <div className='bg-Steel-Blue h-2 rounded-md w-full relative'>
-            <div className={`w-[${Number(currentAmount)/Number(goalAmount)*100}%] h-full bg-Chinese-Blue rounded-md`}></div>
+            <div 
+            style={{width: `${(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%`}}
+            className={`h-full bg-Chinese-Blue rounded-md`}></div>
           </div>
           <div className='flex items-center justify-between'>
             <h3 className='text-Philipine-Gray font-normal text-xs'>
@@ -218,7 +218,7 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
             px-2'
           >
             {' '}
-            Donate
+            Contribute
           </Link>
         </div>
       </div>

@@ -11,7 +11,7 @@ import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import web3 from 'web3';
 import Loader from '../components/Loader';
 
-const addressBnb = "0xBE27F0cd50b6AfbC66Be759f4577B9bBE027dED7";
+const addressBnb = "0x780E4a35ce82A28599B52fe7f26B3EDcF2A60381";
 const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
 const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
 const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
@@ -47,8 +47,6 @@ const CreateProject = () => {
   const [projectDescription, setProjectDescription] = useState('');
   // STRING
   const [projectTitle, setProjectTitle] = useState('');
-  // LARGE NUMBER
-  const [minContributionAmount, setMinContributionAmount] = useState(0);
   // STRING
   const [websiteUrl, setWebsiteUrl] = useState('');
   // STRING
@@ -87,7 +85,6 @@ const CreateProject = () => {
     ...contractConfig,
     functionName: 'createProject',
     args: [
-      minContributionAmount,
       expectedLaunchDate,
       targetContribution,
       projectTitle,
@@ -147,9 +144,6 @@ const CreateProject = () => {
     setGithubUrl('https://github.com');
     setSocialUrl('https://twitter.com');
     setTag('music');
-    setMinContributionAmount(
-      web3.utils.toBigInt(web3.utils.toWei('10000', 'ether')).toString()
-    );
     setTargetContribution(
       web3.utils.toBigInt(web3.utils.toWei('100000', 'ether')).toString()
     );
@@ -172,12 +166,6 @@ const CreateProject = () => {
     setSocialUrl(e.target.value);
   };
 
-  const onMinContributionChange = (e) => {
-    setMinContributionAmount(
-      web3.utils.toBigInt(web3.utils.toWei(e.target.value, 'ether'))
-    );
-  };
-
   const onTagChangeHandler = (e) => {
     setTag(e.target.value);
   };
@@ -195,7 +183,7 @@ const CreateProject = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("args for create project",   minContributionAmount,
+    console.log("args for create project",
       expectedLaunchDate,
       targetContribution,
       projectTitle,
@@ -296,19 +284,20 @@ const CreateProject = () => {
           />
          
           <select style={{ width: '100%' }} onChange={onTagChangeHandler}>
-            <option value=''>--Please choose an option--</option>
-            <option value='arts'>Arts</option>
-            <option value='gaming'>Gaming</option>
-            <option value='music'>Music</option>
-            <option value='sports'>Sports</option>
+            <option value=''>--Please choose a category--</option>
+            <option value='popular'>Popular</option>
+            <option value='ai'>AI</option>
+            <option value='web3'>Web3</option>
+            <option value='defi'>DeFi</option>
+            <option value='nfts'>NFTs</option>
+            <option value='tools'>Tools</option>
+            <option value='public goods'>Public goods</option>
+            <option value='scholarships'>Scholarships</option>
+            <option value='infrastructure'>Infrastructure</option>
+            <option value='entertainment'>Entertainment</option>
+            <option value='events'>Events</option>
+            <option value='gamefi'>GameFI</option>
           </select>
-          <input
-            onChange={onMinContributionChange}
-            className='w-full bg-Pure-White rounded-2xl p-3 outline-none shadow-details'
-            rows={2}
-            type='number'
-            placeholder='Minimum Contribution Amount'
-          />
           <div className='flex items-center w-full flex-col sm:flex-row md:space-x-0 md:space-y-4 lg:space-y-0 lg:space-x-4 sm:space-x-4 md:flex-col lg:flex-row space-y-3 sm:space-y-0'>
             <input
               onChange={onWebsiteUrlChangeHandler}
@@ -369,7 +358,7 @@ const CreateProject = () => {
             <input
               onChange={onExpectedLaunchDateChange}
               className='flex-1 w-full sm:w-auto rounded-2xl p-3 outline-none shadow-details'
-              placeholder='1997.10.16(deadline)'
+              placeholder="Enter project's due date for contributions)"
             />
           </div>
           <button

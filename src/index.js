@@ -88,7 +88,7 @@ const router = createBrowserRouter([
         element: <VoteForRequest />,
       },
       {
-        path: '/donations',
+        path: '/contributions',
         element: <Contributions />,
       },
       {

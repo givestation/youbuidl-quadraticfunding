@@ -1,11 +1,13 @@
 import ProjectContractInterface from '../contracts/abi/Project.json';
-import {  useContractRead, useNetwork } from 'wagmi';
+import {  useContractRead, useNetwork , useAccount} from 'wagmi';
 import { useState, useEffect} from 'react';
 import { formatEther } from 'viem';
 
 const ContributionItem = ({ contractAddress }) => {
 
   const { chain, chains } = useNetwork()
+  const { address, connector, isConnected } = useAccount();
+
   
 
   let defaultEthLink = chain?.id === 97 ? "https://testnet.bscscan.com/address/" 
@@ -39,34 +41,45 @@ const ContributionItem = ({ contractAddress }) => {
   let social ;
   let github;
   let projectCover;
+  let noOfContributors;
   console.log('goalAmount', projectDetails);
 
  
-    if(projectDetails !== undefined ){
-      projectStarter = projectDetails[0];
-      minContribution = projectDetails[3];
-      projectDeadline = projectDetails[4];
-      goalAmount = projectDetails[5];
-      completedTime = projectDetails[6];
-      currentAmount = projectDetails[7];
-      title = projectDetails[8];
-      desc = projectDetails[9];
-      currentState = projectDetails[10];
-      balance = projectDetails[11];
-      website = projectDetails[12];
-      social = projectDetails[13];
-      github = projectDetails[14];
-      projectCover = projectDetails[15];
-    }else{
-      console.log("projectDetails is undefined");
+  if(projectDetails !== undefined ){
+    projectStarter = projectDetails[0];
+    projectDeadline = projectDetails[3];
+    goalAmount = projectDetails[4];
+    noOfContributors= projectDetails[5];
+    completedTime = projectDetails[6];
+    currentAmount = projectDetails[7];
+    title = projectDetails[8];
+    desc = projectDetails[9];
+    currentState = projectDetails[10];
+    balance = projectDetails[11];
+    website = projectDetails[12];
+    social = projectDetails[13];
+    github = projectDetails[14];
+    projectCover = projectDetails[15];
+  }else{
+    console.log("projectDetails is undefined");
 
-    }
+  }
+
+  const { data: realContributors } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'contributiors',
+    args:[
+      address
+    ]
+  });
 
   useEffect(() => {
     console.log("adfsdf")
   },[projectDetails]);
-  console.log(projectDetails  )
+  console.log("show Project Details!",projectDetails)
+  console.log("show contributed amount!",realContributors)
   return (
+    Number(realContributors) !== 0 ?
     <div className="bg-Anti-Flash-White rounded-3xl shadow-details p-2 flex items-center justify-between flex-col space-y-2 sm:space-y-0 sm:flex-row">
       <div className="flex items-center  w-full sm:w-fit space-x-2">
         <div className="bg-Pure-Black p-2 rounded-2xl w-1/5">
@@ -84,12 +97,12 @@ const ContributionItem = ({ contractAddress }) => {
       <div className="space-y-1 w-full flex   text-center items-center sm:flex-col sm:w-fit">
         <h3 className="bg-Chinese-Blue flex-1 sm:px-10  rounded-full py-2.5 text-center text-Pure-White/95">
           <span >
-            ${formatEther(goalAmount === undefined ? 0 : goalAmount)}
+            ${formatEther(realContributors === undefined ? 0 : realContributors)}
           </span>
         </h3>
-        <a href = {defaultEthLink?.concat("",contractAddress)} className="text-Davy-Grey flex-1 text-sm">view campagin</a>
+        <a href = {defaultEthLink?.concat("",contractAddress)} className="text-Davy-Grey flex-1 text-sm">View Project</a>
       </div>
-    </div>
+    </div> : <div></div>
   );
 };
 

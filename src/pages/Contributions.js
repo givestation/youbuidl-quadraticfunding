@@ -7,7 +7,7 @@ import {
 
 const Contributions = () => {
   const { chain, chains } = useNetwork()
-  const addressBnb = "0xBE27F0cd50b6AfbC66Be759f4577B9bBE027dED7";
+  const addressBnb = "0x780E4a35ce82A28599B52fe7f26B3EDcF2A60381";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
   const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
   const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
@@ -27,6 +27,12 @@ const Contributions = () => {
     ...crowdFundingContractConfig,
     functionName: 'returnAllProjects',
   });
+
+  const { data: projectOfContributors } = useContractRead({
+    ...crowdFundingContractConfig,
+    functionName: 'getContributedProject',
+  });
+  console.log(projectOfContributors,"getContributedProject=============");
   return (
     <div className="max-w-5xl mx-auto space-y-4 md:space-y-6 ">
       <div className="flex items-center justify-between">

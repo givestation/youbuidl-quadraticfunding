@@ -75,8 +75,8 @@ const NavbarData = {
       ),
     },
     {
-      label: "Donations",
-      href: "/donations",
+      label: "Contributions",
+      href: "/contributions",
       icon: (
         <svg
           width="24"

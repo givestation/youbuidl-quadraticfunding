@@ -28,11 +28,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "_minimumContribution",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "_deadline",
         "type": "uint256"
       },
@@ -420,17 +415,17 @@
       },
       {
         "internalType": "uint256",
-        "name": "minContribution",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "projectDeadline",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
         "name": "goalAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "noOfContri",
         "type": "uint256"
       },
       {
@@ -521,19 +516,6 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minimumContribution",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",

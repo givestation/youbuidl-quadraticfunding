@@ -12,7 +12,7 @@ import Erc20Json from '../contracts/abi/ERC20.json';
 import Loader from '../components/Loader';
 import web3 from 'web3';
 
-const addressBnb = "0xBE27F0cd50b6AfbC66Be759f4577B9bBE027dED7";
+const addressBnb = "0x780E4a35ce82A28599B52fe7f26B3EDcF2A60381";
 const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
 const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
 const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
@@ -114,12 +114,13 @@ erc20ContractConfig = {
   let social ;
   let github;
   let projectCover;
+  let noOfContributors;
 
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
-    minContribution = projectDetails[3];
-    projectDeadline = projectDetails[4];
-    goalAmount = projectDetails[5];
+    projectDeadline = projectDetails[3];
+    goalAmount = projectDetails[4];
+    noOfContributors= projectDetails[5];
     completedTime = projectDetails[6];
     currentAmount = projectDetails[7];
     title = projectDetails[8];
@@ -131,7 +132,8 @@ erc20ContractConfig = {
     github = projectDetails[14];
     projectCover = projectDetails[15];
   }else{
-    console.log("projecteDetails is undefined!!!");
+    console.log("projectDetails is undefined");
+
   }
 
   const { data: filterTags } = useContractRead({
@@ -283,8 +285,7 @@ erc20ContractConfig = {
   console.log("current currency", selectedCrypto, contributedAmount, selectedCryptoAddress);
   console.log("for contribute",contributeConfigError)
   console.log(showDetailsModal,approvedCongratsModal,"let see after modal cancel!")
-  console.log(address,projectStarter,"===========================")
-  console.log((Number(currentAmount)/Number(goalAmount)*100).toFixed(2),"-===============")
+  console.log(noOfContributors,"-=-=-==-=-=-=-===============================")
 
   return (
     <>
@@ -549,6 +550,7 @@ erc20ContractConfig = {
 
             <div className="bg-Steel-Blue h-2 rounded-md w-full relative">
               <div
+                style={{width: `${(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%`}}
                 className={`w-[${Number(currentAmount) !== 0 ? Number(currentAmount)/Number(goalAmount)*100 : 0}%] h-full bg-Chinese-Blue rounded-md`}
               ></div>
             </div>
@@ -577,7 +579,7 @@ erc20ContractConfig = {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <h3 className="text-Vampire-Black font-normal text-lg">117K</h3>
+                <h3 className="text-Vampire-Black font-normal text-lg">{Number(noOfContributors)}</h3>
               </div>
               <div className="flex items-center space-x-2">
                 <svg
@@ -749,7 +751,7 @@ erc20ContractConfig = {
             to={(wrChecking?.[0] !== undefined || wrChecking?.[0] !== '') && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
             className="text-Nickle text-center flex items-center space-x-2"
           >
-            <span>{ (wrChecking?.[0] !== undefined || wrChecking?.[0] !== '') && realContributors !== 0n ? "you can vote about Withdrawal request for this campaign"  : (realContributors === 0n ? "you cann't take part in vote" : "Creator didn't request for withdraw")}</span>
+            <span>{ (wrChecking?.[0] !== undefined || wrChecking?.[0] !== '') && realContributors !== 0n ? "you can vote about Withdrawal request for this campaign"  : (realContributors === 0n ? "Fund this project to be able to vote" : "Creator didn't request for withdraw")}</span>
             <svg
               width="16"
               height="16"

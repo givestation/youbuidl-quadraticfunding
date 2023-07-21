@@ -18,7 +18,7 @@ import {
 const Rewards = () => {
   const { chain, chains } = useNetwork()
   const { address, connector, isConnected } = useAccount();
-  const addressBnb = "0xBE27F0cd50b6AfbC66Be759f4577B9bBE027dED7";
+  const addressBnb = "0x780E4a35ce82A28599B52fe7f26B3EDcF2A60381";
   const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
   const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
   const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
@@ -214,10 +214,11 @@ const Rewards = () => {
           <div className="flex-1 border border-Bright-Gray rounded-2xl p-6 pl-0 pb-0 flex flex-col overflow-hidden space-y-4">
             <div className="flex-1 pl-6">
               <p className="text-Old-Silver font-normal text-base">
-                Congratulations, you have earned{" "}
+                Congratulations 🎊<br/> You have earned {' '}
                 <span className="font-extrabold">
-                  { showRewardUserData === undefined ? 0 : formatEther(showRewardUserData) } {chain?.nativeCurrency?.symbol}
+                   { showRewardUserData === undefined ? 0 : formatEther(showRewardUserData) } {chain?.nativeCurrency?.symbol}
                 </span> 
+                 {' '}for funding Buidls
               </p>
               <h1 className="text-Pure-Black font-semibold text-2xl sm:text-3xl">
                 { showRewardUserData === undefined ? 0 : formatEther(showRewardUserData) } {chain?.nativeCurrency?.symbol}

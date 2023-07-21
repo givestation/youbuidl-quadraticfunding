@@ -61,12 +61,6 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "minContribution",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
         "name": "projectDeadline",
         "type": "uint256"
       },
@@ -228,11 +222,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "minimumContribution",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "deadline",
         "type": "uint256"
       },
@@ -290,6 +279,41 @@
     "name": "createProject",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getContributedProject",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "projectAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "descriptions",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "contributedAmount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Crowdfunding.ProjectArray[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

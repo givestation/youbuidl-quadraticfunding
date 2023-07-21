@@ -79,12 +79,13 @@ const VoteForRequest = () => {
   let social ;
   let github;
   let projectCover;
+  let noOfContributors;
 
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
-    minContribution = projectDetails[3];
-    projectDeadline = projectDetails[4];
-    goalAmount = projectDetails[5];
+    projectDeadline = projectDetails[3];
+    goalAmount = projectDetails[4];
+    noOfContributors= projectDetails[5];
     completedTime = projectDetails[6];
     currentAmount = projectDetails[7];
     title = projectDetails[8];
@@ -96,7 +97,8 @@ const VoteForRequest = () => {
     github = projectDetails[14];
     projectCover = projectDetails[15];
   }else{
-    console.log("projectdetails is undefined!!!");
+    console.log("projectDetails is undefined");
+
   }
 
 //=============withdraw request check=======
