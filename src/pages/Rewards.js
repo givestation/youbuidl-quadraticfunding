@@ -14,14 +14,16 @@ import {
   usePrepareContractWrite,
   useContractWrite
 } from 'wagmi';
+import addressContract from '../contracts/contant/contentContract.json'
 
 const Rewards = () => {
   const { chain, chains } = useNetwork()
   const { address, connector, isConnected } = useAccount();
-  const addressBnb = "0x780E4a35ce82A28599B52fe7f26B3EDcF2A60381";
-  const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
-  const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
-  const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
+  console.log(addressContract.addressBnb,"=-=-=-=-=-=-=-=-")
+  const addressBnb = addressContract.addressBnb;
+  const addressEth = addressContract.addresseth;
+  const addressArbi = addressContract.addressArbi;
+  const addressOpti = addressContract.addressOpti;
 
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
@@ -42,7 +44,7 @@ const Rewards = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : addressArbi)),
+      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : (chain?.id === 420 ? addressOpti : addressArbi))),
       abi: CrowdFundingContractInterface,
     };
   }

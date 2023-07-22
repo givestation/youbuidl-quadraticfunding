@@ -1,9 +1,5 @@
 import { useState, Fragment } from "react";
 import { useNavigate , useLocation} from "react-router-dom";
-import Contributers from "../components/Contributers";
-import Modals from "../components/modals";
-import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import { Menu, Transition } from "@headlessui/react";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import Loader from '../components/Loader';
@@ -11,8 +7,7 @@ import Loader from '../components/Loader';
 
 
 const Withdraw = () => {
-  const { chain, chains } = useNetwork();
-  const { address, connector, isConnected } = useAccount();
+  
   const navigate = useNavigate();
   const currentLocation  = useLocation();
   const projectContractAddress = currentLocation.pathname?.slice(8,50);
@@ -20,39 +15,12 @@ const Withdraw = () => {
 
   // STRING
   const [projectWRDescription, setProjectWRDescription] = useState('');
-  // Details Modal State
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  // Congrats Modal State
-  const [showCongratsModal, showShowCongratsModal] = useState(false);
-  // State for Vote Button
-  const [isUserVoted, setIsUserVoted] = useState(false);
   // Loading modal
- const [showLoadingModal, setShowLoadingModal] = useState(false);
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
 
   const [wrAmount, setWRAmount] = useState(0);
-  const [selectedCrypto, setSelectedCrypto] = useState("USDT");
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0x");
-
-  const cryptosBNB = [
-                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"},
-                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D "}
-                  ];
-
-  const cryptosETH = [
-                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"},
-                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
-                  ];
-
-  const cryptosArbi = [
-                  {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
-                  {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
-                ];
-
-  const cryptosOpti = [
-                  {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
-                  {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
-                ];
   
+
   //=============Project Contract Config=================
   const projectContractConfig = {
     address: projectContractAddress,

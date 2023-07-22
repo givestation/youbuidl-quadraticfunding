@@ -8,6 +8,12 @@ import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContr
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import { formatEther } from 'viem';
 import Loader from '../components/Loader';
+import stableTokens from '../contracts/contant/contentStableTokens.json'
+
+const cryptosBNB = stableTokens.cryptosBNB;
+const cryptosETH = stableTokens.cryptoETH;
+const cryptosArbi = stableTokens.cryptosArbi;
+const cryptosOpti = stableTokens.cryptosOpti;
 
 const WithdrawRequest = () => {
 
@@ -32,26 +38,6 @@ const WithdrawRequest = () => {
   const [wrAmount, setWRAmount] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDT");
   const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D");
-
-  const cryptosBNB = [
-                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"},
-                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"}
-                  ];
-
-  const cryptosETH = [
-                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
-                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"}
-                  ];
-
-  const cryptosArbi = [
-                  {name:"USDT", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"},
-                  {name:"USDc", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "}
-                ];
-
-  const cryptosOpti = [
-                  {name:"USDT", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"},
-                  {name:"USDC", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
-                ];
   
   const onWRequestAmount = (e) => {
     setWRAmount( e.target.value );

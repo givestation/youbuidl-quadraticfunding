@@ -10,31 +10,19 @@ import {
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import web3 from 'web3';
 import Loader from '../components/Loader';
+import addressContract from '../contracts/contant/contentContract.json'
+import stableTokens from '../contracts/contant/contentStableTokens.json'
 
-const addressBnb = "0x780E4a35ce82A28599B52fe7f26B3EDcF2A60381";
-const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
-const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
-const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
 
-const cryptosBNB = [
-                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"},
-                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"}
-                  ];
+const addressBnb = addressContract.addressBnb;
+const addressEth = addressContract.addresseth;
+const addressArbi = addressContract.addressArbi;
+const addressOpti = addressContract.addressOpti;
 
-const cryptosETH = [
-                {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
-                {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"}
-                ];
-
-const cryptosArbi = [
-                    {name:"USDT", address:"0xusdtarbi8d2ee523a2206206994597c13d831ec7"},
-                    {name:"USDC", address:"0xusdcarbic6218b36c1d19d4a2e9eb0ce3606eb48"}
-                    ];
-
-const cryptosOpti = [
-                {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
-                {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"}
-              ];
+const cryptosBNB = stableTokens.cryptosBNB;
+const cryptosETH = stableTokens.cryptoETH;
+const cryptosArbi = stableTokens.cryptosArbi;
+const cryptosOpti = stableTokens.cryptosOpti;
 
 const CLOUDINARY_UPLOAD_URL =
   'https://api.cloudinary.com/v1_1/dvwdyqvzt/image/upload';
@@ -71,7 +59,7 @@ const CreateProject = () => {
     console.log("plz connect metamask")
   }else{
     contractConfig = {
-      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : addressArbi)),
+      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : (chain?.id === 420 ? addressOpti : addressArbi))),
       abi: CrowdFundingContractInterface,
     };
   }

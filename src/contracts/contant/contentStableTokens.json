@@ -1,0 +1,42 @@
+  {
+    "cryptosBNB": [
+      {
+        "name": "USDT",
+        "address": "0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"
+      },
+      {
+        "name": "USDC",
+        "address": "0x5412a933a20d65531B119B224839d160Dc411bdb"
+      }
+    ],
+    "cryptosETH": [
+      {
+        "name": "USDT",
+        "address": "0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"
+      },
+      {
+        "name": "USDC",
+        "address": "0x5412a933a20d65531B119B224839d160Dc411bdb"
+      }
+    ],
+    "cryptosArbi": [
+      {
+        "name": "USDT",
+        "address": "0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"
+      },
+      {
+        "name": "USDC",
+        "address": "0x5412a933a20d65531B119B224839d160Dc411bdb"
+      }
+    ],
+    "cryptosOpti": [
+      {
+        "name": "USDT",
+        "address": "0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"
+      },
+      {
+        "name": "USDC",
+        "address": "0x5412a933a20d65531B119B224839d160Dc411bdb"
+      }
+    ]
+  }

@@ -11,11 +11,18 @@ import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import Erc20Json from '../contracts/abi/ERC20.json';
 import Loader from '../components/Loader';
 import web3 from 'web3';
+import addressContract from '../contracts/contant/contentContract.json'
+import stableTokens from '../contracts/contant/contentStableTokens.json'
 
-const addressBnb = "0x780E4a35ce82A28599B52fe7f26B3EDcF2A60381";
-const addressEth = "0xcA90Ae5d47F616A8836ae04E1BBcc6267554F591";
-const addressArbi = "0x0cac952a900172370E9fAf3a189C9E7b15cb30B4";
-const addressOpti = "0x6c3b0D6593960093b2f4F0BA35ab7650903A6E94";
+const addressBnb = addressContract.addressBnb;
+const addressEth = addressContract.addresseth;
+const addressArbi = addressContract.addressArbi;
+const addressOpti = addressContract.addressOpti;
+
+const cryptosBNB = stableTokens.cryptosBNB;
+const cryptosETH = stableTokens.cryptoETH;
+const cryptosArbi = stableTokens.cryptosArbi;
+const cryptosOpti = stableTokens.cryptosOpti;
 
 const BuidlDetails = () => {
   const navigate  = useNavigate();
@@ -34,33 +41,13 @@ const BuidlDetails = () => {
   const [approvedCongratsModal, setApprovedCongratsModal] = useState(true);
   // Congrats Contributed Modal State
   const [contributedCongratsModal, setContributedCongratsModal] = useState(true);
-  
+  const [restHours, setRestHours] = useState(0);
   // set token
   const [contributedAmount, setContributedAmount] = useState(0);
   const [contributedNumAmount, setContributedNumAmount] = useState(0);
   const [rewardCalculat, setRewardCalculat] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDT");
   const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D");
-
-  const cryptosBNB = [
-                  {name:"USDT", address:"0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D"},
-                  {name:"USDC", address:"0x5412a933a20d65531B119B224839d160Dc411bdb"}
-                  ];
-
-  const cryptosETH = [
-                  {name:"USDT", address:"0xdac17f958d2ee523a2206206994597c13d831ec7"},
-                  {name:"USDC", address:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"}
-                 ];
-
-  const cryptosArbi = [
-                  {name:"USDT", address:"0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 "},
-                  {name:"USDC", address:"0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"}
-                ];
-
-  const cryptosOpti = [
-                  {name:"USDT", address:"0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"},
-                  {name:"USDC", address:"0x7f5c764cbc14f9669b88837ca1490cca17c31607"}
-                ];
  
 
   let defaultEthLink = chain?.id === 97 ? "https://testnet.bscscan.com/address/" 
@@ -75,7 +62,7 @@ if (chain === undefined){
   console.log("plz connect metamask")
 }else{
   contractConfig = {
-    address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : addressArbi)),
+    address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : (chain?.id === 420 ? addressOpti : addressArbi))),
     abi: CrowdFundingContractInterface,
   };
   console.log("ContractConfig Data",contractConfig)
@@ -135,7 +122,7 @@ erc20ContractConfig = {
     console.log("projectDetails is undefined");
 
   }
-
+  
   const { data: filterTags } = useContractRead({
     ...projectContractConfig,
     functionName: 'filterTags',
@@ -217,7 +204,6 @@ erc20ContractConfig = {
   } = useContractWrite(erc20ApproveContractConfig);
 
   //===========verify Project====================
-
   const {
     config: verifyProjectConfig,
     error: verifyProjectConfigError,
@@ -236,12 +222,6 @@ erc20ContractConfig = {
     error: verifyProjectError,
     isSuccess
   } = useContractWrite(verifyProjectConfig);
-
-  useEffect(() => {
-    if(isVerified == false){
-      setVerification?.();
-    }
-  },[]);
 
 //==========main functions==============
 
@@ -282,6 +262,21 @@ erc20ContractConfig = {
     
   };
 
+  const calculatingDate =  () => {
+    const timestampMillis = Date.now();
+    console.log(Number(projectDeadline) - Number(timestampMillis / 1000),"current timestamp")
+    let dataObj = new Date((Number(projectDeadline) - Number(timestampMillis / 1000)) * 1000);
+    let hours = dataObj.getUTCHours();
+    setRestHours(hours);
+    console.log(hours.toString(),"letft days")
+    
+  };
+
+  useEffect(() => {
+      // setVerification?.();
+      calculatingDate();
+  },[]);
+ 
   console.log("current currency", selectedCrypto, contributedAmount, selectedCryptoAddress);
   console.log("for contribute",contributeConfigError)
   console.log(showDetailsModal,approvedCongratsModal,"let see after modal cancel!")
@@ -605,7 +600,7 @@ erc20ContractConfig = {
                   />
                 </svg>
                 <h3 className="text-Vampire-Black font-normal text-lg">
-                  {completedTime} days left
+                  {restHours > 24 ? restHours / 24 + 1 + " days left" : restHours + " hours left" }
                 </h3>
               </div>
             </div>
