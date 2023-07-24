@@ -34,7 +34,7 @@ const Rewards = () => {
   // setRewardUser
   const [rewardUser, setRewardUser] = useState(0);
   // setPriceBNB
-  const [priceBNB, setPriceBNB] = useState(0);
+  const [priceToken, setPriceToken] = useState(0);
   // setEtherRamount
   const [etherRAmount, setEtherRAmount] = useState(0);
 
@@ -83,7 +83,12 @@ const Rewards = () => {
     setEtherRAmount(
       web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
     );
-    getPriceBNB(e.target.value);
+    if(chain?.id === 97){
+      getPriceBNB(e.target.value);
+    } else if(chain?.id === 5){
+      getPriceETH(e.target.value);
+    }
+    
     
     
   };
@@ -95,9 +100,30 @@ const Rewards = () => {
 
   const getPriceBNB = async (amount) => {
     const api_call = await fetch(`https://www.binance.com/api/v3/ticker/price?symbol=BNBUSDT`);
-    const priceBnb = await api_call.json();
-    setPriceBNB(priceBnb?.price * amount);
-    console.log(priceBnb?.price,amount,"===============");
+    const price = await api_call.json();
+    setPriceToken(price?.price * amount);
+    console.log(price?.price,amount,"===============");
+  }
+
+  const getPriceETH = async (amount) => {
+    const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
+    const price = await api_call.json();
+    setPriceToken(price?.price * amount);
+    console.log(price?.price,amount,"===============");
+  }
+
+  const getPriceArbi = async (amount) => {
+    const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
+    const price = await api_call.json();
+    setPriceToken(price?.price * amount);
+    console.log(price?.price,amount,"===============");
+  }
+
+  const getPriceOpti = async (amount) => {
+    const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
+    const price = await api_call.json();
+    setPriceToken(price?.price * amount);
+    console.log(price?.price,amount,"===============");
   }
 
   // console.log( "reward Error!",userRewardConfigError)
@@ -107,7 +133,8 @@ const Rewards = () => {
     <>
        {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
       {/* Details Modal */}
-      <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
+      {showRewardUserData &&
+        <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
       
         <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
           <div className="px-3 pt-3 pb-1.5 space-y-4">
@@ -128,7 +155,7 @@ const Rewards = () => {
 
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Value USD</h2>
-                  <h2 className="font-normal text-base ">${Number(priceBNB).toFixed(2) }</h2>
+                  <h2 className="font-normal text-base ">${Number(priceToken).toFixed(2) }</h2>
                 </div>
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Status</h2>
@@ -163,10 +190,11 @@ const Rewards = () => {
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
         </div>
-      </Modals>
+        </Modals>
+      }
 
       {/* Congrats Modal */}
-      {isSuccess && <Modals
+      {isSuccess && etherRAmount !== 0 &&<Modals
         showModal={true}
         setShowModal={showShowCongratsModal}
       >
@@ -236,7 +264,7 @@ const Rewards = () => {
             <TotalBalance/>
           </div>
         </div>
-        <button onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
+        <button disabled = {showRewardUserData === undefined ? true : false} onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
           Withdraw
         </button>
       </div>

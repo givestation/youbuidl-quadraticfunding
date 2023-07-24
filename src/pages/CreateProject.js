@@ -12,6 +12,8 @@ import web3 from 'web3';
 import Loader from '../components/Loader';
 import addressContract from '../contracts/contant/contentContract.json'
 import stableTokens from '../contracts/contant/contentStableTokens.json'
+import {Routes, Route, useNavigate} from 'react-router-dom';
+
 
 
 const addressBnb = addressContract.addressBnb;
@@ -28,6 +30,8 @@ const CLOUDINARY_UPLOAD_URL =
   'https://api.cloudinary.com/v1_1/dvwdyqvzt/image/upload';
 
 const CreateProject = () => {
+  const navigate = useNavigate();
+
   const { chain, chains } = useNetwork()
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);  
@@ -182,8 +186,14 @@ const CreateProject = () => {
       projectCoverUrl,
       tag 
       );
-    createProject?.();
+    await createProject?.();
+    
     console.log(createProjectError,"!!!when you creat project, you are wrong")
+  };
+
+  const navigateToHome = () => {
+    // 👇️ navigate to /contacts
+    navigate('/');
   };
 
   return (
@@ -230,7 +240,8 @@ const CreateProject = () => {
               </h4>
             </div>
             <button
-              onClick={() => setCreateProjectCongratsModal(false)}
+              onClick={() => {setCreateProjectCongratsModal(false); navigateToHome();}
+              }
               className='bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6'
             >
               Close
