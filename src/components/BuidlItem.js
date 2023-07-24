@@ -213,7 +213,7 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
           </div>
 
           <Link
-            to={`/buidls/${contractAddress}`}
+            to={`/buidls/${contractAddress}/${index}`}
             className='bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
             px-2'
           >

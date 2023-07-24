@@ -87,16 +87,16 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className='flex items-center flex-row w-full space-x-1.5 sm:space-x-3'>
+            <div className='flex items-center flex-row w-full space-x-1.5 sm:space-x-3 justify-around'>
               <Link
                 to='/projects'
-                className='flex-1 text-base text-center bg-Pure-White text-Chinese-Blue rounded-4xl py-2 md:py-3 xl:py-4 sm:font-semibold w-full xl:w-auto xl:font-bold '
+                className='w-1/3 text-base text-center bg-Pure-White text-Chinese-Blue rounded-4xl py-2 md:py-3 xl:py-4 sm:font-semibold w-full  xl:font-bold '
               >
                 Explore Builds
               </Link>
               <Link
                 to='/create-project'
-                className='flex-1 text-center text-base duration-300 text-Philipine-Silver hover:bg-Pure-White hover:text-Chinese-Blue rounded-4xl py-2 md:py-3 xl:py-4 sm:font-semibold w-full xl:w-auto xl:font-bold'
+                className='w-1/3 text-center text-base duration-300 text-Philipine-Silver hover:bg-Pure-White hover:text-Chinese-Blue rounded-4xl py-2 md:py-3 xl:py-4 sm:font-semibold w-full  xl:font-bold'
               >
                 Submit a project
               </Link>
