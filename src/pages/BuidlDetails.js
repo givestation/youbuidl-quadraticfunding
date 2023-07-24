@@ -341,6 +341,7 @@ erc20ContractConfig = {
                 Cancel
               </button>
               <button
+                disabled={contributedAmount === 0 ? true : false}
                 onClick={() => {
                   approveToken();
                 }}
@@ -349,6 +350,7 @@ erc20ContractConfig = {
                 Approve
               </button>
               <button
+                disabled={contributedAmount === 0 ? true : false}
                 onClick={() => {
                   contributeSmart();
                 }}
@@ -709,6 +711,7 @@ erc20ContractConfig = {
                   </Menu>
                 </div>
                 <button
+                  disabled={contributedAmount === 0 ? true : false}
                   onClick={() => {
                     setShowDetailsModal(true);
                   }}
