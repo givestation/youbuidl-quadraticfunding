@@ -176,7 +176,7 @@ const Rewards = () => {
                 Cancel
               </button>
               <button
-                disabled={showRewardUserData === undefined ? true : false}
+                disabled={showRewardUserData === undefined  || etherRAmount === 0 ? true : false}
                 onClick={() => {
                   rewardWithdraw();
                   
