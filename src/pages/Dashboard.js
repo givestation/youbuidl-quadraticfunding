@@ -56,7 +56,7 @@ const Dashboard = () => {
   
   return (
     
-    <div className='max-w-7xl mx-auto flex relative flex-col space-y-4 xl:space-y-0 xl:flex-row'>
+    <div className='max-w-20xl mx-auto flex relative flex-col space-y-4 xl:space-y-0 xl:flex-row'>
       <div className='flex-1 overflow-hidden space-y-4 md:space-y-6 xl:mr-4'>
         <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-b from-Liberty to-Spanish-Violet   py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
           <img
@@ -213,16 +213,7 @@ const Dashboard = () => {
           )})}
         </div>
       </div>
-      <div className=' hidden xl:block xl:max-w-xs w-full space-y-4 md:space-y-6'>
-        <div className='bg-gradient-to-b xl:mx-4 from-Chinese-Blue to-Celestial-Blue rounded-3xl shadow-details h-56 flex items-end justify-center p-5'>
-          <h1 className='text-Pure-White font-normal text-xl xl:max-w-[120px] text-center'>
-            Advertise your buidl here.
-          </h1>
-        </div>
-        <div className=' xl:sticky top-18 right-0'>
-          {/* <Contributers heading='Recent contributions' /> */}
-        </div>
-      </div>
+       
     </div>
   );
 };
