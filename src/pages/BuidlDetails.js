@@ -26,8 +26,8 @@ const cryptosOpti = stableTokens.cryptosOpti;
 
 const BuidlDetails = () => {
   const navigate  = useNavigate();
-  const { chain, chains } = useNetwork();
-  const { address, connector, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const { address } = useAccount();
   const currentLocation  = useLocation();
   const projectContractAddress = currentLocation.pathname?.slice(8,50);
   const projectId = currentLocation.pathname?.slice(51,52);
@@ -88,7 +88,6 @@ erc20ContractConfig = {
   console.log('ProjectDetails', projectDetails);
 
   let projectStarter; 
-  let minContribution ;
   let projectDeadline;
   let goalAmount ;
   let completedTime ;
@@ -253,7 +252,7 @@ erc20ContractConfig = {
 
   const contributeSmart = async () => {
     console.log( "args for Contribute Functions!", projectContractAddress, selectedCryptoAddress, contributedAmount )
-    console.log(contractConfig,"contract conig value")
+    console.log(contributeConfigError,"contract conig value")
     contribute?.();
   };
 
@@ -266,21 +265,24 @@ erc20ContractConfig = {
     const timestampMillis = Date.now();
     console.log(Number(projectDeadline) - Number(timestampMillis / 1000),"current timestamp")
     let dataObj = new Date((Number(projectDeadline) - Number(timestampMillis / 1000)) * 1000);
+    console.log(dataObj,"data of total")
     let hours = dataObj.getUTCHours();
     setRestHours(hours);
     console.log(hours.toString(),"letft days")
     
   };
 
-  useEffect(() => {
-      // setVerification?.();
-      calculatingDate();
-  },[]);
+  // useEffect(() => {
+      
+  //     calculatingDate();
+  //     setVerification?.();
+  // },[projectDetails]);
  
   console.log("current currency", selectedCrypto, contributedAmount, selectedCryptoAddress);
   console.log("for contribute",contributeConfigError)
   console.log(showDetailsModal,approvedCongratsModal,"let see after modal cancel!")
   console.log(noOfContributors,"-=-=-==-=-=-=-===============================")
+  console.log(restHours,"rest hours")
 
   return (
     <>
@@ -341,7 +343,7 @@ erc20ContractConfig = {
                 Cancel
               </button>
               <button
-                disabled={contributedAmount === 0 ? true : false}
+                disabled={contributedAmount === 0n ? true : false}
                 onClick={() => {
                   approveToken();
                 }}
@@ -350,7 +352,7 @@ erc20ContractConfig = {
                 Approve
               </button>
               <button
-                disabled={contributedAmount === 0 ? true : false}
+                disabled={contributedAmount === 0n ? true : false}
                 onClick={() => {
                   contributeSmart();
                 }}

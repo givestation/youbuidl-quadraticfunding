@@ -9,6 +9,8 @@ import ProjectContractInterface from '../contracts/abi/Project.json';
 import { formatEther } from 'viem';
 import Loader from '../components/Loader';
 import stableTokens from '../contracts/contant/contentStableTokens.json'
+import web3 from 'web3';
+
 
 const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptoETH;
@@ -35,12 +37,18 @@ const WithdrawRequest = () => {
   // State for Vote Button
   const [isUserVoted, setIsUserVoted] = useState(false);
 
-  const [wrAmount, setWRAmount] = useState(0);
-  const [selectedCrypto, setSelectedCrypto] = useState("USDT");
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("0xCa3D1fE4d6310730b79686C3Bd6ADA93f0d87D2D");
+  const [wrUSDTAmount, setWRUSDTAmount] = useState(0);
+  const [wrUSDCAmount, setWRUSDCAmount] = useState(0);
   
-  const onWRequestAmount = (e) => {
-    setWRAmount( e.target.value );
+  const onWRequestUSDTAmount = (e) => {
+    setWRUSDTAmount(
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
+    );
+  };
+  const onWRequestUSDCAmount = (e) => {
+    setWRUSDCAmount(
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
+    );
   };
 //===========Project Contract Config===========
   const projectContractConfig = {
@@ -120,10 +128,9 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
     functionName: 'createWithdrawRequest',
     args: [
       projectWRDescription,
-      wrAmount,
       projectStarter,
-      selectedCryptoAddress,
-      selectedCrypto,
+      wrUSDTAmount,
+      wrUSDCAmount,
       projectId
     ],
   });
@@ -141,7 +148,13 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
   };
 
   const withdrawRequest = () => {
-    console.log("withdrawRequest args!!",projectWRDescription, wrAmount, projectStarter, selectedCryptoAddress,projectId)
+    console.log("withdrawRequest args!!",projectWRDescription,
+    wrUSDTAmount,
+    wrUSDCAmount,
+    projectStarter,
+    cryptosBNB[0].address,
+    cryptosBNB[1].address,
+    projectId)
     createWithdrawRequest?.();
   }
 
@@ -154,7 +167,10 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
             <div className="max-w-xs mx-auto py-5 space-y-4">
               <div className="space-y-1 ">
                 <h1 className="font-normal text-base ">
-                  {wrAmount} {selectedCrypto} Requested for withdrawal by
+                  {wrUSDTAmount} USDT Requested for withdrawal by
+                </h1>
+                <h1 className="font-normal text-base ">
+                  {wrUSDCAmount} USDC Requested for withdrawal by
                 </h1>
                 <div className="flex items-center space-x-1">
                   <img src="/assets/images/avatar-4.png" alt="avatar" />
@@ -178,7 +194,8 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
 
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Amount Requested</h2>
-                  <h2 className="font-normal text-base ">{wrAmount} {selectedCrypto}</h2>
+                  <h2 className="font-normal text-base ">{wrUSDTAmount} USDT</h2>
+                  <h2 className="font-normal text-base ">{wrUSDCAmount} USDC</h2>
                 </div>
 
                 {/* <div className="flex justify-between ">
@@ -311,8 +328,8 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
           </div>
 
           <div className="bg-Anti-Flash-White rounded-4xl py-6 sm:py-10 shadow-details">
-            <div className="max-w-lg px-2 mx-auto space-y-6">
-              <div className="flex items-start flex-col sm:flex-row w-full sm:w-fit space-y-2 sm:space-y-0 sm:space-x-6">
+            <div className="w-3/5 px-2 mx-auto space-y-6">
+              <div className="flex justify-between flex-col sm:flex-row w-full space-y-2 sm:space-y-0 sm:space-x-6">
                 <div className="bg-Pure-Black p-2 w-full sm:w-52 sm:h-52 rounded-2xl">
                   <img
                     className="w-full h-full"
@@ -320,7 +337,7 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
                     alt="contribution"
                   />
                 </div>
-                <div className="space-y-1 w-full sm:w-auto sm:space-y-2">
+                <div className=" w-full sm:w-[60%] space-y-1 w-full sm:w-auto sm:space-y-2">
                   <h1 className="text-Davy-Grey text-lg font-semibold">
                     Build a Web3 AI marketplace
                   </h1>
@@ -369,14 +386,15 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
                 </div>
               </div>
 
-              <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[150px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestAmount}/>
-                  <Menu as="div" className="relative">
+                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDTAmount}/>
+                  <img src={`/assets/icons/USDT.svg`} alt="usdt" />
+                  {/* <Menu as="div" className="relative">
                     <div className="h-8">
                       <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
-                        <img src={`/assets/icons/${selectedCrypto}.svg`} alt={selectedCrypto} />
+                        
                         <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
                           <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
@@ -385,35 +403,81 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
                       </Menu.Button>
                     </div>
 
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
-                          <div className="font-medium text-sm text-Light-Slate-Gray">
-                            {
-                              (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
-                                onClick={() => {
-                                  setSelectedCrypto(crypto.name);
-                                  setSelectedCryptoAddress(crypto.address);
-                                }}
-                                as="div"
-                                className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
-                              >
-                                <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
-                              </Menu.Item>
-                              )
-                            }
-                            </div>
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
-                  </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
+                        <div className="font-medium text-sm text-Light-Slate-Gray">
+                          {
+                            (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                              onClick={() => {
+                                setSelectedCrypto(crypto.name);
+                                setSelectedCryptoAddress(crypto.address);
+                              }}
+                              as="div"
+                              className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
+                            >
+                              <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
+                            </Menu.Item>
+                            )
+                          }
+                          </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu> */}
+                </div>
+
+                <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
+                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDCAmount}/>
+                  <img src={`/assets/icons/USDC.svg`} alt="usdc" />
+                  {/* <Menu as="div" className="relative">
+                    <div className="h-8">
+                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
+                       
+                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
+                          <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
+                          </svg>
+                        </div>
+                      </Menu.Button>
+                    </div>
+
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
+                        <div className="font-medium text-sm text-Light-Slate-Gray">
+                          {
+                            (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                              onClick={() => {
+                                setSelectedCrypto(crypto.name);
+                                setSelectedCryptoAddress(crypto.address);
+                              }}
+                              as="div"
+                              className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
+                            >
+                              <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
+                            </Menu.Item>
+                            )
+                          }
+                          </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu> */}
+                </div>
+
                 <button
                   onClick={() => {
                     setShowDetailsModal(true);

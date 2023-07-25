@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Link } from 'react-router-dom';
 import BuidlItem from '../components/BuidlItem';
 import CategoriesSelector from '../components/CategoriesSelector';
-import Contributers from '../components/Contributers';
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import {
   useContractRead,
@@ -13,7 +12,6 @@ import addressContract from '../contracts/contant/contentContract.json'
 
 
 const Dashboard = () => {
-  let index = 0;
   const { chain, chains } = useNetwork()
   const addressBnb = addressContract.addressBnb;
   const addressEth = addressContract.addresseth;
@@ -52,7 +50,7 @@ const Dashboard = () => {
     functionName: 'returnAllProjects',
   });
 
-  console.log('ALL PROJECTS', returnAllProjects);
+  console.log('ALL PROJECTS', returnAllProjects,tagOfProject);
   
   return (
     

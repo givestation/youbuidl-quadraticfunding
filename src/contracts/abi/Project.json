@@ -92,14 +92,14 @@
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "withdrawToken",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "amountUSDT",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "amountUSDC",
         "type": "uint256"
       },
       {
@@ -166,14 +166,14 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "tokenName",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "amountUSDT",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "amountUSDC",
         "type": "uint256"
       },
       {
@@ -280,24 +280,19 @@
         "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
         "internalType": "address payable",
         "name": "_reciptent",
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "_withdrawToken",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "_amountUSDT",
+        "type": "uint256"
       },
       {
-        "internalType": "string",
-        "name": "_tokenName",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "_amountUSDC",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -680,18 +675,13 @@
         "type": "string"
       },
       {
-        "internalType": "address",
-        "name": "withdrawToken",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "tokenName",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "amountUSDT",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "amountUSDC",
         "type": "uint256"
       },
       {
@@ -792,7 +782,12 @@
       },
       {
         "internalType": "contract IERC20",
-        "name": "_withdrawToken",
+        "name": "_usdt",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "_usdc",
         "type": "address"
       }
     ],
@@ -817,18 +812,13 @@
         "type": "string"
       },
       {
-        "internalType": "address",
-        "name": "withdrawToken",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "tokenName",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "amountUSDT",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "amountUSDC",
         "type": "uint256"
       },
       {

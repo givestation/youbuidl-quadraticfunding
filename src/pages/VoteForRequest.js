@@ -3,6 +3,7 @@ import { useNavigate , useLocation} from "react-router-dom";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import Loader from '../components/Loader';
+import { formatEther } from 'viem';
 
 
 
@@ -246,7 +247,8 @@ const VoteForRequest = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount of Requested</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[3])} {wrChecking?.[2]}</h2>
+                    <h2 className="font-bold">{formatEther(wrChecking?.[1])} USDT</h2>
+                    <h2 className="font-bold">{formatEther(wrChecking?.[2])} USDC</h2>
                     
                     
                   </div>
@@ -281,9 +283,9 @@ const VoteForRequest = () => {
 
                   <div className="text-Light-Slate-Gray relative">
                     <h4 className="font-medium">Total Votes</h4>
-                    <h2 className="font-bold">{Number(wrChecking?.[4])} ({(Number(wrChecking?.[4]) / Number(wrChecking?.[5]) * 100).toFixed(0)})% </h2>
+                    <h2 className="font-bold">{Number(wrChecking?.[3])} ({(Number(wrChecking?.[3]) / Number(wrChecking?.[4]) * 100).toFixed(0)})% </h2>
                     {
-                      isSuccess || realContributors && 
+                      isSuccess && realContributors && 
                       <p
                         className="bg-Spring-Frost absolute top-1 -left-14 sm:left-auto sm:-right-14 text-Pure-Black rounded-lg text-xs py-0.5 px-2"
                       >you voted

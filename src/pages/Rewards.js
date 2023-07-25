@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TotalBalance from "../components/TotalBalance";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import CryptoDropdown from "../components/CryptoDropdown";
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
-import { formatEther } from 'viem';
+import { formatEther,formatUnits  } from 'viem';
 import web3 from 'web3';
 import Loader from '../components/Loader';
 import {
@@ -81,7 +81,7 @@ const Rewards = () => {
   //==============main functions===========
   const onEtherRmount = (e) => {
     setEtherRAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))//mwei
     );
     if(chain?.id === 97){
       getPriceBNB(e.target.value);
@@ -89,10 +89,8 @@ const Rewards = () => {
       getPriceETH(e.target.value);
     }
     
-    
-    
   };
-
+  console.log(formatUnits(etherRAmount,6),"reasdsfcasd-=-=--=-=-==-=")
   const rewardWithdraw = () =>{
    console.log("args for withdraw reward", etherRAmount)
     withdrawUserRewards?.();
@@ -125,6 +123,11 @@ const Rewards = () => {
     setPriceToken(price?.price * amount);
     console.log(price?.price,amount,"===============");
   }
+
+  useEffect(() => {
+    // setVerification?.();
+    console.log(etherRAmount,"=-=-=000==")
+},[etherRAmount]);
 
   // console.log( "reward Error!",userRewardConfigError)
   console.log(chain?.nativeCurrency,"current network info")

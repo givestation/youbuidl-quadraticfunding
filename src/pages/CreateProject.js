@@ -4,15 +4,14 @@ import CongratsModalWrapper from '../components/modals/CongratsModalWrapper';
 import {
   useContractWrite,
   usePrepareContractWrite,
-  useNetwork,
-  useWaitForTransaction
+  useNetwork
 } from 'wagmi';
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import web3 from 'web3';
 import Loader from '../components/Loader';
 import addressContract from '../contracts/contant/contentContract.json'
 import stableTokens from '../contracts/contant/contentStableTokens.json'
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 
 
