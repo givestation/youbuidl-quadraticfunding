@@ -21,7 +21,7 @@ const addressArbi = addressContract.addressArbi;
 const addressOpti = addressContract.addressOpti;
 
 const cryptosBNB = stableTokens.cryptosBNB;
-const cryptosETH = stableTokens.cryptoETH;
+const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
 
@@ -62,7 +62,7 @@ const CreateProject = () => {
     console.log("plz connect metamask")
   }else{
     contractConfig = {
-      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : (chain?.id === 420 ? addressOpti : addressArbi))),
+      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : addressArbi))),
       abi: CrowdFundingContractInterface,
     };
   }
@@ -85,7 +85,7 @@ const CreateProject = () => {
       githubUrl,
       projectCoverUrl,
       tag,
-      ...(chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.address)
+      ...(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto?.address)
       
     ],
   });
@@ -125,22 +125,6 @@ const CreateProject = () => {
     }
   };
 
-  const setDetails = () => {
-    setProjectCoverUrl(
-      'https://res.cloudinary.com/dvwdyqvzt/image/upload/v1687254410/bejniaugl0bz5a5wlhh7.jpg'
-    );
-    setProjectDescription('This is some project description');
-    setProjectTitle('This is some projec title');
-    setWebsiteUrl('https://website.com');
-    setGithubUrl('https://github.com');
-    setSocialUrl('https://twitter.com');
-    setTag('music');
-    setTargetContribution(
-      web3.utils.toBigInt(web3.utils.toWei('100000', 'ether')).toString()
-    );
-    setExpectedLaunchDate('123456789');
-  };
-
   const onProjectDescriptionChangeHandler = (e) => {
     setProjectDescription(e.target.value);
   };
@@ -163,7 +147,7 @@ const CreateProject = () => {
 
   const onTargetContributionChange = (e) => {
     setTargetContribution(
-      web3.utils.toBigInt(web3.utils.toWei(e.target.value, 'ether'))
+      web3.utils.toBigInt(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))
     );
   };
 

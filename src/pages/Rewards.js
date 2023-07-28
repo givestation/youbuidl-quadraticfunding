@@ -44,7 +44,7 @@ const Rewards = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : (chain?.id === 420 ? addressOpti : addressArbi))),
+      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : addressArbi))),
       abi: CrowdFundingContractInterface,
     };
   }
@@ -81,16 +81,16 @@ const Rewards = () => {
   //==============main functions===========
   const onEtherRmount = (e) => {
     setEtherRAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))//mwei
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))//mwei
     );
-    if(chain?.id === 97){
+    if(chain?.id === 56){
       getPriceBNB(e.target.value);
-    } else if(chain?.id === 5){
+    } else if(chain?.id === 1){
       getPriceETH(e.target.value);
     }
     
   };
-  console.log(formatUnits(etherRAmount,6),"reasdsfcasd-=-=--=-=-==-=")
+  console.log(etherRAmount,"reasdsfcasd-=-=--=-=-==-=")
   const rewardWithdraw = () =>{
    console.log("args for withdraw reward", etherRAmount)
     withdrawUserRewards?.();
@@ -129,6 +129,7 @@ const Rewards = () => {
     console.log(etherRAmount,"=-=-=000==")
 },[etherRAmount]);
 
+
   // console.log( "reward Error!",userRewardConfigError)
   console.log(chain?.nativeCurrency,"current network info")
 
@@ -136,7 +137,8 @@ const Rewards = () => {
     <>
        {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
       {/* Details Modal */}
-      {showRewardUserData &&
+      {
+      showRewardUserData &&
         <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
       
         <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
@@ -208,7 +210,7 @@ const Rewards = () => {
               Congratulation!
             </h1>
             <h4 className="text-Bright-Gray/90 font-normal text-base">
-              You have successfully Withdraw { etherRAmount === undefined ? 0 : formatEther?.(etherRAmount) } 
+              You have successfully Withdraw { etherRAmount === undefined ? 0 : formatUnits?.(Number(etherRAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6)) } 
               <span className="font-bold">{chain?.nativeCurrency?.symbol}</span> to your wallet.
             </h4>
           </div>
@@ -267,8 +269,10 @@ const Rewards = () => {
             <TotalBalance/>
           </div>
         </div>
-        <button disabled = {showRewardUserData === undefined ? true : false} onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
-          Withdraw
+        <button 
+          disabled = {showRewardUserData === undefined ? true : false} 
+          onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
+            Withdraw
         </button>
       </div>
     </>

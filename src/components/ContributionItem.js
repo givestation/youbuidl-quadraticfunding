@@ -1,7 +1,7 @@
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import {  useContractRead, useNetwork , useAccount} from 'wagmi';
 import { useState, useEffect} from 'react';
-import { formatEther } from 'viem';
+import { formatEther,formatUnits } from 'viem';
 
 const ContributionItem = ({ contractAddress }) => {
 
@@ -10,10 +10,11 @@ const ContributionItem = ({ contractAddress }) => {
 
   
 
-  let defaultEthLink = chain?.id === 97 ? "https://testnet.bscscan.com/address/" 
-                  : (chain?.id === 5 ? "https://goerli.etherscan.io/address/" 
-                  : (chain?.id === 420 ? "https://goerli-optimism.etherscan.io/address/"
-                  : "https://goerli.arbiscan.io/address/"));
+  let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/" 
+                  : (chain?.id === 1 ? "https://etherscan.io/address/" 
+                  : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
+                  : "https://arbiscan.io/address/"));
+
 
   
   console.log("contract addresss", contractAddress)
@@ -97,7 +98,7 @@ const ContributionItem = ({ contractAddress }) => {
       <div className="space-y-1 w-full flex   text-center items-center sm:flex-col sm:w-fit">
         <h3 className="bg-Chinese-Blue flex-1 sm:px-10  rounded-full py-2.5 text-center text-Pure-White/95">
           <span >
-            ${formatEther(realContributors === undefined ? 0 : realContributors)}
+            ${formatUnits?.(realContributors === undefined ? 0 : Number(realContributors),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
           </span>
         </h3>
         <a href = {defaultEthLink?.concat("",contractAddress)} className="text-Davy-Grey flex-1 text-sm">View Project</a>

@@ -8,7 +8,7 @@ import addressContract from '../contracts/contant/contentContract.json'
 
 
 const Contributions = () => {
-  const { chain, chains } = useNetwork()
+  const { chain } = useNetwork()
   const addressBnb = addressContract.addressBnb;
   const addressEth = addressContract.addresseth;
   const addressArbi = addressContract.addressArbi;
@@ -20,7 +20,7 @@ const Contributions = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain?.id === 97 ? addressBnb : (chain?.id === 5 ? addressEth : (chain?.id === 420 ? addressOpti : addressArbi))),
+      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : addressArbi))),
       abi: CrowdFundingContractInterface,
     };
   }

@@ -4,77 +4,30 @@ import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContr
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import Loader from '../components/Loader';
 import stableTokens from '../contracts/contant/contentStableTokens.json'
-import { formatEther } from 'viem';
+import { formatEther,formatUnits } from 'viem';
 
 
 
 const cryptosBNB = stableTokens.cryptosBNB;
-const cryptosETH = stableTokens.cryptoETH;
+const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
 
 const Withdraw = () => {
-  const { chain, chains } = useNetwork();
+  const { chain } = useNetwork();
   const navigate = useNavigate();
   const currentLocation  = useLocation();
   const projectContractAddress = currentLocation.pathname?.slice(8,50);
   const projectId = currentLocation.pathname?.slice(51,52)
 
-  // STRING
-  const [projectWRDescription, setProjectWRDescription] = useState('');
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
-
-  const [wrAmount, setWRAmount] = useState(0);
-  
 
   //=============Project Contract Config=================
   const projectContractConfig = {
     address: projectContractAddress,
     abi: ProjectContractInterface,
   };
-
-  const { data: projectDetails } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'getProjectDetails',
-  });
-  console.log('projectdetails', projectDetails);
-
-  let projectStarter; 
-  let minContribution ;
-  let projectDeadline;
-  let goalAmount ;
-  let completedTime ;
-  let currentAmount ;
-  let title;
-  let desc ;
-  let currentState; 
-  let balance ;
-  let website ;
-  let social ;
-  let github;
-  let projectCover;
-  let noOfContributors;
-
-  if(projectDetails !== undefined ){
-    projectStarter = projectDetails[0];
-    projectDeadline = projectDetails[3];
-    goalAmount = projectDetails[4];
-    noOfContributors= projectDetails[5];
-    completedTime = projectDetails[6];
-    currentAmount = projectDetails[7];
-    title = projectDetails[8];
-    desc = projectDetails[9];
-    currentState = projectDetails[10];
-    balance = projectDetails[11];
-    website = projectDetails[12];
-    social = projectDetails[13];
-    github = projectDetails[14];
-    projectCover = projectDetails[15];
-  }else{
-    console.log("projectDetails is undefined");
-
-  }
 
 //=============withdraw request check=======
   const { data: wrChecking } = useContractRead({
@@ -97,7 +50,7 @@ const Withdraw = () => {
     functionName: 'withdrawRequestedAmount',
     args: [
       projectId,
-      ...(chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.address)
+      ...(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.address)
     ],
   });
 
@@ -110,15 +63,9 @@ const Withdraw = () => {
   } = useContractWrite(withdrawConfig);
 
   //==============main functions===========
-  const onProjectWRDescriptionChangeHandler = (e) => {
-    setProjectWRDescription(e.target.value);
-  };
-  const onWRequestAmount = (e) => {
-    setWRAmount( e.target.value );
-  };
   const withdrawToken = () => {
     console.log("for args Withdrawal ",projectId,
-    ...(chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.address)
+    ...(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.address)
   );
     console.log("=============withdraw error========",withdrawConfigError)
     withdrawRequestedAmount?.();
@@ -248,16 +195,13 @@ const Withdraw = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount for Withdrawal</h4>
-                    <h2 className="font-bold">{formatEther(wrChecking?.[1])} USDT</h2>
-                    <h2 className="font-bold">{formatEther(wrChecking?.[2])} USDC</h2>
-                    
-                    
+                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[2]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} USDC</h2>
                   </div>
                 </div>
 
                 <div className="flex w-full sm:w-auto justify-between sm:justify-start items-center space-x-8 sm:space-x-2">
                   <svg
-                    
                     width="36"
                     height="36"
                     viewBox="0 0 36 36"
@@ -279,13 +223,6 @@ const Withdraw = () => {
                   <div className="text-Light-Slate-Gray relative">
                     <h4 className="font-medium">Total Votes</h4>
                     <h2 className="font-bold">{Number(wrChecking?.[3])} ({(Number(wrChecking?.[3]) / Number(wrChecking?.[4]) * 100).toFixed(0)})%</h2>
-                    {/* {
-                      wrChecking?.[3] !== 0n &&
-                      <p
-                        className="bg-Spring-Frost absolute top-1 -left-14 sm:left-auto sm:-right-14 text-Pure-Black rounded-lg text-xs py-0.5 px-2"
-                      >voted
-                      </p>
-                    } */}
                   </div>
                  
                 </div>

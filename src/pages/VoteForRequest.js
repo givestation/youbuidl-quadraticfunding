@@ -3,74 +3,31 @@ import { useNavigate , useLocation} from "react-router-dom";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import Loader from '../components/Loader';
-import { formatEther } from 'viem';
+import { formatEther,formatUnits } from 'viem';
+import stableTokens from '../contracts/contant/contentStableTokens.json'
 
-
+const cryptosBNB = stableTokens.cryptosBNB;
+const cryptosETH = stableTokens.cryptosETH;
+const cryptosArbi = stableTokens.cryptosArbi;
+const cryptosOpti = stableTokens.cryptosOpti;
 
 const VoteForRequest = () => {
+  const { chain, chains } = useNetwork()
+
   const { address, connector, isConnected } = useAccount();
   const navigate = useNavigate();
   const currentLocation  = useLocation();
   const projectContractAddress = currentLocation.pathname?.slice(8,50);
   const projectId = currentLocation.pathname?.slice(51,52)
-
-  // STRING
-  const [projectWRDescription, setProjectWRDescription] = useState('');
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
 
-  const [wrAmount, setWRAmount] = useState(0);
+//=============withdraw request check=======
 
-  
-  //=============Project Contract Config=================
   const projectContractConfig = {
     address: projectContractAddress,
     abi: ProjectContractInterface,
   };
-
-  const { data: projectDetails } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'getProjectDetails',
-  });
-  console.log('projectdetails', projectDetails);
-
-  let projectStarter; 
-  let minContribution ;
-  let projectDeadline;
-  let goalAmount ;
-  let completedTime ;
-  let currentAmount ;
-  let title;
-  let desc ;
-  let currentState; 
-  let balance ;
-  let website ;
-  let social ;
-  let github;
-  let projectCover;
-  let noOfContributors;
-
-  if(projectDetails !== undefined ){
-    projectStarter = projectDetails[0];
-    projectDeadline = projectDetails[3];
-    goalAmount = projectDetails[4];
-    noOfContributors= projectDetails[5];
-    completedTime = projectDetails[6];
-    currentAmount = projectDetails[7];
-    title = projectDetails[8];
-    desc = projectDetails[9];
-    currentState = projectDetails[10];
-    balance = projectDetails[11];
-    website = projectDetails[12];
-    social = projectDetails[13];
-    github = projectDetails[14];
-    projectCover = projectDetails[15];
-  }else{
-    console.log("projectDetails is undefined");
-
-  }
-
-//=============withdraw request check=======
   const { data: wrChecking } = useContractRead({
     ...projectContractConfig,
     functionName: 'showDetailOfWR',
@@ -112,12 +69,7 @@ const VoteForRequest = () => {
   });
 
   //==============main functions===========
-  const onProjectWRDescriptionChangeHandler = (e) => {
-    setProjectWRDescription(e.target.value);
-  };
-  const onWRequestAmount = (e) => {
-    setWRAmount( e.target.value );
-  };
+  
   const voteRequest = () => {
     console.log("request vote",projectId)
     voteWithdrawRequest?.();
@@ -247,10 +199,8 @@ const VoteForRequest = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount of Requested</h4>
-                    <h2 className="font-bold">{formatEther(wrChecking?.[1])} USDT</h2>
-                    <h2 className="font-bold">{formatEther(wrChecking?.[2])} USDC</h2>
-                    
-                    
+                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[2]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} USDC</h2>
                   </div>
                 </div>
 
@@ -292,25 +242,11 @@ const VoteForRequest = () => {
                       </p>
                     }
                   </div>
-                 
                 </div>
               </div>
-
-              {/* <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-                <button
-                  onClick={() => {
-                    setShowDetailsModal(true);
-                  }}
-                  className="flex-1 bg-gradient-to-r  sm:w-auto from-Chinese-Blue to-Celestial-Blue text-Pure-White rounded-xl py-2"
-                >
-                  Withdraw
-                </button>
-              </div> */}
             </div>
           </div>
         </div>
-
-        
       </div>
     </>
   );

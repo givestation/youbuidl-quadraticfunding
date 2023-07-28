@@ -1,19 +1,17 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { useNavigate , useLocation} from "react-router-dom";
-import Contributers from "../components/Contributers";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import { Menu, Transition } from "@headlessui/react";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../contracts/abi/Project.json';
-import { formatEther } from 'viem';
+import { formatEther,formatUnits } from 'viem';
 import Loader from '../components/Loader';
 import stableTokens from '../contracts/contant/contentStableTokens.json'
 import web3 from 'web3';
 
 
 const cryptosBNB = stableTokens.cryptosBNB;
-const cryptosETH = stableTokens.cryptoETH;
+const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
 
@@ -34,20 +32,17 @@ const WithdrawRequest = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   // Congrats Modal State
   const [showCongratsModal, showShowCongratsModal] = useState(true);
-  // State for Vote Button
-  const [isUserVoted, setIsUserVoted] = useState(false);
-
-  const [wrUSDTAmount, setWRUSDTAmount] = useState(0);
+  const [wrUSDTOrDaiAmount, setWRUSDTOrDaiAmount] = useState(0);
   const [wrUSDCAmount, setWRUSDCAmount] = useState(0);
   
-  const onWRequestUSDTAmount = (e) => {
-    setWRUSDTAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
+  const onWRequestUSDTOrDaiAmount = (e) => {
+    setWRUSDTOrDaiAmount(
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))
     );
   };
   const onWRequestUSDCAmount = (e) => {
     setWRUSDCAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, 'ether'))
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))
     );
   };
 //===========Project Contract Config===========
@@ -63,36 +58,11 @@ const WithdrawRequest = () => {
   console.log('projectDetails value', projectDetails);
 
   let projectStarter; 
-  let minContribution ;
-  let projectDeadline;
-  let goalAmount ;
-  let completedTime ;
-  let currentAmount ;
-  let title;
-  let desc ;
-  let currentState; 
-  let balance ;
-  let website ;
-  let social ;
-  let github;
-  let projectCover;
-  let noOfContributors;
+  
   
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
-    projectDeadline = projectDetails[3];
-    goalAmount = projectDetails[4];
-    noOfContributors= projectDetails[5];
-    completedTime = projectDetails[6];
-    currentAmount = projectDetails[7];
-    title = projectDetails[8];
-    desc = projectDetails[9];
-    currentState = projectDetails[10];
-    balance = projectDetails[11];
-    website = projectDetails[12];
-    social = projectDetails[13];
-    github = projectDetails[14];
-    projectCover = projectDetails[15];
+   
   }else{
     console.log("projectDetails is undefined");
 
@@ -100,23 +70,23 @@ const WithdrawRequest = () => {
 
 //==============get USDT and USDC balance=============
 
-const { data: getUSDTBalance } = useContractRead({
+const { data: getUSDTOrDaiBalance } = useContractRead({
   ...projectContractConfig,
   functionName: 'getContractBalance',
   args : [
-    (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi)))[0].address
+    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].address
   ]
 });
-console.log("USDT's balance",getUSDTBalance);
+console.log("USDT or DAI's balance",getUSDTOrDaiBalance);
 
 const { data: getUSDCBalance } = useContractRead({
   ...projectContractConfig,
   functionName: 'getContractBalance',
   args : [
-    (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi)))[1].address
+    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[1].address
   ]
 });
-console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
+console.log("USDC's balance",getUSDCBalance)
 
 //===============Witdraw Request Config=============
   const {
@@ -129,7 +99,7 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
     args: [
       projectWRDescription,
       projectStarter,
-      wrUSDTAmount,
+      wrUSDTOrDaiAmount,
       wrUSDCAmount,
       projectId
     ],
@@ -149,7 +119,7 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
 
   const withdrawRequest = () => {
     console.log("withdrawRequest args!!",projectWRDescription,
-    wrUSDTAmount,
+    wrUSDTOrDaiAmount,
     wrUSDCAmount,
     projectStarter,
     cryptosBNB[0].address,
@@ -167,7 +137,7 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
             <div className="max-w-xs mx-auto py-5 space-y-4">
               <div className="space-y-1 ">
                 <h1 className="font-normal text-base ">
-                  {wrUSDTAmount} USDT Requested for withdrawal by
+                  {wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name} Requested for withdrawal by
                 </h1>
                 <h1 className="font-normal text-base ">
                   {wrUSDCAmount} USDC Requested for withdrawal by
@@ -177,12 +147,6 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
                   <h3 className="text-Davy-Grey font-medium text-xs">
                     {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(39, 42)}
                   </h3>
-                  {/* <a
-                    href="/"
-                    className="bg-Chinese-Blue text-Pure-White rounded-md text-xs py-0.5 px-2"
-                  >
-                    view on explorer
-                  </a> */}
                 </div>
               </div>
 
@@ -194,14 +158,10 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
 
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Amount Requested</h2>
-                  <h2 className="font-normal text-base ">{wrUSDTAmount} USDT</h2>
+                  <h2 className="font-normal text-base ">{wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
                   <h2 className="font-normal text-base ">{wrUSDCAmount} USDC</h2>
                 </div>
 
-                {/* <div className="flex justify-between ">
-                  <h2 className="font-normal text-base ">Total Votes</h2>
-                  <h2 className="font-normal text-base ">3,211</h2>
-                </div> */}
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Receipient Address</h2>
                   <h2 className="font-normal text-base ">{projectStarter?.slice(0, 6) + "..." + projectStarter?.slice(40, 42)}</h2>
@@ -379,8 +339,8 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Contract Balance </h4>
-                    <h2 className="font-bold">{getUSDTBalance === undefined ? 0 :formatEther?.(getUSDTBalance)} USDT</h2>
-                    <h2 className="font-bold">{getUSDCBalance === undefined ? 0 :formatEther?.(getUSDCBalance)} USDC</h2>
+                    <h2 className="font-bold">{getUSDTOrDaiBalance === undefined ? 0 :formatUnits?.(Number(getUSDTOrDaiBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                    <h2 className="font-bold">{getUSDCBalance === undefined ? 0 :formatUnits?.(Number(getUSDCBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} USDC</h2>
                     
                   </div>
                 </div>
@@ -389,93 +349,13 @@ console.log("USDC's balance",getUSDCBalance,getUSDTBalance)
               <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDTAmount}/>
-                  <img src={`/assets/icons/USDT.svg`} alt="usdt" />
-                  {/* <Menu as="div" className="relative">
-                    <div className="h-8">
-                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
-                        
-                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
-                          <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
-                          </svg>
-                        </div>
-                      </Menu.Button>
-                    </div>
-
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
-                        <div className="font-medium text-sm text-Light-Slate-Gray">
-                          {
-                            (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
-                              onClick={() => {
-                                setSelectedCrypto(crypto.name);
-                                setSelectedCryptoAddress(crypto.address);
-                              }}
-                              as="div"
-                              className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
-                            >
-                              <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
-                            </Menu.Item>
-                            )
-                          }
-                          </div>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu> */}
+                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDTOrDaiAmount}/>
+                  <img src={`/assets/icons/${(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}.svg`} alt="usdtOrdai" />
                 </div>
 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
                   <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDCAmount}/>
                   <img src={`/assets/icons/USDC.svg`} alt="usdc" />
-                  {/* <Menu as="div" className="relative">
-                    <div className="h-8">
-                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
-                       
-                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
-                          <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
-                          </svg>
-                        </div>
-                      </Menu.Button>
-                    </div>
-
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
-                        <div className="font-medium text-sm text-Light-Slate-Gray">
-                          {
-                            (chain?.id === 97 ? cryptosBNB : (chain?.id === 5 ? cryptosETH : (chain?.id === 420 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
-                              onClick={() => {
-                                setSelectedCrypto(crypto.name);
-                                setSelectedCryptoAddress(crypto.address);
-                              }}
-                              as="div"
-                              className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
-                            >
-                              <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
-                            </Menu.Item>
-                            )
-                          }
-                          </div>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu> */}
                 </div>
 
                 <button
