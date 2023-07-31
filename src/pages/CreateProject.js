@@ -86,7 +86,6 @@ const CreateProject = () => {
       projectCoverUrl,
       tag,
       ...(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto?.address)
-      
     ],
   });
 
@@ -171,7 +170,7 @@ const CreateProject = () => {
       );
     await createProject?.();
     
-    console.log(createProjectError,"!!!when you creat project, you are wrong")
+    console.log(createProjectConfigError,"!!!when you creat project, you are wrong")
   };
 
   const navigateToHome = () => {
