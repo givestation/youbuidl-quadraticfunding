@@ -134,6 +134,7 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
 
   console.log('tags', filterTags);
   console.log((Number(currentAmount)/Number(goalAmount)*100).toFixed(2),"=-===-=-=-=-")
+  console.log(formatUnits?.( Number(goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6)))
 
 
   return (
@@ -183,13 +184,13 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
             <h3 className='text-Philipine-Gray font-normal text-xs'>
               Raised:{' '}
               <span className='text-Vampire-Black'>
-                ${formatUnits?.(currentAmount === undefined ? 0 : Number(currentAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6) ) || 0}
+                ${formatUnits?.(currentAmount === undefined ? 0 : (currentAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6) ) || 0}
               </span>
             </h3>
             <h3 className='text-Philipine-Gray font-normal text-xs'>
               Target:{' '}
               <span className='text-Vampire-Black'>
-                ${formatUnits?.(goalAmount === undefined ? 0 : Number(goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
+                ${formatUnits?.(goalAmount === undefined ? 0 : (goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
               </span>
             </h3>
           </div>

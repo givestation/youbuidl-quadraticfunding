@@ -535,7 +535,7 @@ erc20ContractConfig = {
                   Target
                 </h4>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
-                  ${formatUnits(goalAmount === undefined ? 0 : Number(goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )}
+                  ${formatUnits(goalAmount === undefined ? 0 : goalAmount,(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )}
                 </h1>
               </div>
             </div>
