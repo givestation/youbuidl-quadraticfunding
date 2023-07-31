@@ -362,10 +362,10 @@ erc20ContractConfig = {
 
       <Modals showModal={showDescModal} setShowModal={setShowDescModal}>
       
-        <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
+        <div className=" max-w-md  rounded-2xl bg-Pure-White">
           <div className="px-3 pt-3 pb-1.5 space-y-4">
             
-            <div className="max-w-xs mx-auto py-5 space-y-4">
+            <div className="overflow-y-scroll overflow-y-hidden scroll-smooth overflow-hidden h-[30rem] mx-auto py-5 space-y-4">
               {desc}
             </div>
             <div className="flex items-center space-x-4 font-semibold text-base">

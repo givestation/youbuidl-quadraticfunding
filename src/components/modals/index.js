@@ -7,7 +7,7 @@ const Modals = ({ children, showModal, setShowModal, classes }) => {
       <Dialog
         as="div"
         onClose={setShowModal}
-        className={`fixed top-0 left-0 right-0 bottom-0 bg-[#1111128A] z-50 flex justify-center items-center ${
+        className={`w-full fixed top-0 left-0 right-0 bottom-0 bg-[#1111128A] z-50 flex justify-center items-center ${
           classes && classes
         }`}
       >
