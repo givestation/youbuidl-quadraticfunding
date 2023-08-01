@@ -277,6 +277,21 @@ erc20ContractConfig = {
   console.log(noOfContributors,"-=-=-==-=-=-=-===============================")
   console.log(restHours,"rest hours")
 
+  function splitSentences(inputString) {
+    // Use a regular expression to split the string based on three consecutive full stops.
+    const sentences = inputString.split(".");
+    let origin=[];
+    let sent_arr = [];
+    for (let index = 0; index < sentences.length; index+=3) {
+      sent_arr.push(sentences[index]+sentences[index+1]+sentences[index+2])
+    }
+    sent_arr.forEach(stc => {
+      origin.push(<div>{stc}.</div>);
+    });
+    return origin
+  }
+  
+
   return (
     <>
       <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
@@ -364,9 +379,13 @@ erc20ContractConfig = {
       
         <div className=" max-w-md  rounded-2xl bg-Pure-White">
           <div className="px-3 pt-3 pb-1.5 space-y-4">
+
+          <h1 className="flex items-center  text-Rich-Black font-normal text-lg font-semibold	">
+                <span> {title}</span>:
+              </h1>
             
-            <div className="overflow-y-scroll overflow-y-hidden scroll-smooth overflow-hidden h-[30rem] mx-auto py-5 space-y-4">
-              {desc}
+            <div className="overflow-y-scroll overflow-y-hidden scroll-smooth overflow-hidden h-[30rem] mx-auto space-y-4">
+              {splitSentences(desc).map(stc =>stc)}
             </div>
             <div className="flex items-center space-x-4 font-semibold text-base">
               <button

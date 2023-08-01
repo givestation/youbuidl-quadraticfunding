@@ -29,6 +29,47 @@ const Withdraw = () => {
     abi: ProjectContractInterface,
   };
 
+  const { data: projectDetails } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'getProjectDetails',
+  });
+  console.log('projectDetails value', projectDetails);
+
+  let projectStarter; 
+  let projectDeadline;
+  let goalAmount ;
+  let completedTime ;
+  let currentAmount ;
+  let title;
+  let desc ;
+  let currentState; 
+  let balance ;
+  let website ;
+  let social ;
+  let github;
+  let projectCover;
+  let noOfContributors;
+
+  if(projectDetails !== undefined ){
+    projectStarter = projectDetails[0];
+    projectDeadline = projectDetails[3];
+    goalAmount = projectDetails[4];
+    noOfContributors= projectDetails[5];
+    completedTime = projectDetails[6];
+    currentAmount = projectDetails[7];
+    title = projectDetails[8];
+    desc = projectDetails[9];
+    currentState = projectDetails[10];
+    balance = projectDetails[11];
+    website = projectDetails[12];
+    social = projectDetails[13];
+    github = projectDetails[14];
+    projectCover = projectDetails[15];
+  }else{
+    console.log("projectDetails is undefined");
+
+  }
+
 //=============withdraw request check=======
   const { data: wrChecking } = useContractRead({
     ...projectContractConfig,
@@ -152,13 +193,13 @@ const Withdraw = () => {
                 <div className="bg-Pure-Black p-2 w-full sm:w-52 sm:h-52 rounded-2xl">
                   <img
                     className="w-full h-full"
-                    src="/assets/images/contribution.png"
+                    src={projectCover}
                     alt="contribution"
                   />
                 </div>
                 <div className="space-y-1 w-full sm:w-auto sm:space-y-2">
                   <h1 className="text-Davy-Grey text-lg font-semibold">
-                    Build a Web3 AI marketplace
+                    {title}
                   </h1>
                   <p className="text-Nickle font-normal text-sm sm:text-base">
                     {wrChecking?.[0]}
@@ -195,8 +236,8 @@ const Withdraw = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount for Withdrawal</h4>
-                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
-                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[2]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} USDC</h2>
+                    <h2 className="font-bold">{formatUnits?.((wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                    <h2 className="font-bold">{formatUnits?.((wrChecking?.[2]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} USDC</h2>
                   </div>
                 </div>
 

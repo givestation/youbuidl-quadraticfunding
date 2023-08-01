@@ -58,11 +58,35 @@ const WithdrawRequest = () => {
   console.log('projectDetails value', projectDetails);
 
   let projectStarter; 
-  
-  
+  let projectDeadline;
+  let goalAmount ;
+  let completedTime ;
+  let currentAmount ;
+  let title;
+  let desc ;
+  let currentState; 
+  let balance ;
+  let website ;
+  let social ;
+  let github;
+  let projectCover;
+  let noOfContributors;
+
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
-   
+    projectDeadline = projectDetails[3];
+    goalAmount = projectDetails[4];
+    noOfContributors= projectDetails[5];
+    completedTime = projectDetails[6];
+    currentAmount = projectDetails[7];
+    title = projectDetails[8];
+    desc = projectDetails[9];
+    currentState = projectDetails[10];
+    balance = projectDetails[11];
+    website = projectDetails[12];
+    social = projectDetails[13];
+    github = projectDetails[14];
+    projectCover = projectDetails[15];
   }else{
     console.log("projectDetails is undefined");
 
@@ -143,7 +167,7 @@ console.log("USDC's balance",getUSDCBalance)
                   {wrUSDCAmount} USDC Requested for withdrawal by
                 </h1>
                 <div className="flex items-center space-x-1">
-                  <img src="/assets/images/avatar-4.png" alt="avatar" />
+                  <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
                   <h3 className="text-Davy-Grey font-medium text-xs">
                     {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(39, 42)}
                   </h3>
@@ -253,7 +277,7 @@ console.log("USDC's balance",getUSDCBalance)
               </div>
 
               <h1 className="font-semibold text-sm sm:text-lg text-Raisin-Black">
-                Withdrawal request for Build a Web3 Marketplace
+                Withdrawal request for {title}
               </h1>
             </div>
             <svg
@@ -293,13 +317,13 @@ console.log("USDC's balance",getUSDCBalance)
                 <div className="bg-Pure-Black p-2 w-full sm:w-52 sm:h-52 rounded-2xl">
                   <img
                     className="w-full h-full"
-                    src="/assets/images/contribution.png"
+                    src={projectCover}
                     alt="contribution"
                   />
                 </div>
                 <div className=" w-full sm:w-[60%] space-y-1 w-full sm:w-auto sm:space-y-2">
                   <h1 className="text-Davy-Grey text-lg font-semibold">
-                    Build a Web3 AI marketplace
+                    {title}
                   </h1>
                   <textarea
                     onChange={onProjectWRDescriptionChangeHandler}

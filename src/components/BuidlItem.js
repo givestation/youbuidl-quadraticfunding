@@ -7,19 +7,12 @@ import { Loader } from './Loader'
 
 const BuidlItem = ({ contractAddress , index, tag}) => {
   const { address, connector, isConnected } = useAccount();
-
-  console.log(contractAddress , index,"contractAddress , key")
   const { chain, chains } = useNetwork()
-  
-
-  
   let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/" 
                   : (chain?.id === 1 ? "https://etherscan.io/address/" 
                   : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
                   : "https://arbiscan.io/address/"));
 
-
-  
   console.log("contract addresss", contractAddress)
   const projectContractConfig = {
     address: contractAddress,

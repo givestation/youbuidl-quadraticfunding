@@ -48,8 +48,8 @@ const { chains, publicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'My Youbuidl App',
-  projectId: 'YOUR_PROJECT_ID',
+  appName: 'youbuidl',
+  projectId: 'a1dd57ddaed16cfb376bd7066679449f',
   chains,
 });
 
