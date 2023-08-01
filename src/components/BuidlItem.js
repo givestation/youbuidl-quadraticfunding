@@ -131,7 +131,7 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
 
 
   return (
-    tag === filterTags || tag === 'popular' ?
+    (tag === filterTags || tag === 'popular') && isRevealed ?
     
     <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
       <img className='w-full object-cover' src={projectCover} alt='code' />
