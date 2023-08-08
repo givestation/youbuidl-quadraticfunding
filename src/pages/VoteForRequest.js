@@ -10,6 +10,7 @@ const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
+const cryptosMatic = stableTokens.cryptosMatic;
 
 const VoteForRequest = () => {
   const { chain, chains } = useNetwork()
@@ -243,7 +244,7 @@ const VoteForRequest = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount of Requested</h4>
-                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
                     <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[2]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} USDC</h2>
                   </div>
                 </div>

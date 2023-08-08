@@ -13,6 +13,7 @@ import {
   zkSync,
   hardhat,
   bsc,
+  
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
@@ -33,7 +34,7 @@ import Withdraw from './pages/Withdraw';
 
 
 const { chains, publicClient } = configureChains(
-  [bsc, mainnet, optimism, arbitrum],
+  [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),

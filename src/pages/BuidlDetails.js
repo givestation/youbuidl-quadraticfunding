@@ -18,11 +18,13 @@ const addressBnb = addressContract.addressBnb;
 const addressEth = addressContract.addresseth;
 const addressArbi = addressContract.addressArbi;
 const addressOpti = addressContract.addressOpti;
+const addressMatic = addressContract.addressMatic;
 
 const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
+const cryptosMatic = stableTokens.cryptosMatic;
 
 const BuidlDetails = () => {
   const navigate  = useNavigate();
@@ -48,7 +50,7 @@ const BuidlDetails = () => {
   const [contributedNumAmount, setContributedNumAmount] = useState(0);
   const [rewardCalculat, setRewardCalculat] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDC");
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState((chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[1].address);
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState((chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti :(chain?.id === 137 ? cryptosMatic : cryptosArbi))))[1].address);
  
   let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/" 
                   : (chain?.id === 1 ? "https://etherscan.io/address/" 
@@ -61,7 +63,7 @@ if (chain === undefined){
   console.log("plz connect metamask")
 }else{
   contractConfig = {
-    address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : addressArbi))),
+    address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : addressArbi)))),
     abi: CrowdFundingContractInterface,
   };
   console.log("ContractConfig Data",contractConfig)
@@ -707,7 +709,7 @@ erc20ContractConfig = {
                       <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
                         <div className="font-medium text-sm text-Light-Slate-Gray">
                           {
-                            (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                            (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi)))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
                               onClick={() => {
                                 setSelectedCrypto(crypto.name);
                                 setSelectedCryptoAddress(crypto.address);

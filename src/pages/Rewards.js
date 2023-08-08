@@ -24,6 +24,7 @@ const Rewards = () => {
   const addressEth = addressContract.addresseth;
   const addressArbi = addressContract.addressArbi;
   const addressOpti = addressContract.addressOpti;
+  const addressMatic =  addressContract.addressMatic;
 
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
@@ -44,7 +45,7 @@ const Rewards = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : addressArbi))),
+      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : addressArbi)))),
       abi: CrowdFundingContractInterface,
     };
   }

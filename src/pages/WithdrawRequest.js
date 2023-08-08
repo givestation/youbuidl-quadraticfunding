@@ -14,6 +14,7 @@ const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
+const cryptosMatic = stableTokens.cryptosMatic;
 
 const WithdrawRequest = () => {
 
@@ -98,7 +99,7 @@ const { data: getUSDTOrDaiBalance } = useContractRead({
   ...projectContractConfig,
   functionName: 'getContractBalance',
   args : [
-    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].address
+    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].address
   ]
 });
 console.log("USDT or DAI's balance",getUSDTOrDaiBalance);
@@ -107,7 +108,7 @@ const { data: getUSDCBalance } = useContractRead({
   ...projectContractConfig,
   functionName: 'getContractBalance',
   args : [
-    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[1].address
+    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[1].address
   ]
 });
 console.log("USDC's balance",getUSDCBalance)
@@ -161,7 +162,7 @@ console.log("USDC's balance",getUSDCBalance)
             <div className="max-w-xs mx-auto py-5 space-y-4">
               <div className="space-y-1 ">
                 <h1 className="font-normal text-base ">
-                  {wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name} Requested for withdrawal by
+                  {wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name} Requested for withdrawal by
                 </h1>
                 <h1 className="font-normal text-base ">
                   {wrUSDCAmount} USDC Requested for withdrawal by
@@ -182,7 +183,7 @@ console.log("USDC's balance",getUSDCBalance)
 
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Amount Requested</h2>
-                  <h2 className="font-normal text-base ">{wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                  <h2 className="font-normal text-base ">{wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
                   <h2 className="font-normal text-base ">{wrUSDCAmount} USDC</h2>
                 </div>
 
@@ -363,7 +364,7 @@ console.log("USDC's balance",getUSDCBalance)
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Contract Balance </h4>
-                    <h2 className="font-bold">{getUSDTOrDaiBalance === undefined ? 0 :formatUnits?.(Number(getUSDTOrDaiBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                    <h2 className="font-bold">{getUSDTOrDaiBalance === undefined ? 0 :formatUnits?.(Number(getUSDTOrDaiBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
                     <h2 className="font-bold">{getUSDCBalance === undefined ? 0 :formatUnits?.(Number(getUSDCBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} USDC</h2>
                     
                   </div>
@@ -374,7 +375,7 @@ console.log("USDC's balance",getUSDCBalance)
                 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
                   <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDTOrDaiAmount}/>
-                  <img src={`/assets/icons/${(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}.svg`} alt="usdtOrdai" />
+                  <img src={`/assets/icons/${(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}.svg`} alt="usdtOrdai" />
                 </div>
 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
