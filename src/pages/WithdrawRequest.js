@@ -14,6 +14,7 @@ const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
+const cryptosMatic = stableTokens.cryptosMatic;
 
 const WithdrawRequest = () => {
 
@@ -58,11 +59,35 @@ const WithdrawRequest = () => {
   console.log('projectDetails value', projectDetails);
 
   let projectStarter; 
-  
-  
+  let projectDeadline;
+  let goalAmount ;
+  let completedTime ;
+  let currentAmount ;
+  let title;
+  let desc ;
+  let currentState; 
+  let balance ;
+  let website ;
+  let social ;
+  let github;
+  let projectCover;
+  let noOfContributors;
+
   if(projectDetails !== undefined ){
     projectStarter = projectDetails[0];
-   
+    projectDeadline = projectDetails[3];
+    goalAmount = projectDetails[4];
+    noOfContributors= projectDetails[5];
+    completedTime = projectDetails[6];
+    currentAmount = projectDetails[7];
+    title = projectDetails[8];
+    desc = projectDetails[9];
+    currentState = projectDetails[10];
+    balance = projectDetails[11];
+    website = projectDetails[12];
+    social = projectDetails[13];
+    github = projectDetails[14];
+    projectCover = projectDetails[15];
   }else{
     console.log("projectDetails is undefined");
 
@@ -74,7 +99,7 @@ const { data: getUSDTOrDaiBalance } = useContractRead({
   ...projectContractConfig,
   functionName: 'getContractBalance',
   args : [
-    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].address
+    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].address
   ]
 });
 console.log("USDT or DAI's balance",getUSDTOrDaiBalance);
@@ -83,7 +108,7 @@ const { data: getUSDCBalance } = useContractRead({
   ...projectContractConfig,
   functionName: 'getContractBalance',
   args : [
-    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[1].address
+    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[1].address
   ]
 });
 console.log("USDC's balance",getUSDCBalance)
@@ -137,13 +162,13 @@ console.log("USDC's balance",getUSDCBalance)
             <div className="max-w-xs mx-auto py-5 space-y-4">
               <div className="space-y-1 ">
                 <h1 className="font-normal text-base ">
-                  {wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name} Requested for withdrawal by
+                  {wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name} Requested for withdrawal by
                 </h1>
                 <h1 className="font-normal text-base ">
                   {wrUSDCAmount} USDC Requested for withdrawal by
                 </h1>
                 <div className="flex items-center space-x-1">
-                  <img src="/assets/images/avatar-4.png" alt="avatar" />
+                  <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
                   <h3 className="text-Davy-Grey font-medium text-xs">
                     {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(39, 42)}
                   </h3>
@@ -158,7 +183,7 @@ console.log("USDC's balance",getUSDCBalance)
 
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Amount Requested</h2>
-                  <h2 className="font-normal text-base ">{wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                  <h2 className="font-normal text-base ">{wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
                   <h2 className="font-normal text-base ">{wrUSDCAmount} USDC</h2>
                 </div>
 
@@ -253,7 +278,7 @@ console.log("USDC's balance",getUSDCBalance)
               </div>
 
               <h1 className="font-semibold text-sm sm:text-lg text-Raisin-Black">
-                Withdrawal request for Build a Web3 Marketplace
+                Withdrawal request for {title}
               </h1>
             </div>
             <svg
@@ -293,13 +318,13 @@ console.log("USDC's balance",getUSDCBalance)
                 <div className="bg-Pure-Black p-2 w-full sm:w-52 sm:h-52 rounded-2xl">
                   <img
                     className="w-full h-full"
-                    src="/assets/images/contribution.png"
+                    src={projectCover}
                     alt="contribution"
                   />
                 </div>
                 <div className=" w-full sm:w-[60%] space-y-1 w-full sm:w-auto sm:space-y-2">
                   <h1 className="text-Davy-Grey text-lg font-semibold">
-                    Build a Web3 AI marketplace
+                    {title}
                   </h1>
                   <textarea
                     onChange={onProjectWRDescriptionChangeHandler}
@@ -339,7 +364,7 @@ console.log("USDC's balance",getUSDCBalance)
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Contract Balance </h4>
-                    <h2 className="font-bold">{getUSDTOrDaiBalance === undefined ? 0 :formatUnits?.(Number(getUSDTOrDaiBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}</h2>
+                    <h2 className="font-bold">{getUSDTOrDaiBalance === undefined ? 0 :formatUnits?.(Number(getUSDTOrDaiBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
                     <h2 className="font-bold">{getUSDCBalance === undefined ? 0 :formatUnits?.(Number(getUSDCBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} USDC</h2>
                     
                   </div>
@@ -350,7 +375,7 @@ console.log("USDC's balance",getUSDCBalance)
                 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
                   <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDTOrDaiAmount}/>
-                  <img src={`/assets/icons/${(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[0].name}.svg`} alt="usdtOrdai" />
+                  <img src={`/assets/icons/${(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}.svg`} alt="usdtOrdai" />
                 </div>
 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">

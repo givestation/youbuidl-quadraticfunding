@@ -18,11 +18,13 @@ const addressBnb = addressContract.addressBnb;
 const addressEth = addressContract.addresseth;
 const addressArbi = addressContract.addressArbi;
 const addressOpti = addressContract.addressOpti;
+const addressMatic = addressContract.addressMatic;
 
 const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptosETH;
 const cryptosArbi = stableTokens.cryptosArbi;
 const cryptosOpti = stableTokens.cryptosOpti;
+const cryptosMatic = stableTokens.cryptosMatic;
 
 const BuidlDetails = () => {
   const navigate  = useNavigate();
@@ -48,7 +50,7 @@ const BuidlDetails = () => {
   const [contributedNumAmount, setContributedNumAmount] = useState(0);
   const [rewardCalculat, setRewardCalculat] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDC");
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState((chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi)))[1].address);
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState((chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti :(chain?.id === 137 ? cryptosMatic : cryptosArbi))))[1].address);
  
   let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/" 
                   : (chain?.id === 1 ? "https://etherscan.io/address/" 
@@ -61,7 +63,7 @@ if (chain === undefined){
   console.log("plz connect metamask")
 }else{
   contractConfig = {
-    address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : addressArbi))),
+    address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : addressArbi)))),
     abi: CrowdFundingContractInterface,
   };
   console.log("ContractConfig Data",contractConfig)
@@ -277,6 +279,21 @@ erc20ContractConfig = {
   console.log(noOfContributors,"-=-=-==-=-=-=-===============================")
   console.log(restHours,"rest hours")
 
+  function splitSentences(inputString) {
+    // Use a regular expression to split the string based on three consecutive full stops.
+    const sentences = inputString.split(".");
+    let origin=[];
+    let sent_arr = [];
+    for (let index = 0; index < sentences.length; index+=3) {
+      sent_arr.push(sentences[index]+sentences[index+1]+sentences[index+2])
+    }
+    sent_arr.forEach(stc => {
+      origin.push(<div>{stc}.</div>);
+    });
+    return origin
+  }
+  
+
   return (
     <>
       <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
@@ -362,11 +379,15 @@ erc20ContractConfig = {
 
       <Modals showModal={showDescModal} setShowModal={setShowDescModal}>
       
-        <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
+        <div className=" max-w-md  rounded-2xl bg-Pure-White">
           <div className="px-3 pt-3 pb-1.5 space-y-4">
+
+          <h1 className="flex items-center  text-Rich-Black font-normal text-lg font-semibold	">
+                <span> {title}</span>:
+              </h1>
             
-            <div className="max-w-xs mx-auto py-5 space-y-4">
-              {desc}
+            <div className="overflow-y-scroll overflow-y-hidden scroll-smooth overflow-hidden h-[30rem] mx-auto space-y-4">
+              {splitSentences(desc).map(stc =>stc)}
             </div>
             <div className="flex items-center space-x-4 font-semibold text-base">
               <button
@@ -535,7 +556,7 @@ erc20ContractConfig = {
                   Target
                 </h4>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
-                  ${formatUnits(goalAmount === undefined ? 0 : Number(goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )}
+                  ${formatUnits(goalAmount === undefined ? 0 : goalAmount,(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )}
                 </h1>
               </div>
             </div>
@@ -688,7 +709,7 @@ erc20ContractConfig = {
                       <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
                         <div className="font-medium text-sm text-Light-Slate-Gray">
                           {
-                            (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : cryptosArbi))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                            (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi)))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
                               onClick={() => {
                                 setSelectedCrypto(crypto.name);
                                 setSelectedCryptoAddress(crypto.address);

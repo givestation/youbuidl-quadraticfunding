@@ -13,6 +13,7 @@ import {
   zkSync,
   hardhat,
   bsc,
+  
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
@@ -33,7 +34,7 @@ import Withdraw from './pages/Withdraw';
 
 
 const { chains, publicClient } = configureChains(
-  [bsc, mainnet, optimism, arbitrum],
+  [bsc, mainnet, optimism, arbitrum,polygon],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),
@@ -48,8 +49,8 @@ const { chains, publicClient } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'My Youbuidl App',
-  projectId: 'YOUR_PROJECT_ID',
+  appName: 'youbuidl',
+  projectId: 'a1dd57ddaed16cfb376bd7066679449f',
   chains,
 });
 

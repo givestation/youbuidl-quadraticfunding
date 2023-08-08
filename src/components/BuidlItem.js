@@ -7,19 +7,12 @@ import { Loader } from './Loader'
 
 const BuidlItem = ({ contractAddress , index, tag}) => {
   const { address, connector, isConnected } = useAccount();
-
-  console.log(contractAddress , index,"contractAddress , key")
   const { chain, chains } = useNetwork()
-  
-
-  
   let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/" 
                   : (chain?.id === 1 ? "https://etherscan.io/address/" 
                   : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
                   : "https://arbiscan.io/address/"));
 
-
-  
   console.log("contract addresss", contractAddress)
   const projectContractConfig = {
     address: contractAddress,
@@ -134,10 +127,11 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
 
   console.log('tags', filterTags);
   console.log((Number(currentAmount)/Number(goalAmount)*100).toFixed(2),"=-===-=-=-=-")
+  console.log(formatUnits?.( Number(goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6)))
 
 
   return (
-    tag === filterTags || tag === 'popular' ?
+    (tag === filterTags || tag === 'popular') && isRevealed ?
     
     <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
       <img className='w-full object-cover' src={projectCover} alt='code' />
@@ -183,13 +177,13 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
             <h3 className='text-Philipine-Gray font-normal text-xs'>
               Raised:{' '}
               <span className='text-Vampire-Black'>
-                ${formatUnits?.(currentAmount === undefined ? 0 : Number(currentAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6) ) || 0}
+                ${formatUnits?.(currentAmount === undefined ? 0 : (currentAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6) ) || 0}
               </span>
             </h3>
             <h3 className='text-Philipine-Gray font-normal text-xs'>
               Target:{' '}
               <span className='text-Vampire-Black'>
-                ${formatUnits?.(goalAmount === undefined ? 0 : Number(goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
+                ${formatUnits?.(goalAmount === undefined ? 0 : (goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
               </span>
             </h3>
           </div>

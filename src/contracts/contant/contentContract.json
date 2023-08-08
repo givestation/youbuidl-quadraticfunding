@@ -1,6 +1,7 @@
   {
     "addressBnb": "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
-    "addressEth": "0xBBD52136eFB864692554996aaB7D52c2c8f43520",
-    "addressArbi": "0xCf43EB30abD01C5CF9dBa84551Ce8A1F060BB6c1",
-    "addressOpti": "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916"
+    "addressEth": "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
+    "addressArbi": "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
+    "addressOpti": "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
+    "addressMatic": "0xCf43EB30abD01C5CF9dBa84551Ce8A1F060BB6c1"
   }
