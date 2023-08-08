@@ -34,7 +34,7 @@ import Withdraw from './pages/Withdraw';
 
 
 const { chains, publicClient } = configureChains(
-  [bsc, mainnet, optimism, arbitrum,polygon],
+  [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),
