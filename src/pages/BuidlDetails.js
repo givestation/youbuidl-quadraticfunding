@@ -43,6 +43,8 @@ const BuidlDetails = () => {
   const [approvedCongratsModal, setApprovedCongratsModal] = useState(true);
   // Congrats Contributed Modal State
   const [contributedCongratsModal, setContributedCongratsModal] = useState(true);
+   // change State
+   const [changeState, setChangeState] = useState(false);
   const [restHours, setRestHours] = useState(0);
   
   // set token
@@ -248,7 +250,13 @@ erc20ContractConfig = {
   
   const approveToken = async () => {
     console.log("args for approve", projectContractAddress, contributedAmount)
-    approve?.();
+    await approve?.();
+    if(changeState ===  false){
+      setChangeState(true);
+    }else{
+      setChangeState(false);
+    }
+    
   }
 
   const contributeSmart = async () => {
