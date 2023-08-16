@@ -43,6 +43,8 @@ const BuidlDetails = () => {
   const [approvedCongratsModal, setApprovedCongratsModal] = useState(true);
   // Congrats Contributed Modal State
   const [contributedCongratsModal, setContributedCongratsModal] = useState(true);
+   // change State
+   const [changeState, setChangeState] = useState(false);
   const [restHours, setRestHours] = useState(0);
   
   // set token
@@ -248,7 +250,13 @@ erc20ContractConfig = {
   
   const approveToken = async () => {
     console.log("args for approve", projectContractAddress, contributedAmount)
-    approve?.();
+    await approve?.();
+    if(changeState ===  false){
+      setChangeState(true);
+    }else{
+      setChangeState(false);
+    }
+    
   }
 
   const contributeSmart = async () => {
@@ -259,12 +267,14 @@ erc20ContractConfig = {
 
   const calculatingDate =  () => {
     const timestampMillis = Date.now();
-    console.log(Number(projectDeadline) - Number(timestampMillis / 1000),"current timestamp")
-    let dataObj = new Date((Number(projectDeadline) - Number(timestampMillis / 1000)) * 1000);
-    console.log(dataObj,"data of total")
-    let hours = dataObj.getUTCHours();
-    setRestHours(hours);
-    console.log(hours.toString(),"letft days")
+    console.log(Number(projectDeadline),Number(timestampMillis / 1000),Number(projectDeadline) - Number(timestampMillis / 1000),"current timestamp")
+    // let dataObj = new Date((Number(projectDeadline) - Number(timestampMillis / 1000)) * 1000);
+    
+    const daysLeft = Math.floor((Number(projectDeadline) - Number(timestampMillis / 1000)) / (24 * 60 * 60));
+    console.log(daysLeft,"data of total")
+    // let hours = dataObj.getUTCHours();
+    setRestHours(daysLeft);
+    console.log(daysLeft.toString(),"letft days")
     
   };
 
@@ -618,7 +628,7 @@ erc20ContractConfig = {
                   />
                 </svg>
                 <h3 className="text-Vampire-Black font-normal text-lg">
-                  {restHours > 24 ? restHours / 24 + 1 + " days left" : restHours + " hours left" }
+                  {restHours > 1 ? restHours + " days left" : restHours + " hours left" }
                 </h3>
               </div>
             </div>
