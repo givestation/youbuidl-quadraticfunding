@@ -46,6 +46,7 @@ const BuidlDetails = () => {
    // change State
    const [changeState, setChangeState] = useState(false);
   const [restHours, setRestHours] = useState(0);
+  const [restDays, setRestDays] = useState(0);
   
   // set token
   const [contributedAmount, setContributedAmount] = useState(0);
@@ -271,11 +272,12 @@ erc20ContractConfig = {
     // let dataObj = new Date((Number(projectDeadline) - Number(timestampMillis / 1000)) * 1000);
     
     const daysLeft = Math.floor((Number(projectDeadline) - Number(timestampMillis / 1000)) / (24 * 60 * 60));
-    console.log(daysLeft,"data of total")
+    const hoursLeft = Math.floor(((Number(projectDeadline) - Number(timestampMillis / 1000)) % (24 * 60 * 60)) / 3600);
+    console.log(daysLeft,hoursLeft,"data of total")
     // let hours = dataObj.getUTCHours();
-    setRestHours(daysLeft);
+    setRestDays(daysLeft);
+    setRestHours(hoursLeft)
     console.log(daysLeft.toString(),"letft days")
-    
   };
 
   useEffect(() => {
@@ -628,7 +630,7 @@ erc20ContractConfig = {
                   />
                 </svg>
                 <h3 className="text-Vampire-Black font-normal text-lg">
-                  {restHours > 1 ? restHours + " days left" : restHours + " hours left" }
+                  {restDays > 1 ? restDays + " days left" : restHours + " hours left" }
                 </h3>
               </div>
             </div>
