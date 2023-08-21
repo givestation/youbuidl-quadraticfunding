@@ -250,7 +250,8 @@ const Rewards = () => {
           <div className="flex-1 border border-Bright-Gray rounded-2xl p-6 pl-0 pb-0 flex flex-col overflow-hidden space-y-4">
             <div className="flex-1 pl-6">
               <p className="text-Old-Silver font-normal text-base">
-                Congratulations 🎊<br/> You have earned {' '}
+              { showRewardUserData[0] === 0n ? "" : "Congratulations 🎊" }
+               <br/> You have earned {' '}
                 <span className="font-extrabold">
                    { showRewardUserData[0] === undefined ? 0 : formatEther(showRewardUserData[0]) } {chain?.nativeCurrency?.symbol}
                 </span>{' '}
@@ -258,7 +259,7 @@ const Rewards = () => {
                 <span className="font-extrabold">
                    { showRewardUserData[1] === undefined ? 0 : formatEther(showRewardUserData[1]) } BuidlPoints
                 </span> 
-                 {' '}for funding 2 Buidls
+                 
               </p>
               <h1 className="text-Pure-Black font-semibold text-2xl sm:text-3xl">
                 { showRewardUserData[0] === undefined ? 0 : formatEther(showRewardUserData[0]) } {chain?.nativeCurrency?.symbol}
