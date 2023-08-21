@@ -185,14 +185,27 @@
         "type": "address"
       },
       {
-        "internalType": "uint256[4]",
+        "internalType": "uint256[2][4]",
         "name": "rewardTiers",
-        "type": "uint256[4]"
+        "type": "uint256[2][4]"
       }
     ],
     "name": "addRewardTokenTier",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "buildPointAddress",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -277,6 +290,26 @@
       }
     ],
     "name": "createProject",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "emergencyWithdrawBNB",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "_tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "emergencyWithdrawERC20",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -405,6 +438,11 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "name": "rewardTokensTiers",
@@ -424,6 +462,11 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "name": "rewards",
@@ -440,6 +483,19 @@
   {
     "inputs": [
       {
+        "internalType": "contract IERC20",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setBuildPointAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "contributor",
         "type": "address"
@@ -448,9 +504,9 @@
     "name": "showRewardUser",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint256[2]",
         "name": "",
-        "type": "uint256"
+        "type": "uint256[2]"
       }
     ],
     "stateMutability": "view",
@@ -467,9 +523,9 @@
     "name": "showTotalRewardUser",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint256[2]",
         "name": "",
-        "type": "uint256"
+        "type": "uint256[2]"
       }
     ],
     "stateMutability": "view",
@@ -481,6 +537,11 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "name": "totalRewards",
@@ -508,36 +569,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "recipientAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "contract IERC20",
-        "name": "tokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "withdrawPooledRewards",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "withdrawUserRewards",
     "outputs": [],
     "stateMutability": "nonpayable",

@@ -263,7 +263,8 @@ erc20ContractConfig = {
   const contributeSmart = async () => {
     console.log( "args for Contribute Functions!", projectContractAddress, selectedCryptoAddress, contributedAmount )
     console.log(contributeConfigError,"contract conig value")
-    contribute?.();
+    await contribute?.();
+
   };
 
   const calculatingDate =  () => {

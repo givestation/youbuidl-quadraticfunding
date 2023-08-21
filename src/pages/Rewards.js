@@ -89,7 +89,6 @@ const Rewards = () => {
     } else if(chain?.id === 1){
       getPriceETH(e.target.value);
     }
-    
   };
   console.log(etherRAmount,"reasdsfcasd-=-=--=-=-==-=")
   const rewardWithdraw = () =>{
@@ -138,8 +137,8 @@ const Rewards = () => {
     <>
        {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
       {/* Details Modal */}
-      {
-      showRewardUserData &&
+      { 
+      // showRewardUserData &&
         <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
       
         <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
@@ -200,29 +199,30 @@ const Rewards = () => {
       }
 
       {/* Congrats Modal */}
-      {isSuccess && etherRAmount !== 0 &&<Modals
-        showModal={true}
-        setShowModal={showShowCongratsModal}
-      >
-        <CongratsModalWrapper>
-          {" "}
-          <div className="space-y-2 py-6">
-            <h1 className="text-Bright-Gray font-medium text-xl">
-              Congratulation!
-            </h1>
-            <h4 className="text-Bright-Gray/90 font-normal text-base">
-              You have successfully Withdraw { etherRAmount === undefined ? 0 : formatUnits?.(Number(etherRAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6)) } 
-              <span className="font-bold">{chain?.nativeCurrency?.symbol}</span> to your wallet.
-            </h4>
-          </div>
-          <button
-            onClick={() => showShowCongratsModal(false)}
-            className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
-          >
-            Close
-          </button>
-        </CongratsModalWrapper>
-      </Modals>
+      { isSuccess && etherRAmount !== 0 &&
+        <Modals
+          showModal={true}
+          setShowModal={showShowCongratsModal}
+        >
+          <CongratsModalWrapper>
+            {" "}
+            <div className="space-y-2 py-6">
+              <h1 className="text-Bright-Gray font-medium text-xl">
+                Congratulation!
+              </h1>
+              <h4 className="text-Bright-Gray/90 font-normal text-base">
+                You have successfully Withdraw { etherRAmount === undefined ? 0 : formatUnits?.(Number(etherRAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6)) } 
+                <span className="font-bold">{chain?.nativeCurrency?.symbol}</span> to your wallet.
+              </h4>
+            </div>
+            <button
+              onClick={() => showShowCongratsModal(false)}
+              className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
+            >
+              Close
+            </button>
+          </CongratsModalWrapper>
+        </Modals>
       }
 
 
@@ -271,7 +271,7 @@ const Rewards = () => {
           </div>
         </div>
         <button 
-          disabled = {showRewardUserData === undefined ? true : false} 
+          // disabled = {showRewardUserData === undefined ? true : false} 
           onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
             Withdraw
         </button>
