@@ -284,13 +284,15 @@ erc20ContractConfig = {
   useEffect(() => {
       calculatingDate();
       // setVerification?.(); 
+      
   },[]);
  
   console.log("current currency", selectedCrypto, contributedAmount, selectedCryptoAddress);
   console.log("for contribute",contributeConfigError)
   console.log(showDetailsModal,approvedCongratsModal,"let see after modal cancel!")
   console.log(noOfContributors,"-=-=-==-=-=-=-===============================")
-  console.log(restHours,"rest hours")
+  console.log(restHours,"rest hours");
+
 
   function splitSentences(inputString) {
     // Use a regular expression to split the string based on three consecutive full stops.
@@ -775,10 +777,10 @@ erc20ContractConfig = {
             </svg>
           </Link> :
           <Link
-            to={(wrChecking?.[0] !== undefined || wrChecking?.[0] !== '') && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
+            to={ wrChecking?.[0] !== '' && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
             className="text-Nickle text-center flex items-center space-x-2"
           >
-            <span>{ (wrChecking?.[0] !== undefined || wrChecking?.[0] !== '') && realContributors !== 0n ? "you can vote about Withdrawal request for this campaign"  : (realContributors === 0n ? "Fund this project to be able to vote" : "Creator didn't request for withdraw")}</span>
+            <span>{ wrChecking?.[0] !== '' && realContributors !== 0n ? "you can vote about Withdrawal request for this campaign"  : (realContributors === 0n ? "Fund this project to be able to vote" : "Creator didn't request for withdraw")}</span>
             <svg
               width="16"
               height="16"

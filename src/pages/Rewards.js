@@ -66,9 +66,9 @@ const Rewards = () => {
   } = usePrepareContractWrite({
     ...crowdFundingContractConfig,
     functionName: 'withdrawUserRewards',
-    args: [
-      etherRAmount
-    ],
+    // args: [
+      
+    // ],
   });
  
   const {
@@ -199,7 +199,7 @@ const Rewards = () => {
       }
 
       {/* Congrats Modal */}
-      { isSuccess && etherRAmount !== 0 &&
+      { isSuccess &&
         <Modals
           showModal={true}
           setShowModal={showShowCongratsModal}
@@ -277,7 +277,7 @@ const Rewards = () => {
         </div>
         <button 
           // disabled = {showRewardUserData === undefined ? true : false} 
-          onClick={() => { setShowDetailsModal(true); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
+          onClick={() => { rewardWithdraw(); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
             Withdraw
         </button>
       </div>
