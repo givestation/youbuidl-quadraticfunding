@@ -19,6 +19,7 @@ const addressEth = addressContract.addresseth;
 const addressArbi = addressContract.addressArbi;
 const addressOpti = addressContract.addressOpti;
 const addressMatic = addressContract.addressMatic;
+const addressZksync = addressContract.addressZksync;
 
 const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptosETH;
@@ -63,7 +64,7 @@ const CreateProject = () => {
     console.log("plz connect metamask")
   }else{
     contractConfig = {
-      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : addressArbi)))),
+      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : (chain?.id === 324 ? addressArbi : addressZksync))))),
       abi: CrowdFundingContractInterface,
     };
   }
