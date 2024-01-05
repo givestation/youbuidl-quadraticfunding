@@ -1,12 +1,13 @@
 import { useState, Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { Link, useNavigate,useLocation } from "react-router-dom";
-import {  useContractRead,usePrepareContractWrite,useContractWrite } from 'wagmi';
-import { formatEther,formatUnits } from 'viem';
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useContractRead, usePrepareContractWrite, useContractWrite } from 'wagmi';
+import { readContract } from "@wagmi/core";
+import { formatEther, formatUnits } from 'viem';
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import { useNetwork,useAccount } from 'wagmi';
+import { useNetwork, useAccount } from 'wagmi';
 import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import Erc20Json from '../contracts/abi/ERC20.json';
 import Loader from '../components/Loader';
@@ -19,7 +20,7 @@ const addressEth = addressContract.addresseth;
 const addressArbi = addressContract.addressArbi;
 const addressOpti = addressContract.addressOpti;
 const addressMatic = addressContract.addressMatic;
-const addressZksync =addressContract.addressZksync;
+const addressZksync = addressContract.addressZksync;
 
 const cryptosBNB = stableTokens.cryptosBNB;
 const cryptosETH = stableTokens.cryptosETH;
@@ -28,12 +29,12 @@ const cryptosOpti = stableTokens.cryptosOpti;
 const cryptosMatic = stableTokens.cryptosMatic;
 
 const BuidlDetails = () => {
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const currentLocation  = useLocation();
-  const projectContractAddress = currentLocation.pathname?.slice(8,50);
-  const projectId = currentLocation.pathname?.slice(51,52);
+  const currentLocation = useLocation();
+  const projectContractAddress = currentLocation.pathname?.slice(8, 50);
+  const projectId = currentLocation.pathname?.slice(51, 52);
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   // Details Modal State
@@ -44,89 +45,64 @@ const BuidlDetails = () => {
   const [approvedCongratsModal, setApprovedCongratsModal] = useState(true);
   // Congrats Contributed Modal State
   const [contributedCongratsModal, setContributedCongratsModal] = useState(true);
-   // change State
-   const [changeState, setChangeState] = useState(false);
+  // change State
+  const [changeState, setChangeState] = useState(false);
   const [restHours, setRestHours] = useState(0);
   const [restDays, setRestDays] = useState(0);
-  
+
+  const [projectStarter, setProjectStarter] = useState()
+  const [projectDeadline, setProjectDeadline] = useState()
+  const [goalAmount, setGoalAmount] = useState()
+  const [noOfContributors, setNoOfContributors] = useState()
+  const [completedTime, setCompletedTime] = useState()
+  const [currentAmount, setCurrentAmount] = useState()
+  const [title, setTitle] = useState()
+  const [desc, setDesc] = useState()
+  const [currentState, setCurrentState] = useState()
+  const [balance, setBalance] = useState()
+  const [website, setWebsite] = useState()
+  const [social, setSocial] = useState()
+  const [github, setGithub] = useState()
+  const [projectCover, setProjectCover] = useState()
+
   // set token
   const [contributedAmount, setContributedAmount] = useState(0);
   const [contributedNumAmount, setContributedNumAmount] = useState(0);
   const [rewardCalculat, setRewardCalculat] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDC");
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState((chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti :(chain?.id === 137 ? cryptosMatic : cryptosArbi))))[1].address);
- 
-  let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/" 
-                  : (chain?.id === 1 ? "https://etherscan.io/address/" 
-                  : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
-                  : "https://arbiscan.io/address/"));
+  const [projectDetails, setProjectDetails] = useState(undefined)
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState((chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[1].address);
 
-//====================Crowdfunding contractConfig===============
-let contractConfig = {};
-if (chain === undefined){
-  console.log("plz connect metamask")
-}else{
-  contractConfig = {
-    address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : (chain?.id === 42161 ? addressArbi : addressZksync))))),
-    abi: CrowdFundingContractInterface,
+  let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/"
+    : (chain?.id === 1 ? "https://etherscan.io/address/"
+      : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
+        : "https://arbiscan.io/address/"));
+
+  //====================Crowdfunding contractConfig===============
+  let contractConfig = {};
+  if (chain === undefined) {
+    console.log("plz connect metamask")
+  } else {
+    contractConfig = {
+      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : (chain?.id === 42161 ? addressArbi : addressZksync))))),
+      abi: CrowdFundingContractInterface,
+    };
+    console.log("ContractConfig Data", contractConfig)
+  }
+
+  //===========stable token Contract Config================
+  let erc20ContractConfig = {};
+  erc20ContractConfig = {
+    address: selectedCryptoAddress,
+    abi: Erc20Json,
   };
-  console.log("ContractConfig Data",contractConfig)
-}
 
-//===========stable token Contract Config================
-let erc20ContractConfig = {};
-erc20ContractConfig = {
-  address: selectedCryptoAddress,
-  abi: Erc20Json,
-};
-  
-//===========project Contract config==============
+  //===========project Contract config==============
   const projectContractConfig = {
     address: projectContractAddress,
     abi: ProjectContractInterface,
   };
 
-  const { data: projectDetails } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'getProjectDetails',
-  });
-  console.log('ProjectDetails', projectDetails);
-
-  let projectStarter; 
-  let projectDeadline;
-  let goalAmount ;
-  let completedTime ;
-  let currentAmount ;
-  let title;
-  let desc ;
-  let currentState; 
-  let balance ;
-  let website ;
-  let social ;
-  let github;
-  let projectCover;
-  let noOfContributors;
-
-  if(projectDetails !== undefined ){
-    projectStarter = projectDetails[0];
-    projectDeadline = projectDetails[3];
-    goalAmount = projectDetails[4];
-    noOfContributors= projectDetails[5];
-    completedTime = projectDetails[6];
-    currentAmount = projectDetails[7];
-    title = projectDetails[8];
-    desc = projectDetails[9];
-    currentState = projectDetails[10];
-    balance = projectDetails[11];
-    website = projectDetails[12];
-    social = projectDetails[13];
-    github = projectDetails[14];
-    projectCover = projectDetails[15];
-  }else{
-    console.log("projectDetails is undefined");
-
-  }
-  
   const { data: filterTags } = useContractRead({
     ...projectContractConfig,
     functionName: 'filterTags',
@@ -135,34 +111,29 @@ erc20ContractConfig = {
   const { data: realContributors } = useContractRead({
     ...projectContractConfig,
     functionName: 'contributiors',
-    args:[
+    args: [
       address
     ]
   });
 
-  console.log("this client is contributed?",realContributors)
-  console.log('tags of this project', filterTags);
-
-//=============verify information of project=======
+  //=============verify information of project=======
   const { data: isVerified } = useContractRead({
     ...projectContractConfig,
     functionName: 'isVerified',
   });
 
-  console.log("this project is verified?",isVerified)
-
-//=============withdraw request check=======
+  //=============withdraw request check=======
   const { data: wrChecking } = useContractRead({
     ...projectContractConfig,
     functionName: 'showDetailOfWR',
-    args:[
+    args: [
       projectId
     ]
   });
 
-  console.log("this project is withdraw request?",wrChecking)
+  console.log("this project is withdraw request?", wrChecking)
 
- //=============Contribute  token===========
+  //=============Contribute  token===========
   const {
     config: contributeConfig,
     error: contributeConfigError,
@@ -207,27 +178,7 @@ erc20ContractConfig = {
     isSuccess: approvedSuccess,
   } = useContractWrite(erc20ApproveContractConfig);
 
-  //===========verify Project====================
-  const {
-    config: verifyProjectConfig,
-    error: verifyProjectConfigError,
-    isError: isVerifyProjectConfigError,
-  } = usePrepareContractWrite({
-    ...projectContractConfig,
-    functionName: 'setVerification',
-    args: [
-      true
-    ],
-  });
-
-  const {
-    data: verifyProjectReturnData,
-    write: setVerification,
-    error: verifyProjectError,
-    isSuccess
-  } = useContractWrite(verifyProjectConfig);
-
-//==========main functions==============
+  //==========main functions==============
 
   const onContributedAmount = (e) => {
     setContributedAmount(
@@ -235,80 +186,109 @@ erc20ContractConfig = {
     );
     setContributedNumAmount(e.target.value);
 
-    if(e.target.value >= 3 && e.target.value <= 5) {
+    if (e.target.value >= 3 && e.target.value <= 5) {
       setRewardCalculat(0.002)
     }
 
-    if(e.target.value > 5 && e.target.value <= 10) {
+    if (e.target.value > 5 && e.target.value <= 10) {
       setRewardCalculat(0.003)
     }
-    if(e.target.value > 10 && e.target.value <= 50) {
+    if (e.target.value > 10 && e.target.value <= 50) {
       setRewardCalculat(0.005)
     }
-    if(e.target.value > 50 ) {
+    if (e.target.value > 50) {
       setRewardCalculat(0.08)
     }
   };
-  
+
   const approveToken = async () => {
     console.log("args for approve", projectContractAddress, contributedAmount)
     await approve?.();
-    if(changeState ===  false){
+    if (changeState === false) {
       setChangeState(true);
-    }else{
+    } else {
       setChangeState(false);
     }
-    
+
   }
 
   const contributeSmart = async () => {
-    console.log( "args for Contribute Functions!", projectContractAddress, selectedCryptoAddress, contributedAmount )
-    console.log(contributeConfigError,"contract conig value")
+    console.log("args for Contribute Functions!", projectContractAddress, selectedCryptoAddress, contributedAmount)
+    console.log(contributeConfigError, "contract conig value")
     await contribute?.();
-
   };
 
-  const calculatingDate =  () => {
+  const calculatingDate = () => {
     const timestampMillis = Date.now();
-    console.log(Number(projectDeadline),Number(timestampMillis / 1000),Number(projectDeadline) - Number(timestampMillis / 1000),"current timestamp")
+    console.log(Number(projectDeadline), Number(timestampMillis / 1000), Number(projectDeadline) - Number(timestampMillis / 1000), "current timestamp")
     // let dataObj = new Date((Number(projectDeadline) - Number(timestampMillis / 1000)) * 1000);
-    
+
     const daysLeft = Math.floor((Number(projectDeadline) - Number(timestampMillis / 1000)) / (24 * 60 * 60));
     const hoursLeft = Math.floor(((Number(projectDeadline) - Number(timestampMillis / 1000)) % (24 * 60 * 60)) / 3600);
-    console.log(daysLeft,hoursLeft,"data of total")
+    console.log(daysLeft, hoursLeft, "data of total")
     // let hours = dataObj.getUTCHours();
     setRestDays(daysLeft);
     setRestHours(hoursLeft)
-    console.log(daysLeft.toString(),"letft days")
+    console.log(daysLeft.toString(), "letft days")
   };
 
   useEffect(() => {
+    if (projectDeadline)
       calculatingDate();
-      // setVerification?.(); 
-      
-  },[]);
- 
-  console.log("current currency", selectedCrypto, contributedAmount, selectedCryptoAddress);
-  console.log("for contribute",contributeConfigError)
-  console.log(showDetailsModal,approvedCongratsModal,"let see after modal cancel!")
-  console.log(noOfContributors,"-=-=-==-=-=-=-===============================")
-  console.log(restHours,"rest hours");
-
+  }, [projectDeadline]);
 
   function splitSentences(inputString) {
     // Use a regular expression to split the string based on three consecutive full stops.
     const sentences = inputString.split(".");
-    let origin=[];
+    let origin = [];
     let sent_arr = [];
-    for (let index = 0; index < sentences.length; index+=3) {
-      sent_arr.push(sentences[index]+sentences[index+1]+sentences[index+2])
+    for (let index = 0; index < sentences.length; index += 3) {
+      sent_arr.push(sentences[index] + sentences[index + 1] + sentences[index + 2])
     }
     sent_arr.forEach(stc => {
       origin.push(<div>{stc}.</div>);
     });
     return origin
   }
-  
+
+  const initProjectDetails = async () => {
+    try {
+      const data = await readContract({
+        ...projectContractConfig,
+        functionName: 'getProjectDetails',
+        args: []
+      });
+      setProjectDetails(data);
+    } catch {
+      navigate(-1)
+    }
+  }
+
+  useEffect(() => {
+    if (chain != undefined)
+      initProjectDetails()
+    else
+      navigate(-1)
+  }, [chain])
+
+  useEffect(() => {
+    if (projectDetails != undefined) {
+      setProjectStarter(projectDetails[0]);
+      setProjectDeadline(projectDetails[3]);
+      setGoalAmount(projectDetails[4]);
+      setNoOfContributors(projectDetails[5]);
+      setCompletedTime(projectDetails[6]);
+      setCurrentAmount(projectDetails[7]);
+      setTitle(projectDetails[8]);
+      setDesc(projectDetails[9]);
+      setCurrentState(projectDetails[10]);
+      setBalance(projectDetails[11]);
+      setWebsite(projectDetails[12]);
+      setSocial(projectDetails[13]);
+      setGithub(projectDetails[14]);
+      setProjectCover(projectDetails[15]);
+    }
+  }, [projectDetails])
 
   return (
     <>
@@ -345,7 +325,7 @@ erc20ContractConfig = {
             <div className="text-Eire-Black space-y-0.5">
               <div className="flex justify-center ">
                 <h2 className="font-medium text-base flex-1 text-center">
-                  Contributing 
+                  Contributing
                 </h2>
                 <h2 className="font-medium text-base flex-1 text-center">
                   {contributedNumAmount} {selectedCrypto}
@@ -356,10 +336,10 @@ erc20ContractConfig = {
                   {chain?.nativeCurrency?.symbol} Reward
                 </h2>
                 <h2 className="font-medium text-base flex-1 text-center">
-                 {rewardCalculat}
+                  {rewardCalculat}
                 </h2>
               </div>
-              
+
             </div>
             <div className="flex items-center space-x-4 font-semibold text-base">
               <button
@@ -386,7 +366,7 @@ erc20ContractConfig = {
               >
                 Contribute
               </button>
-              
+
             </div>
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
@@ -394,16 +374,21 @@ erc20ContractConfig = {
       </Modals>
 
       <Modals showModal={showDescModal} setShowModal={setShowDescModal}>
-      
+
         <div className=" max-w-md  rounded-2xl bg-Pure-White">
           <div className="px-3 pt-3 pb-1.5 space-y-4">
 
-          <h1 className="flex items-center  text-Rich-Black font-normal text-lg font-semibold	">
-                <span> {title}</span>:
-              </h1>
-            
+            <h1 className="flex items-center  text-Rich-Black font-normal text-lg font-semibold	">
+              <span> {title}</span>:
+            </h1>
+
             <div className="overflow-y-scroll overflow-y-hidden scroll-smooth overflow-hidden h-[30rem] mx-auto space-y-4">
-              {splitSentences(desc).map(stc =>stc)}
+              {splitSentences(desc ?? '').map(
+                (stc, index) => {
+                  return (
+                    <span key={index}> {stc}</span>
+                  )
+                })}
             </div>
             <div className="flex items-center space-x-4 font-semibold text-base">
               <button
@@ -412,7 +397,7 @@ erc20ContractConfig = {
               >
                 Cancel
               </button>
-              
+
             </div>
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
@@ -420,8 +405,8 @@ erc20ContractConfig = {
       </Modals>
 
       {/* Approved Modal loading and congratulation */}
-      {approvedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
-      {approvedSuccess && 
+      {approvedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
+      {approvedSuccess &&
         <Modals
           showModal={approvedCongratsModal}
           setShowModal={setApprovedCongratsModal}
@@ -433,7 +418,7 @@ erc20ContractConfig = {
                 Congratulation!
               </h1>
               <h4 className="text-Bright-Gray/90 font-normal text-sm">
-                You have successfully approved 
+                You have successfully approved
                 <span className="font-semibold"> {contributedNumAmount === '' ? 0 : contributedNumAmount} {selectedCrypto}</span> from your wallet!
               </h4>
             </div>
@@ -448,8 +433,8 @@ erc20ContractConfig = {
       }
 
       {/* Contributed Modal loading and congratulation*/}
-      {contributedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
-      {contributedSucess && 
+      {contributedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
+      {contributedSucess &&
         <Modals
           showModal={contributedCongratsModal}
           setShowModal={setContributedCongratsModal}
@@ -461,7 +446,7 @@ erc20ContractConfig = {
                 Congratulation!
               </h1>
               <h4 className="text-Bright-Gray/90 font-normal text-sm">
-                You have successfully contributed 
+                You have successfully contributed
                 <span className="font-semibold"> {contributedNumAmount} {selectedCrypto}</span> to this project.
                 <br />
                 Kindly check the reward page to claim your
@@ -477,7 +462,7 @@ erc20ContractConfig = {
           </CongratsModalWrapper>
         </Modals>
       }
-      
+
       <div className="space-y-4  max-w-5xl mx-auto">
         <h1 className="text-Raisin-Black font-semibold text-xl">
           Buidl Details
@@ -501,10 +486,10 @@ erc20ContractConfig = {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                 { isVerified && <path
+                  {isVerified && <path
                     d="M15.2717 7.60764L14.3083 6.48848C14.1242 6.27598 13.9754 5.87931 13.9754 5.59598V4.39181C13.9754 3.64098 13.3592 3.02473 12.6083 3.02473H11.4042C11.1279 3.02473 10.7242 2.87598 10.5117 2.69181L9.3925 1.72848C8.90375 1.31056 8.10334 1.31056 7.6075 1.72848L6.49542 2.69889C6.28292 2.87598 5.87917 3.02473 5.60292 3.02473H4.3775C3.62667 3.02473 3.01042 3.64098 3.01042 4.39181V5.60306C3.01042 5.87931 2.86167 6.27598 2.68459 6.48848L1.72834 7.61473C1.3175 8.10348 1.3175 8.89681 1.72834 9.38556L2.68459 10.5118C2.86167 10.7243 3.01042 11.121 3.01042 11.3972V12.6085C3.01042 13.3593 3.62667 13.9756 4.3775 13.9756H5.60292C5.87917 13.9756 6.28292 14.1243 6.49542 14.3085L7.61459 15.2718C8.10334 15.6897 8.90375 15.6897 9.39959 15.2718L10.5188 14.3085C10.7313 14.1243 11.1279 13.9756 11.4113 13.9756H12.6154C13.3663 13.9756 13.9825 13.3593 13.9825 12.6085V11.4043C13.9825 11.1281 14.1313 10.7243 14.3154 10.5118L15.2788 9.39264C15.6896 8.90389 15.6896 8.09639 15.2717 7.60764ZM11.4467 7.16139L8.02542 10.5826C7.92625 10.6818 7.79167 10.7385 7.65 10.7385C7.50834 10.7385 7.37375 10.6818 7.27459 10.5826L5.56042 8.86848C5.355 8.66306 5.355 8.32306 5.56042 8.11764C5.76584 7.91223 6.10584 7.91223 6.31125 8.11764L7.65 9.45639L10.6958 6.41056C10.9013 6.20514 11.2413 6.20514 11.4467 6.41056C11.6521 6.61598 11.6521 6.95598 11.4467 7.16139Z"
                     fill="#74D12A"
-                  />} 
+                  />}
                 </svg>
               </div>
               <div className="flex items-center space-x-1">
@@ -547,7 +532,7 @@ erc20ContractConfig = {
                 </svg>
               </div>
               <a
-                href = {defaultEthLink?.concat("",projectContractAddress)}
+                href={defaultEthLink?.concat("", projectContractAddress)}
                 className="bg-Chinese-Blue text-Pure-White rounded-md text-xs py-0.5 px-2"
               >
                 view on explorer
@@ -561,9 +546,9 @@ erc20ContractConfig = {
                   Raised so far
                 </h4>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
-                  ${formatUnits?.(currentAmount === undefined ? 0 : Number(currentAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) ) || 0}
+                  ${formatUnits?.(currentAmount === undefined ? 0 : Number(currentAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6)) || 0}
                   <span className="text-Philipine-Gray font-normal text-sm">
-                     {(Number(currentAmount)/Number(goalAmount)*100).toFixed(2)}%
+                    {(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%
                   </span>
                 </h1>
               </div>
@@ -572,15 +557,15 @@ erc20ContractConfig = {
                   Target
                 </h4>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
-                  ${formatUnits(goalAmount === undefined ? 0 : goalAmount,(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )}
+                  ${formatUnits(goalAmount === undefined ? 0 : goalAmount, (chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
                 </h1>
               </div>
             </div>
 
             <div className="bg-Steel-Blue h-2 rounded-md w-full relative">
               <div
-                style={{width: `${(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%`}}
-                className={`w-[${Number(currentAmount) !== 0 ? Number(currentAmount)/Number(goalAmount)*100 : 0}%] h-full bg-Chinese-Blue rounded-md`}
+                style={{ width: `${(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%` }}
+                className={`w-[${Number(currentAmount) !== 0 ? Number(currentAmount) / Number(goalAmount) * 100 : 0}%] h-full bg-Chinese-Blue rounded-md`}
               ></div>
             </div>
 
@@ -608,7 +593,7 @@ erc20ContractConfig = {
                     strokeLinejoin="round"
                   />
                 </svg>
-                <h3 className="text-Vampire-Black font-normal text-lg">{Number(noOfContributors)}</h3>
+                <h3 className="text-Vampire-Black font-normal text-lg">{Number(noOfContributors ?? 0)}</h3>
               </div>
               <div className="flex items-center space-x-2">
                 <svg
@@ -634,7 +619,7 @@ erc20ContractConfig = {
                   />
                 </svg>
                 <h3 className="text-Vampire-Black font-normal text-lg">
-                  {restDays > 1 ? restDays + " days left" : restHours + " hours left" }
+                  {restDays > 1 ? restDays + " days left" : restHours + " hours left"}
                 </h3>
               </div>
             </div>
@@ -644,13 +629,13 @@ erc20ContractConfig = {
                 Description
               </h1>
               <p className="text-Nickle font-normal text-sm sm:text-base">
-                {desc?.slice(0,50)}...
+                {desc?.slice(0, 50)}...
                 <br />
                 <span className="text-Vampire-Black font-semibold cursor-pointer text-base">
                   <button
-                  onClick={() => {
-                    setShowDescModal(true);
-                  }}>Read more</button>
+                    onClick={() => {
+                      setShowDescModal(true);
+                    }}>Read more</button>
                 </span>
               </p>
             </div>
@@ -700,7 +685,7 @@ erc20ContractConfig = {
 
 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[124px]  " placeholder="Enter amount" type='number'  onChange={onContributedAmount}/>
+                  <input className="outline-none max-w-[124px]  " placeholder="Enter amount" type='number' onChange={onContributedAmount} />
                   <Menu as="div" className="relative">
                     <div className="h-8">
                       <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
@@ -725,7 +710,7 @@ erc20ContractConfig = {
                       <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
                         <div className="font-medium text-sm text-Light-Slate-Gray">
                           {
-                            (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi)))).map((crypto,index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                            (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi)))).map((crypto, index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
                               onClick={() => {
                                 setSelectedCrypto(crypto.name);
                                 setSelectedCryptoAddress(crypto.address);
@@ -756,49 +741,49 @@ erc20ContractConfig = {
           </div>
         </div>
         <div className="flex justify-center">
-          {address === projectStarter ? 
-          <Link
-            to={wrChecking?.[0] === undefined || wrChecking?.[0] === '' ? `/buidls/${projectContractAddress}/${projectId}/withdraw-request` : `/buidls/${projectContractAddress}/${projectId}/withdraw`} 
-            className="text-Nickle text-center flex items-center space-x-2"
-          >
-            <span>{wrChecking?.[0] === undefined || wrChecking?.[0] === '' ? "No withdrawal request for this campaign" : "you created withdraw request"}</span>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {address === projectStarter ?
+            <Link
+              to={wrChecking?.[0] === undefined || wrChecking?.[0] === '' ? `/buidls/${projectContractAddress}/${projectId}/withdraw-request` : `/buidls/${projectContractAddress}/${projectId}/withdraw`}
+              className="text-Nickle text-center flex items-center space-x-2"
             >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM7 8H6V6H9V11H10V13H7V8ZM9 5V3H7V5H9Z"
-                fill="#B70505"
-              />
-            </svg>
-          </Link> :
-          <Link
-            to={ wrChecking?.[0] !== '' && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR`: `/buidls/${projectContractAddress}/${projectId}`} 
-            className="text-Nickle text-center flex items-center space-x-2"
-          >
-            <span>{ wrChecking?.[0] !== '' && realContributors !== 0n ? "you can vote about Withdrawal request for this campaign"  : (realContributors === 0n ? "Fund this project to be able to vote" : "Creator didn't request for withdraw")}</span>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <span>{wrChecking?.[0] === undefined || wrChecking?.[0] === '' ? "No withdrawal request for this campaign" : "you created withdraw request"}</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM7 8H6V6H9V11H10V13H7V8ZM9 5V3H7V5H9Z"
+                  fill="#B70505"
+                />
+              </svg>
+            </Link> :
+            <Link
+              to={wrChecking?.[0] !== '' && realContributors !== 0n ? `/buidls/${projectContractAddress}/${projectId}/voteForWR` : `/buidls/${projectContractAddress}/${projectId}`}
+              className="text-Nickle text-center flex items-center space-x-2"
             >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM7 8H6V6H9V11H10V13H7V8ZM9 5V3H7V5H9Z"
-                fill="#B70505"
-              />
-            </svg>
-          </Link>
-        }
-          
+              <span>{wrChecking?.[0] !== '' && realContributors !== 0n ? "you can vote about Withdrawal request for this campaign" : (realContributors === 0n ? "Fund this project to be able to vote" : "Creator didn't request for withdraw")}</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM7 8H6V6H9V11H10V13H7V8ZM9 5V3H7V5H9Z"
+                  fill="#B70505"
+                />
+              </svg>
+            </Link>
+          }
+
         </div>
       </div>
     </>

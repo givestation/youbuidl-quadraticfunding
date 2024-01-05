@@ -207,9 +207,8 @@ const Dashboard = () => {
         <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-8 p-0.5'>
           
           {returnAllProjects?.map((each ,index) => {
-            console.log(index,"EE==========================================================")
             return (
-            <BuidlItem index={index} contractAddress={each} tag={tagOfProject} />
+            <BuidlItem index={index} contractAddress={each} tag={tagOfProject} key={index} />
           )})}
         </div>
       </div>
