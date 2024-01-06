@@ -1,43 +1,20 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import BuidlItem from "../components/BuidlItem";
 import CategoriesSelector from "../components/CategoriesSelector";
-import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
-import {
-  useNetwork,
-  useContractRead
-} from 'wagmi';
-import addressContract from '../contracts/contant/contentContract.json'
-
+import { getProjects } from "../utils";
 
 const Projects = () => {
-
-  const { chain } = useNetwork()
-  const addressBnb = addressContract.addressBnb;
-  const addressEth = addressContract.addresseth;
-  const addressArbi = addressContract.addressArbi;
-  const addressOpti = addressContract.addressOpti;
-  const addressMatic = addressContract.addressMatic;
-  const addressZksync =  addressContract.addressZksync;
-
+  const [projects, setProjects] = useState([]);
    // set tag of project
    const [tagOfProject, setTagOfProject] = useState('popular');
 
-  let crowdFundingContractConfig = {};
-  if (chain === undefined){
-
-    console.log("plz connect metamask")
-  }else{
-    crowdFundingContractConfig = {
-      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : (chain?.id === 42161 ? addressArbi : addressZksync))))),
-      abi: CrowdFundingContractInterface,
-    };
-  }
-
-  const { data: returnAllProjects } = useContractRead({
-    ...crowdFundingContractConfig,
-    functionName: 'returnAllProjects',
-  });
+  useEffect(() => {
+    const loadProjects = async () => {
+      const projectsData = await getProjects();
+      setProjects(projectsData)
+    }
+    loadProjects()
+  }, [])
   return (
     <div className="max-w-6xl mx-auto space-y-4 md:space-y-6 ">
       <div className="flex items-center justify-between">
@@ -140,8 +117,8 @@ const Projects = () => {
         }}/>
 
       <div className="grid  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-      {returnAllProjects?.map((each ,index) => (
-            <BuidlItem index={index} key={index} contractAddress={each} tag={tagOfProject} />
+      {projects?.map((item ,index) => (
+            <BuidlItem key={index} project={item} tag={tagOfProject} />
           ))}
       </div>
     </div>

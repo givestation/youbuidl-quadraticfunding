@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import {  useContractRead, useNetwork,useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
-import { formatEther, formatUnits } from 'viem';
-import { useState, useEffect} from 'react';
-import { Loader } from './Loader'
+import { formatUnits } from 'viem';
 
-const BuidlItem = ({ contractAddress , index, tag}) => {
+const BuidlItem = ({ project, tag}) => {
   const { address, connector, isConnected } = useAccount();
   const { chain, chains } = useNetwork()
   let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/" 
@@ -13,132 +11,32 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
                   : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
                   : "https://arbiscan.io/address/"));
 
-  console.log("contract addresss", contractAddress)
-  const projectContractConfig = {
-    address: contractAddress,
-    abi: ProjectContractInterface,
-  };
+  const isRevealed = true;
+  const isVerified = true;
 
-  const { data: projectDetails } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'getProjectDetails',
-  });
+  // const { data: isRevealed } = useContractRead({
+  //   ...projectContractConfig,
+  //   functionName: 'isRevealed',
+  // });
 
-  
+  // const { data: isVerified } = useContractRead({
+  //   ...projectContractConfig,
+  //   functionName: 'isVerified',
+  // });
 
-  const { data: isRevealed } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'isRevealed',
-  });
-
-  const { data: isVerified } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'isVerified',
-  });
-
-  const { data: filterTags } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'filterTags',
-  });
-
-  const { data: realContribitors } = useContractRead({
-    ...projectContractConfig,
-    functionName: 'contributiors',
-    args:[
-      address
-    ]
-  });
-  console.log("this client is contributed?",realContribitors)
-  console.log('IS REVEALED', isRevealed);
-  console.log('IS VERIFIED', isVerified);
-  useEffect(() => {
-    console.log("adfsdf")
-  },[projectDetails]);
-  console.log(projectDetails  );
-
-   
-  // let projectStarter = projectDetails[0];
-  // let minContribution = projectDetails[1];
-  // let projectDeadline = projectDetails[2];
-  // let goalAmount = projectDetails[3];
-  // let completedTime = projectDetails[4];
-  // let currentAmount = projectDetails[5];
-  // let title = projectDetails[6];
-  // let desc = projectDetails[7];
-  // let currentState = projectDetails[8];
-  // let balance = projectDetails[9];
-  // let website = projectDetails[10];
-  // let social = projectDetails[11];
-  // let github = projectDetails[12];
-  // let projectCover = projectDetails[13];
-
-  let projectStarter; 
-  let minContribution ;
-  let projectDeadline;
-  let goalAmount ;
-  let noOfContributors;
-  let completedTime ;
-  let currentAmount ;
-  let title;
-  let desc ;
-  let currentState; 
-  let balance ;
-  let website ;
-  let social ;
-  let github;
-  let projectCover;
-  console.log('goalAmount', projectDetails);
-
- 
-    if(projectDetails !== undefined ){
-      projectStarter = projectDetails[0];
-      projectDeadline = projectDetails[3];
-      goalAmount = projectDetails[4];
-      noOfContributors= projectDetails[5];
-      completedTime = projectDetails[6];
-      currentAmount = projectDetails[7];
-      title = projectDetails[8];
-      desc = projectDetails[9];
-      currentState = projectDetails[10];
-      balance = projectDetails[11];
-      website = projectDetails[12];
-      social = projectDetails[13];
-      github = projectDetails[14];
-      projectCover = projectDetails[15];
-    }else{
-      console.log("projectDetails is undefined");
-
-    }
-
-  // const projectStarter = 1241234135123124;
-  // const minContribution = 1241234135123124;
-  // const projectDeadline = 1241234135123124;
-  // const goalAmount = 1241234135123124;
-  // const completedTime = 1241234135123124;
-  // const currentAmount = 1241234135123124;
-  // const title = 1241234135123124;
-  // const desc = 1241234135123124;
-  // const currentState = 1241234135123124;
-  // const balance = 1241234135123124;
-  // const website = 1241234135123124;
-  // const social = 1241234135123124;
-  // const github = 1241234135123124;
-  // const projectCover = 1241234135123124;
-
-  console.log('tags', filterTags);
-  console.log((Number(currentAmount)/Number(goalAmount)*100).toFixed(2),"=-===-=-=-=-")
-  console.log(formatUnits?.( Number(goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6)))
-
+  const contribute = () => {
+    console.log(isConnected, "=======================is connected===========")
+  }
 
   return (
-    (tag === filterTags || tag === 'popular') && isRevealed ?
+    (tag === project.filterTags || tag === 'popular') && isRevealed ?
     
     <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
-      <img className='w-full object-cover' src={projectCover} alt='code' />
+      <img className='w-full object-cover' src={project.projectCoverUrl} alt='code' />
       <div className='p-2 space-y-2'>
-        <Link to={`/buidls/${contractAddress}/${index}`}>
+        <Link to={`/buidls/${project.projectContractAddress}/${project.index}`}>
           <h1 className='text-Davy-Grey font-semibold text-sm flex items-center space-x-1'>
-            <span>{title}</span>
+            <span>{project.title}</span>
             <svg
               width='17'
               height='17'
@@ -159,7 +57,7 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
         <div>
           <h3 className='text-Davy-Grey font-medium text-sm'>Description</h3>
           <p className='text-Nickle font-normal text-xs'>
-            {desc?.slice(0, 50)}
+            {project.desc?.slice(0, 50)}
             {/* {desc.length > 1000 && (
               <span className='text-Vampire-Black cursor-pointer'>
                 Read more
@@ -170,20 +68,20 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
         <div className='space-y-1'>
           <div className='bg-Steel-Blue h-2 rounded-md w-full relative'>
             <div 
-            style={{width: `${(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%`}}
+            style={{width: `${(Number(project?.currentAmount) / Number(project?.goalAmount) * 100).toFixed(2)}%`}}
             className={`h-full bg-Chinese-Blue rounded-md`}></div>
           </div>
           <div className='flex items-center justify-between'>
             <h3 className='text-Philipine-Gray font-normal text-xs'>
               Raised:{' '}
               <span className='text-Vampire-Black'>
-                ${formatUnits?.(currentAmount === undefined ? 0 : (currentAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6) ) || 0}
+                ${formatUnits?.(project.currentAmount === undefined ? 0 : (project.currentAmount), (project.chainId == 56 || project.chainId == 1 ? 18 : 6) ) || 0}
               </span>
             </h3>
             <h3 className='text-Philipine-Gray font-normal text-xs'>
               Target:{' '}
               <span className='text-Vampire-Black'>
-                ${formatUnits?.(goalAmount === undefined ? 0 : (goalAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
+                ${formatUnits?.(project.goalAmount === undefined ? 0 : (project.goalAmount),(project.chainId == 56 || project.chainId == 1 ? 18 : 6))}
               </span>
             </h3>
           </div>
@@ -192,10 +90,10 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
           <div className='flex items-center space-x-1'>
             <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
             <a
-              href = {defaultEthLink?.concat("",contractAddress)}
+              href = {defaultEthLink?.concat("",project.projectContractAddress)}
               className='text-Davy-Grey font-medium text-xs'
             >
-              {projectStarter?.slice(0, 15)}...
+              {project.creator?.slice(0, 15)}...
             </a>
             <svg
               width='17'
@@ -211,14 +109,20 @@ const BuidlItem = ({ contractAddress , index, tag}) => {
             </svg>
           </div>
 
-          <Link
-            to={`/buidls/${contractAddress}/${index}`}
+          <div className='cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
+            px-2'
+            onClick={contribute}  
+          >
+            Contribute
+          </div>
+          {/* <Link
+            to={`/buidls/${project.projectContractAddress}/${project.index}`}
             className='bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
             px-2'
           >
             {' '}
             Contribute
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
