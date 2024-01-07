@@ -124,7 +124,7 @@ const BuidlItem = ({ project, tag }) => {
             px-2'
                 onClick={contribute}
               >
-                Contribute
+                Switch
               </div>
             )}
             {isConnected && chain.id == project?.chainId && (

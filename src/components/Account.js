@@ -30,7 +30,7 @@ const Account = () => {
                       >
                         <div className="cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
             px-2">
-                          Contribute
+                          Connect
                         </div>
                       </button>
                     </div>
