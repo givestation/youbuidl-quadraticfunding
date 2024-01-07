@@ -1,61 +1,23 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import BuidlItem from '../components/BuidlItem';
 import CategoriesSelector from '../components/CategoriesSelector';
-import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
-import {
-  useContractRead,
-  useNetwork
-} from 'wagmi';
-import addressContract from '../contracts/contant/contentContract.json'
-
+import { getProjects } from "../utils";
 
 const Dashboard = () => {
-  const { chain } = useNetwork()
-  const addressBnb = addressContract.addressBnb;
-  const addressEth = addressContract.addresseth;
-  const addressArbi = addressContract.addressArbi;
-  const addressOpti = addressContract.addressOpti;
-  const addressMatic = addressContract.addressMatic;
-  const addressZksync =  addressContract.addressZksync;
-  // set tag of project
   const [tagOfProject, setTagOfProject] = useState('popular');
+  const [projects, setProjects] = useState([]);
+  // set tag of project
 
-
-  // console.log(chain + "asdfasfdasd")
-  
-  // const crowdFundingContractConfig = {
-  //   address: (chain.id === 97 ? addressBnb : (chain.id === 5 ? addressEth : addressArbi)),
-  //   abi: CrowdFundingContractInterface,
-  // };
-
-  let crowdFundingContractConfig = {};
-  if (chain === undefined){
-
-    console.log("plz connect metamask")
-  }else{
-    crowdFundingContractConfig = {
-      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : (chain?.id === 42161 ? addressArbi : addressZksync))))),
-      abi: CrowdFundingContractInterface,
-    };
-  }
-  
-
-  // const crowdFundingContractConfig = {
-  //   address: addressBnb,
-  //   abi: CrowdFundingContractInterface,
-  // };
-
-  const { data: returnAllProjects } = useContractRead({
-    ...crowdFundingContractConfig,
-    functionName: 'returnAllProjects',
-  });
-
-  console.log('ALL PROJECTS', returnAllProjects,tagOfProject);
-  
+  useEffect(() => {
+    const loadProjects = async () => {
+      const projectsData = await getProjects();
+      setProjects(projectsData)
+    }
+    loadProjects()
+  }, [])
   return (
-    
+
     <div className='max-w-20xl mx-auto flex relative flex-col space-y-4 xl:space-y-0 xl:flex-row'>
       <div className='flex-1 overflow-hidden space-y-4 md:space-y-6 xl:mr-4'>
         <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-b from-Liberty to-Spanish-Violet   py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
@@ -64,7 +26,7 @@ const Dashboard = () => {
             src='/assets/images/pattren.png'
             alt='pattren'
           />
-         
+
           <div className='flex-1 xl:mt-0 text-left space-y-4 xl:space-y-2 z-10'>
             <div>
               <div className='flex items-center  justify-between'>
@@ -201,19 +163,16 @@ const Dashboard = () => {
             </svg>
           </div>
         </div>
-        <CategoriesSelector onSubmit = {(args) => {
+        <CategoriesSelector onSubmit={(args) => {
           setTagOfProject(args)
-        }}/>
-        <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-8 p-0.5'>
-          
-          {returnAllProjects?.map((each ,index) => {
-            console.log(index,"EE==========================================================")
-            return (
-            <BuidlItem index={index} contractAddress={each} tag={tagOfProject} />
-          )})}
+        }} />
+        <div className="grid  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {projects?.map((item, index) => (
+            <BuidlItem key={index} project={item} tag={tagOfProject} />
+          ))}
         </div>
       </div>
-       
+
     </div>
   );
 };
