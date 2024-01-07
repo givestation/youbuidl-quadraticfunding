@@ -24,7 +24,7 @@ const Account = () => {
               if (!connected) {
                 return (
                   <div>
-                    <div className="hidden sm:block">
+                    <div>
                       <button
                         onClick={openConnectModal}
                       >
