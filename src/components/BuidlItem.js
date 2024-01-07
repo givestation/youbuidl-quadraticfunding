@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import ProjectContractInterface from '../contracts/abi/Project.json';
+import ProjectContractInterface from '../contracts/abi/project?.json';
 import { useContractRead, useNetwork, useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { formatUnits } from 'viem';
 import Account from './Account';
@@ -30,8 +30,8 @@ const BuidlItem = ({ project, tag }) => {
   const { switchNetwork, } = useSwitchNetwork();
 
   const contribute = () => {
-    if (chain.id != project.chainId) {
-      switchNetwork(project.chainId)
+    if (chain.id != project?.chainId) {
+      switchNetwork(project?.chainId)
     } else {
 
     }
@@ -40,11 +40,11 @@ const BuidlItem = ({ project, tag }) => {
   return (
     (tag === project?.filterTags || tag === 'popular') && isRevealed ?
       <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
-        <img className='w-full object-cover' src={project.projectCoverUrl} alt='code' />
+        <img className='w-full object-cover' src={project?.projectCoverUrl} alt='code' />
         <div className='p-2 space-y-2'>
-          <Link to={`/buidls/${project.id}/${project.index}`}>
+          <Link to={`/buidls/${project?.id}/${project?.index}`}>
             <h1 className='text-Davy-Grey font-semibold text-sm flex items-center space-x-1'>
-              <span>{project.title}</span>
+              <span>{project?.title}</span>
               <svg
                 width='17'
                 height='17'
@@ -65,7 +65,7 @@ const BuidlItem = ({ project, tag }) => {
           <div>
             <h3 className='text-Davy-Grey font-medium text-sm'>Description</h3>
             <p className='text-Nickle font-normal text-xs'>
-              {project.desc?.slice(0, 50)}
+              {project?.desc?.slice(0, 50)}
               {/* {desc.length > 1000 && (
               <span className='text-Vampire-Black cursor-pointer'>
                 Read more
@@ -83,13 +83,13 @@ const BuidlItem = ({ project, tag }) => {
               <h3 className='text-Philipine-Gray font-normal text-xs'>
                 Raised:{' '}
                 <span className='text-Vampire-Black'>
-                  ${formatUnits?.(project.currentAmount === undefined ? 0 : (project.currentAmount), (project.chainId == 56 || project.chainId == 1 ? 18 : 6)) || 0}
+                  ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == 56 || project?.chainId == 1 ? 18 : 6)) || 0}
                 </span>
               </h3>
               <h3 className='text-Philipine-Gray font-normal text-xs'>
                 Target:{' '}
                 <span className='text-Vampire-Black'>
-                  ${formatUnits?.(project.goalAmount === undefined ? 0 : (project.goalAmount), (project.chainId == 56 || project.chainId == 1 ? 18 : 6))}
+                  ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == 56 || project?.chainId == 1 ? 18 : 6))}
                 </span>
               </h3>
             </div>
@@ -98,10 +98,10 @@ const BuidlItem = ({ project, tag }) => {
             <div className='flex items-center space-x-1'>
               <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
               <a
-                href={defaultEthLink?.concat("", project.id)}
+                href={defaultEthLink?.concat("", project?.id)}
                 className='text-Davy-Grey font-medium text-xs'
               >
-                {project.creator?.slice(0, 15)}...
+                {project?.creator?.slice(0, 15)}...
               </a>
               <svg
                 width='17'
@@ -120,7 +120,7 @@ const BuidlItem = ({ project, tag }) => {
             {!isConnected && (
               <Account />
             )}
-            {isConnected && chain.id != project.chainId && (
+            {isConnected && chain.id != project?.chainId && (
               <div className='cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
             px-2'
                 onClick={contribute}
@@ -128,9 +128,9 @@ const BuidlItem = ({ project, tag }) => {
                 Contribute
               </div>
             )}
-            {isConnected && chain.id == project.chainId && (
+            {isConnected && chain.id == project?.chainId && (
               <Link
-                to={`/buidls/${project.id}/${project.index}`}
+                to={`/buidls/${project?.id}/${project?.index}`}
                 className='bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
             px-2'
               >
