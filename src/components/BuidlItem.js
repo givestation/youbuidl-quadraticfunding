@@ -38,8 +38,7 @@ const BuidlItem = ({ project, tag }) => {
   }
 
   return (
-    (tag === project.filterTags || tag === 'popular') && isRevealed ?
-
+    (tag === project?.filterTags || tag === 'popular') && isRevealed ?
       <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
         <img className='w-full object-cover' src={project.projectCoverUrl} alt='code' />
         <div className='p-2 space-y-2'>
