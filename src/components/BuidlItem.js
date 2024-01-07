@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom';
-import ProjectContractInterface from '../contracts/abi/project?.json';
-import { useContractRead, useNetwork, useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useNetwork, useAccount } from 'wagmi';
 import { formatUnits } from 'viem';
 import Account from './Account';
 import { useSwitchNetwork } from 'wagmi'
 
 const BuidlItem = ({ project, tag }) => {
-  const { address, connector, isConnected } = useAccount();
+  const { isConnected } = useAccount();
 
-  const { chain, chains } = useNetwork()
+  const { chain } = useNetwork()
   let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/"
     : (chain?.id === 1 ? "https://etherscan.io/address/"
       : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
