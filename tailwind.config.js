@@ -12,7 +12,7 @@ module.exports = {
       Gray: "#818283",
       "Spanish-Gray": "#999999",
       "Red-RYB": "#FF2121",
-      "Chinese-Blue": "#43489D",
+      "Chinese-Blue": "#00A4FF",
       "Quick-Silver": "#A6A6A6",
       "Bright-Gray": "#EEEEEE",
       "Old-Silver": "#828282",

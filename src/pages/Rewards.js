@@ -243,7 +243,7 @@ const Rewards = () => {
           </svg>
 
           <h1 className="text-Chinese-Blue font-semibold text-base">
-            Claim your rewards.
+            Claim your BuidlPoints rewards.
           </h1>
         </div>
 
