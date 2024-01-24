@@ -37,6 +37,7 @@ const BuidlDetails = () => {
   const projectId = currentLocation.pathname?.slice(51, 52);
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showloader, setshowloader] = useState(false)
   // Details Modal State
   const [showDescModal, setShowDescModal] = useState(false);
   // Loading modal
@@ -292,9 +293,22 @@ const BuidlDetails = () => {
 
   return (
     <>
+
+
+      {
+        showloader&&(
+          <div style={{background:"#000000cc",position:"fixed",display:"flex",justifyContent:"center",alignItems:"center",width:"100vw",height:"100vh",zIndex:"999999999999",left:"0",top:"0"}}>
+            <div className="flex justify-center" style={{width:"100px"}}>
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><radialGradient id='a12' cx='.66' fx='.66' cy='.3125' fy='.3125' gradientTransform='scale(1.5)'><stop offset='0' stop-color='#00A4FF'></stop><stop offset='.3' stop-color='#00A4FF' stop-opacity='.9'></stop><stop offset='.6' stop-color='#00A4FF' stop-opacity='.6'></stop><stop offset='.8' stop-color='#00A4FF' stop-opacity='.3'></stop><stop offset='1' stop-color='#00A4FF' stop-opacity='0'></stop></radialGradient><circle transform-origin='center' fill='none' stroke='url(#a12)' stroke-width='22' stroke-linecap='round' stroke-dasharray='200 1000' stroke-dashoffset='0' cx='100' cy='100' r='70'><animateTransform type='rotate' attributeName='transform' calcMode='spline' dur='2' values='360;0' keyTimes='0;1' keySplines='0 0 1 1' repeatCount='indefinite'></animateTransform></circle><circle transform-origin='center' fill='none' opacity='.2' stroke='#00A4FF' stroke-width='22' stroke-linecap='round' cx='100' cy='100' r='70'></circle></svg>
+            </div>
+          </div>
+        )
+      }
+
       <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
         <div className="max-w-sm rounded-2xl bg-Pure-White">
           <img
+          className="h-52 object-cover rounded-xl"
             src={projectCover ? projectCover : "https://images.pexels.com/photos/1178758/pexels-photo-1178758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
             alt="dog"
           />
@@ -318,37 +332,63 @@ const BuidlDetails = () => {
               <h3 className="text-Rich-Black font-normal text-sm">
                 Creator - {projectStarter?.slice(0, 10) + "..." + projectStarter?.slice(38, 42)}
               </h3>
-              <p className="bg-Chinese-Blue inline text-Pure-White rounded-lg text-xs py-0.5 px-4">
-                WEB3
-              </p>
+              <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{background:"#CDEDFF"}}>
+              <div><img src="/assets/images/popularity 1.png" alt="" /></div>
+              <div style={{color:"#3EA7E1"}}>Popular</div>
             </div>
-            <div className="text-Eire-Black space-y-0.5">
-              <div className="flex justify-center ">
-                <h2 className="font-medium text-base flex-1 text-center">
+            </div>
+            <div className="text-Eire-Black space-y-0.5 w-4/5 m-auto">
+              <div className="flex justify-between ">
+                <h2 className="font-medium text-base flex-1 ">
                   Contributing
                 </h2>
-                <h2 className="font-medium text-base flex-1 text-center">
+                <h2 className="font-medium text-base flex-1 text-right">
                   {contributedNumAmount} {selectedCrypto}
                 </h2>
               </div>
               <div className="flex justify-center ">
-                <h2 className="font-medium text-base flex-1 text-center">
-                  {chain?.nativeCurrency?.symbol} Reward
+                <h2 className="font-medium text-base flex-1 ">
+                QF Matching
                 </h2>
-                <h2 className="font-medium text-base flex-1 text-center">
-                  {rewardCalculat}
+                <h2 className="font-medium text-base flex-1 text-right" style={{color:"#12D69B"}}>
+                  $0
+                </h2>
+              </div>
+              <div className="flex justify-center ">
+                <h2 className="font-medium text-base flex-1 ">
+                {chain?.nativeCurrency?.symbol}  Reward
+                </h2>
+                <h2 className="font-medium text-base flex-1 text-right" >
+                  {contributedNumAmount} {selectedCrypto}
+                </h2>
+              </div>
+              <div className="flex justify-center ">
+                <h2 className="font-medium text-base flex-1 ">
+                  GivePoints Reward
+                </h2>
+                <h2 className="font-medium text-base flex-1 text-right">
+                {contributedNumAmount} {selectedCrypto}
+                </h2>
+              </div>
+              <div className="flex justify-center !mt-5">
+                <h2 className="font-medium text-base flex-1 text-center ">
+                Total
+                </h2>
+                <h2 className="font-medium text-base flex-1 text-right">
+                {contributedNumAmount} {selectedCrypto}
                 </h2>
               </div>
 
             </div>
             <div className="flex items-center space-x-4 font-semibold text-base">
               <button
+              style={{border:"1px solid #D0D5DD",}}
                 onClick={() => setShowDetailsModal(false)}
-                className="text-Chinese-Blue border-2 border-Chinese-Blue flex-1 py-2 rounded-4xl"
+                className="border-2 border-Chinese-Blue flex-1 py-2 rounded-4xl"
               >
                 Cancel
               </button>
-              <button
+              {/* <button
                 disabled={contributedAmount === 0n ? true : false}
                 onClick={() => {
                   approveToken();
@@ -356,12 +396,13 @@ const BuidlDetails = () => {
                 className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
               >
                 Approve
-              </button>
+              </button> */}
               <button
                 disabled={contributedAmount === 0n ? true : false}
                 onClick={() => {
                   contributeSmart();
                 }}
+                style={{background:"#3EA7E1",borderColor:"#3EA7E1"}}
                 className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
               >
                 Contribute
@@ -532,6 +573,7 @@ const BuidlDetails = () => {
                 </svg>
               </div>
               <a
+              style={{background:"#3EA7E1"}}
                 href={defaultEthLink?.concat("", projectContractAddress)}
                 className="bg-Chinese-Blue text-Pure-White rounded-md text-xs py-0.5 px-2"
               >
@@ -540,36 +582,50 @@ const BuidlDetails = () => {
             </div>
           </div>
           <div className="px-6 py-4 space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="text-Philipine-Gray font-normal text-base">
-                  Raised so far
-                </h4>
-                <h1 className="text-Vampire-Black font-semibold text-xl">
-                  ${formatUnits?.(currentAmount === undefined ? 0 : Number(currentAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6)) || 0}
-                  <span className="text-Philipine-Gray font-normal text-sm">
-                    {(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%
-                  </span>
-                </h1>
-              </div>
-              <div>
-                <h4 className="text-Philipine-Gray font-normal text-base">
-                  Target
-                </h4>
-                <h1 className="text-Vampire-Black font-semibold text-xl">
-                  ${formatUnits(goalAmount === undefined ? 0 : goalAmount, (chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
-                </h1>
-              </div>
-            </div>
 
-            <div className="bg-Steel-Blue h-2 rounded-md w-full relative">
-              <div
-                style={{ width: `${(Number(currentAmount) / Number(goalAmount) * 100).toFixed(2)}%` }}
-                className={`w-[${Number(currentAmount) !== 0 ? Number(currentAmount) / Number(goalAmount) * 100 : 0}%] h-full bg-Chinese-Blue rounded-md`}
-              ></div>
-            </div>
+          <div className='space-y-1'>
+           
+           <div className='flex items-center justify-between'>
+             <h3 className=' font-normal text-xs flex items-center gap-0.5'>
+             <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.5">Currently raising</div>
+               <div  className='text-Vampire-Black mt-1'>
+      
+               </div>
+             </h3>
+             <h3 className=' font-normal text-xs'>
+             <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.5">QF Matching</div>
+             </h3>
+           </div>
+         </div>
+         <div className='space-y-1'>
+          
+           <div className='flex items-center justify-between'>
+             <h3 className='text-Philipine-Gray font-bold text-xl'>
+              
+               <span className='text-Vampire-Black'>
+                 ${Number(currentAmount)}
+               </span>
+             </h3>
+             <h3 className='text-emerald-400 font-bold text-xl '>
+            
+               <span className='text-emerald-400' style={{color:"#12D69B"}}>
+               $0
+               </span>
+             </h3>
+           </div>
+         </div>
+         <div className='flex items-center justify-between'>
+         <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.5 text-xs" >Target   ${formatUnits(goalAmount === undefined ? 0 : goalAmount, (chain?.id === 56 || chain?.id === 1 ? 18 : 6))}</div>
 
-            <div className="flex items-center justify-between">
+         </div>
+
+           <div className="flex items-center justify-between !mt-10">
+            <div>
+            <h1 className="text-Vampire-Black font-semibold text-xl">
+                Description
+              </h1>
+            </div>
+            <div className="flex items-center justify-between gap-10">
               <div className="flex items-center space-x-2">
                 <svg
                   width="26"
@@ -623,16 +679,19 @@ const BuidlDetails = () => {
                 </h3>
               </div>
             </div>
+           </div>
+
+          
+         
 
             <div>
-              <h1 className="text-Vampire-Black font-semibold text-xl">
-                Description
-              </h1>
+            
               <p className="text-Nickle font-normal text-sm sm:text-base">
-                {desc?.slice(0, 50)}...
+                {desc?.slice(0, 500)}...
                 <br />
-                <span className="text-Vampire-Black font-semibold cursor-pointer text-base">
+                <span className="text-Vampire-Black font-semibold cursor-pointer text-base ">
                   <button
+                  className="underline"
                     onClick={() => {
                       setShowDescModal(true);
                     }}>Read more</button>
@@ -640,61 +699,70 @@ const BuidlDetails = () => {
               </p>
             </div>
 
-            <div className="flex w-full items-center justify-between flex-col space-y-4 sm:space-y-0 sm:flex-row">
+            <div className=" !mt-20 flex w-full items-center justify-between flex-col space-y-4 sm:space-y-0 sm:flex-row">
               <div className="flex items-center space-x-2">
-                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" href={github}>
-                  <svg
-                    width="27"
-                    height="31"
-                    viewBox="0 0 27 31"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M18.6154 29.8334V24.5573C18.6635 23.9072 18.5809 23.2537 18.3731 22.6401C18.1653 22.0266 17.8371 21.4672 17.4102 20.999C21.4359 20.5218 25.6667 18.8994 25.6667 11.4556C25.6663 9.55213 24.9778 7.72168 23.7436 6.34307C24.328 4.67776 24.2867 2.83703 23.6282 1.20328C23.6282 1.20328 22.1154 0.726107 18.6154 3.22102C15.6769 2.37414 12.5795 2.37414 9.64102 3.22102C6.14102 0.726107 4.6282 1.20328 4.6282 1.20328C3.9697 2.83703 3.92838 4.67776 4.51281 6.34307C3.26938 7.7319 2.58015 9.5789 2.58973 11.4965C2.58973 18.8858 6.8205 20.5082 10.8461 21.0399C10.4243 21.5034 10.099 22.0561 9.89141 22.6621C9.68378 23.2682 9.59846 23.9139 9.64102 24.5573V29.8334M9.64102 25.7434C3.23076 27.7884 3.23076 22.335 0.666656 21.6534L9.64102 25.7434Z"
-                      stroke="#006ED4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" style={{filter: "drop-shadow(0px 8px 24px rgba(24, 39, 75, 0.08)) drop-shadow(0px 6px 12px rgba(24, 39, 75, 0.12))"}} href={github}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<rect width="24" height="24" fill="white"/>
+<path d="M10.1388 13C9.55115 13 9.08621 13.5059 9.19679 14.0831C9.52887 15.8163 10.2677 17.4049 11.3107 18.7462C11.6636 19.2 12.3362 19.2 12.6891 18.7462C13.7322 17.4049 14.471 15.8164 14.8031 14.0831C14.9137 13.5059 14.4487 13 13.861 13H10.1388Z" fill="#3EA7E1"/>
+<path d="M17.8888 13C17.366 13 16.9356 13.4037 16.8589 13.9209C16.5113 16.267 15.5367 18.409 14.112 20.1704C13.804 20.5512 13.848 21.1177 14.2353 21.4176C14.4402 21.5762 14.708 21.6325 14.9556 21.556C18.3846 20.4967 21.0255 17.6424 21.781 14.0908C21.9041 13.5124 21.4377 13 20.8464 13H17.8888Z" fill="#3EA7E1"/>
+<path d="M3.15352 13C2.56218 13 2.09582 13.5124 2.21886 14.0908C3.00142 17.7696 5.80689 20.7002 9.41564 21.6629C9.66029 21.7281 9.91894 21.6492 10.0955 21.4678C10.3689 21.1868 10.3695 20.7413 10.1148 20.4433C8.56666 18.6322 7.50675 16.3896 7.14096 13.9209C7.06432 13.4037 6.63392 13 6.11108 13H3.15352Z" fill="#3EA7E1"/>
+<path d="M21.7811 9.90924C21.9041 10.4876 21.4377 11 20.8464 11H17.8889C17.366 11 16.9356 10.5963 16.859 10.0791C16.5113 7.73297 15.5368 5.59097 14.112 3.82959C13.804 3.44877 13.8481 2.88228 14.2354 2.58243C14.4403 2.42382 14.708 2.36751 14.9556 2.44399C18.3846 3.50334 21.0256 6.35759 21.7811 9.90924Z" fill="#3EA7E1"/>
+<path d="M14.8031 9.91699C14.9137 10.4942 14.4488 11.0001 13.8611 11.0001H10.1389C9.55121 11.0001 9.08627 10.4942 9.19686 9.91699C9.52893 8.18377 10.2677 6.5952 11.3108 5.25388C11.6637 4.80011 12.3363 4.80011 12.6892 5.25389C13.7323 6.5952 14.4711 8.18377 14.8031 9.91699Z" fill="#3EA7E1"/>
+<path d="M9.04277 2.44442C9.29111 2.36766 9.55976 2.42446 9.76494 2.58405C10.1512 2.88448 10.1947 3.45023 9.88695 3.83073C8.46272 5.59188 7.48852 7.73344 7.14096 10.079C7.06432 10.5962 6.63392 11 6.11108 11H3.15352C2.56218 11 2.09581 10.4876 2.21885 9.90919C2.97422 6.35808 5.61452 3.50417 9.04277 2.44442Z" fill="#3EA7E1"/>
+</svg>
                 </a>
-                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" href={social}>
-                  <svg
-                    width="29"
-                    height="29"
-                    viewBox="0 0 29 29"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M27.6667 1.33325L12.6667 16.3333"
-                      stroke="#229ED9"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M27.6667 1.33325L18.3333 27.9999L13 15.9999L1 10.6666L27.6667 1.33325Z"
-                      stroke="#229ED9"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" style={{filter: "drop-shadow(0px 8px 24px rgba(24, 39, 75, 0.08)) drop-shadow(0px 6px 12px rgba(24, 39, 75, 0.12))"}} href={social}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 0.75C5.64625 0.75 0.5 5.89625 0.5 12.25C0.5 17.3387 3.79187 21.6369 8.36312 23.1606C8.93812 23.2612 9.15375 22.9162 9.15375 22.6144C9.15375 22.3412 9.13938 21.4356 9.13938 20.4725C6.25 21.0044 5.5025 19.7681 5.2725 19.1212C5.14313 18.7906 4.5825 17.77 4.09375 17.4969C3.69125 17.2812 3.11625 16.7494 4.07938 16.735C4.985 16.7206 5.63188 17.5687 5.8475 17.9137C6.8825 19.6531 8.53563 19.1644 9.19688 18.8625C9.2975 18.115 9.59938 17.6119 9.93 17.3244C7.37125 17.0369 4.6975 16.045 4.6975 11.6462C4.6975 10.3956 5.14312 9.36062 5.87625 8.55562C5.76125 8.26812 5.35875 7.08937 5.99125 5.50812C5.99125 5.50812 6.95438 5.20625 9.15375 6.68687C10.0738 6.42812 11.0513 6.29875 12.0288 6.29875C13.0063 6.29875 13.9838 6.42812 14.9038 6.68687C17.1031 5.19187 18.0662 5.50812 18.0662 5.50812C18.6987 7.08937 18.2962 8.26812 18.1812 8.55562C18.9144 9.36062 19.36 10.3812 19.36 11.6462C19.36 16.0594 16.6719 17.0369 14.1131 17.3244C14.53 17.6837 14.8894 18.3737 14.8894 19.4519C14.8894 20.99 14.875 22.2262 14.875 22.6144C14.875 22.9162 15.0906 23.2756 15.6656 23.1606C20.2081 21.6369 23.5 17.3244 23.5 12.25C23.5 5.89625 18.3538 0.75 12 0.75Z" fill="#3EA7E1"/>
+</svg>
+                </a>
+                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" style={{filter: "drop-shadow(0px 8px 24px rgba(24, 39, 75, 0.08)) drop-shadow(0px 6px 12px rgba(24, 39, 75, 0.12))"}} href={social}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <g clip-path="url(#clip0_534_1014)">
+    <path d="M20.317 4.15557C18.7873 3.45369 17.147 2.93658 15.4319 2.6404C15.4007 2.63469 15.3695 2.64897 15.3534 2.67754C15.1424 3.05276 14.9087 3.54226 14.7451 3.927C12.9004 3.65083 11.0652 3.65083 9.25832 3.927C9.09465 3.5337 8.85248 3.05276 8.64057 2.67754C8.62448 2.64992 8.59328 2.63564 8.56205 2.6404C6.84791 2.93563 5.20756 3.45275 3.67693 4.15557C3.66368 4.16129 3.65233 4.17082 3.64479 4.18319C0.533392 8.83155 -0.31895 13.3657 0.0991801 17.8436C0.101072 17.8655 0.11337 17.8864 0.130398 17.8997C2.18321 19.4073 4.17171 20.3225 6.12328 20.9291C6.15451 20.9386 6.18761 20.9272 6.20748 20.9015C6.66913 20.2711 7.08064 19.6063 7.43348 18.9073C7.4543 18.8664 7.43442 18.8178 7.39186 18.8016C6.73913 18.554 6.1176 18.2521 5.51973 17.9093C5.47244 17.8816 5.46865 17.814 5.51216 17.7816C5.63797 17.6873 5.76382 17.5893 5.88396 17.4902C5.90569 17.4721 5.93598 17.4683 5.96153 17.4797C9.88928 19.273 14.1415 19.273 18.023 17.4797C18.0485 17.4674 18.0788 17.4712 18.1015 17.4893C18.2216 17.5883 18.3475 17.6873 18.4742 17.7816C18.5177 17.814 18.5149 17.8816 18.4676 17.9093C17.8697 18.2588 17.2482 18.554 16.5945 18.8006C16.552 18.8168 16.533 18.8664 16.5538 18.9073C16.9143 19.6054 17.3258 20.2701 17.7789 20.9005C17.7978 20.9272 17.8319 20.9386 17.8631 20.9291C19.8241 20.3225 21.8126 19.4073 23.8654 17.8997C23.8834 17.8864 23.8948 17.8664 23.8967 17.8445C24.3971 12.6676 23.0585 8.17064 20.3482 4.18414C20.3416 4.17082 20.3303 4.16129 20.317 4.15557ZM8.02002 15.117C6.8375 15.117 5.86313 14.0313 5.86313 12.6981C5.86313 11.3648 6.8186 10.2791 8.02002 10.2791C9.23087 10.2791 10.1958 11.3743 10.1769 12.6981C10.1769 14.0313 9.22141 15.117 8.02002 15.117ZM15.9947 15.117C14.8123 15.117 13.8379 14.0313 13.8379 12.6981C13.8379 11.3648 14.7933 10.2791 15.9947 10.2791C17.2056 10.2791 18.1705 11.3743 18.1516 12.6981C18.1516 14.0313 17.2056 15.117 15.9947 15.117Z" fill="#3EA7E1"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_534_1014">
+      <rect width="24" height="24" fill="white"/>
+    </clipPath>
+  </defs>
+</svg>
+                </a>
+                <a className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer" style={{filter: "drop-shadow(0px 8px 24px rgba(24, 39, 75, 0.08)) drop-shadow(0px 6px 12px rgba(24, 39, 75, 0.12))"}} href={social}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M18.3263 1.90381H21.6998L14.3297 10.3273L23 21.7898H16.2112L10.894 14.8378L4.80995 21.7898H1.43443L9.31743 12.7799L1 1.90381H7.96111L12.7674 8.25814L18.3263 1.90381ZM17.1423 19.7706H19.0116L6.94539 3.81694H4.93946L17.1423 19.7706Z" fill="#3EA7E1"/>
+</svg>
                 </a>
               </div>
-              <div className="flex w-full sm:w-auto flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+              <div className="flex  !w-full justify-center sm:w-auto flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
 
 
-                <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[124px]  " placeholder="Enter amount" type='number' onChange={onContributedAmount} />
+                <div className="  w-4/6 justify-between rounded-2xl border border-slate-800  flex items-center" style={{borderColor:"#8080804d",borderRadius:"18.5px"}}>
+                 
+                    <div className="  px-4 py-2 flex items-center" >
+                    <input className="outline-none max-w-[124px]  " placeholder="Enter amount" type='number' onChange={onContributedAmount} />
+                  {/* <img src={`/assets/icons/${selectedCrypto}.svg`} alt={selectedCrypto} /> */}
+                    </div>
+
                   <Menu as="div" className="relative">
-                    <div className="h-8">
-                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full border-Light-Slate-Gray/90 text-Light-Slate-Gray ">
+                    <div >
+                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full  text-Light-Slate-Gray ">
+                     
+                   
+
+                        <div className="gap-2 rounded-2xl border border-slate-800  px-4 py-2 flex items-center" style={{background:"black",color:"white",borderRadius:"18.5px"}}>
+
+                          <div>Select Token</div>
+
+                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center" style={{background:"transparent"}}>
+                        
                         <img src={`/assets/icons/${selectedCrypto}.svg`} alt={selectedCrypto} />
-                        <div className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center">
-                          <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21.8382 8.11719H5.16159C4.6614 8.11719 4.3821 8.64531 4.69187 9.00586L13.0301 18.6746C13.2688 18.9514 13.7284 18.9514 13.9696 18.6746L22.3079 9.00586C22.6176 8.64531 22.3384 8.11719 21.8382 8.11719Z" fill="white" />
-                          </svg>
+                      </div>
+
                         </div>
+                       
+                       
                       </Menu.Button>
                     </div>
 
@@ -727,16 +795,22 @@ const BuidlDetails = () => {
                     </Transition>
                   </Menu>
                 </div>
+              </div>
                 <button
                   disabled={contributedAmount === 0 ? true : false}
                   onClick={() => {
-                    setShowDetailsModal(true);
+                    setshowloader(true);
+                    setTimeout(() => {
+                      setshowloader(false)
+                      setShowDetailsModal(true);
+                    }, 300);
+              
                   }}
-                  className="bg-Chinese-Blue w-full sm:w-auto text-Pure-White rounded-4xl py-1 px-2.5 font-medium text-lg"
+                  style={{background:"#3EA7E1"}}
+                  className="bg-Chinese-Blue w-full sm:w-auto text-Pure-White rounded-4xl border   px-10 py-2 font-medium text-lg"
                 >
                   Contribute
                 </button>
-              </div>
             </div>
           </div>
         </div>

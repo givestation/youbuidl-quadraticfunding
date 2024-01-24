@@ -38,12 +38,51 @@ const BuidlItem = ({ project, tag }) => {
 
   return (
     (tag === project?.filterTags || tag === 'popular') && isRevealed ?
-      <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden'>
-        <img className='w-full object-cover' src={project?.projectCoverUrl} alt='code' />
-        <div className='p-2 space-y-2'>
+      <div className='rounded-3xl bg-Ghost-White shadow-details overflow-hidden pb-1'>
+        
+        <div className="relative">
+        <img className='w-full object-cover  h-48' src={project?.projectCoverUrl} alt='code' />
+        <div className='flex items-center justify-between space-x-1 absolute bottom-1 w-full pl-4 pr-4 pb-1 pt-1' style={{background:"rgba(0, 0, 0, 0.56)"}}>
+
+                <div className="flex items-center space-x-1">
+                <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
+              <a
+              style={{color:"white"}}
+                href={defaultEthLink?.concat("", project?.id)}
+                className='text-white  font-medium text-xs'
+              >
+                {project?.creator?.slice(0, 15)}...
+              </a>
+              <svg
+                width='17'
+                height='17'
+                viewBox='0 0 17 17'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M15.2717 7.60764L14.3083 6.48848C14.1242 6.27598 13.9754 5.87931 13.9754 5.59598V4.39181C13.9754 3.64098 13.3592 3.02473 12.6083 3.02473H11.4042C11.1279 3.02473 10.7242 2.87598 10.5117 2.69181L9.3925 1.72848C8.90375 1.31056 8.10334 1.31056 7.6075 1.72848L6.49542 2.69889C6.28292 2.87598 5.87917 3.02473 5.60292 3.02473H4.3775C3.62667 3.02473 3.01042 3.64098 3.01042 4.39181V5.60306C3.01042 5.87931 2.86167 6.27598 2.68459 6.48848L1.72834 7.61473C1.3175 8.10348 1.3175 8.89681 1.72834 9.38556L2.68459 10.5118C2.86167 10.7243 3.01042 11.121 3.01042 11.3972V12.6085C3.01042 13.3593 3.62667 13.9756 4.3775 13.9756H5.60292C5.87917 13.9756 6.28292 14.1243 6.49542 14.3085L7.61459 15.2718C8.10334 15.6897 8.90375 15.6897 9.39959 15.2718L10.5188 14.3085C10.7313 14.1243 11.1279 13.9756 11.4113 13.9756H12.6154C13.3663 13.9756 13.9825 13.3593 13.9825 12.6085V11.4043C13.9825 11.1281 14.1313 10.7243 14.3154 10.5118L15.2788 9.39264C15.6896 8.90389 15.6896 8.09639 15.2717 7.60764ZM11.4467 7.16139L8.02542 10.5826C7.92625 10.6818 7.79167 10.7385 7.65 10.7385C7.50834 10.7385 7.37375 10.6818 7.27459 10.5826L5.56042 8.86848C5.355 8.66306 5.355 8.32306 5.56042 8.11764C5.76584 7.91223 6.10584 7.91223 6.31125 8.11764L7.65 9.45639L10.6958 6.41056C10.9013 6.20514 11.2413 6.20514 11.4467 6.41056C11.6521 6.61598 11.6521 6.95598 11.4467 7.16139Z'
+                  fill='#74D12A'
+                />
+              </svg>
+                </div>
+
+
+                <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 3C13.5 3.82843 12.8284 4.5 12 4.5C11.1716 4.5 10.5 3.82843 10.5 3C10.5 2.17157 11.1716 1.5 12 1.5C12.8284 1.5 13.5 2.17157 13.5 3ZM15 3C15 4.65685 13.6569 6 12 6C11.1439 6 10.3716 5.64143 9.82502 5.06628L5.90408 7.24457C5.96669 7.48592 6 7.73907 6 8C6 8.26094 5.96668 8.51411 5.90407 8.75547L9.82499 10.9338C10.3716 10.3586 11.1439 10 12 10C13.6569 10 15 11.3431 15 13C15 14.6569 13.6569 16 12 16C10.3431 16 9 14.6569 9 13C9 12.7391 9.03331 12.486 9.0959 12.2446L5.17493 10.0663C4.62836 10.6414 3.85605 11 3 11C1.34315 11 0 9.65685 0 8C0 6.34315 1.34315 5 3 5C3.85607 5 4.62838 5.35857 5.17496 5.9337L9.09591 3.7554C9.03331 3.51406 9 3.26092 9 3C9 1.34315 10.3431 0 12 0C13.6569 0 15 1.34315 15 3ZM13.5 13C13.5 13.8284 12.8284 14.5 12 14.5C11.1716 14.5 10.5 13.8284 10.5 13C10.5 12.1716 11.1716 11.5 12 11.5C12.8284 11.5 13.5 12.1716 13.5 13ZM4.5 8C4.5 8.82843 3.82843 9.5 3 9.5C2.17157 9.5 1.5 8.82843 1.5 8C1.5 7.17157 2.17157 6.5 3 6.5C3.82843 6.5 4.5 7.17157 4.5 8Z" fill="white"/>
+</svg>
+                </div>
+
+
+            </div>
+        </div>
+
+      
+        <div className='p-3 space-y-2'>
           <Link to={`/buidls/${project?.id}/${project?.index}`}>
-            <h1 className='text-Davy-Grey font-semibold text-sm flex items-center space-x-1'>
-              <span>{project?.title}</span>
+            <h1 className='text-Davy-Grey font-semibold text-sm flex items-center space-x-1 font-bold'>
+              <span className="font-bold text-l">{project?.title}</span>
               <svg
                 width='17'
                 height='17'
@@ -62,9 +101,15 @@ const BuidlItem = ({ project, tag }) => {
             </h1>
           </Link>
           <div>
-            <h3 className='text-Davy-Grey font-medium text-sm'>Description</h3>
-            <p className='text-Nickle font-normal text-xs'>
-              {project?.desc?.slice(0, 50)}
+            <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{background:"#CDEDFF"}}>
+              <div><img src="/assets/images/popularity 1.png" alt="" /></div>
+              <div style={{color:"#3EA7E1"}}>Popular</div>
+            </div>
+            <p className='text-Nickle font-normal text-sm mt-5 flex flex-col'>
+              {project?.desc?.slice(0, 50)} ...
+              <span className='text-Vampire-Black cursor-pointer underline'>
+                Read more
+              </span>
               {/* {desc.length > 1000 && (
               <span className='text-Vampire-Black cursor-pointer'>
                 Read more
@@ -73,62 +118,55 @@ const BuidlItem = ({ project, tag }) => {
             </p>
           </div>
           <div className='space-y-1'>
-            <div className='bg-Steel-Blue h-2 rounded-md w-full relative'>
-              <div
-                style={{ width: `${(Number(project?.currentAmount) / Number(project?.goalAmount) * 100).toFixed(2)}%` }}
-                className={`h-full bg-Chinese-Blue rounded-md`}></div>
-            </div>
+           
             <div className='flex items-center justify-between'>
-              <h3 className='text-Philipine-Gray font-normal text-xs'>
-                Raised:{' '}
+              <h3 className=' font-normal text-xs flex items-center gap-0.5'>
+              <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.5">Currently raising</div>
+                <div  className='text-Vampire-Black mt-1'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 7 7" fill="none">
+<ellipse cx="3.43124" cy="3.01465" rx="3.27187" ry="3.01465" fill="#12D69B"/>
+</svg>
+                </div>
+              </h3>
+              <h3 className=' font-normal text-xs'>
+              <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.5">QF Matching</div>
+              </h3>
+            </div>
+          </div>
+          <div className='space-y-1'>
+           
+            <div className='flex items-center justify-between'>
+              <h3 className='text-Philipine-Gray font-bold text-xl'>
+               
                 <span className='text-Vampire-Black'>
                   ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == 56 || project?.chainId == 1 ? 18 : 6)) || 0}
                 </span>
               </h3>
-              <h3 className='text-Philipine-Gray font-normal text-xs'>
-                Target:{' '}
-                <span className='text-Vampire-Black'>
+              <h3 className='text-emerald-400 font-bold text-xl '>
+             
+                <span className='text-emerald-400' style={{color:"#12D69B"}}>
                   ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == 56 || project?.chainId == 1 ? 18 : 6))}
                 </span>
               </h3>
             </div>
           </div>
           <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-1'>
-              <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
-              <a
-                href={defaultEthLink?.concat("", project?.id)}
-                className='text-Davy-Grey font-medium text-xs'
-              >
-                {project?.creator?.slice(0, 15)}...
-              </a>
-              <svg
-                width='17'
-                height='17'
-                viewBox='0 0 17 17'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d='M15.2717 7.60764L14.3083 6.48848C14.1242 6.27598 13.9754 5.87931 13.9754 5.59598V4.39181C13.9754 3.64098 13.3592 3.02473 12.6083 3.02473H11.4042C11.1279 3.02473 10.7242 2.87598 10.5117 2.69181L9.3925 1.72848C8.90375 1.31056 8.10334 1.31056 7.6075 1.72848L6.49542 2.69889C6.28292 2.87598 5.87917 3.02473 5.60292 3.02473H4.3775C3.62667 3.02473 3.01042 3.64098 3.01042 4.39181V5.60306C3.01042 5.87931 2.86167 6.27598 2.68459 6.48848L1.72834 7.61473C1.3175 8.10348 1.3175 8.89681 1.72834 9.38556L2.68459 10.5118C2.86167 10.7243 3.01042 11.121 3.01042 11.3972V12.6085C3.01042 13.3593 3.62667 13.9756 4.3775 13.9756H5.60292C5.87917 13.9756 6.28292 14.1243 6.49542 14.3085L7.61459 15.2718C8.10334 15.6897 8.90375 15.6897 9.39959 15.2718L10.5188 14.3085C10.7313 14.1243 11.1279 13.9756 11.4113 13.9756H12.6154C13.3663 13.9756 13.9825 13.3593 13.9825 12.6085V11.4043C13.9825 11.1281 14.1313 10.7243 14.3154 10.5118L15.2788 9.39264C15.6896 8.90389 15.6896 8.09639 15.2717 7.60764ZM11.4467 7.16139L8.02542 10.5826C7.92625 10.6818 7.79167 10.7385 7.65 10.7385C7.50834 10.7385 7.37375 10.6818 7.27459 10.5826L5.56042 8.86848C5.355 8.66306 5.355 8.32306 5.56042 8.11764C5.76584 7.91223 6.10584 7.91223 6.31125 8.11764L7.65 9.45639L10.6958 6.41056C10.9013 6.20514 11.2413 6.20514 11.4467 6.41056C11.6521 6.61598 11.6521 6.95598 11.4467 7.16139Z'
-                  fill='#74D12A'
-                />
-              </svg>
-            </div>
+          <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.5 text-xs" >Target  ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == 56 || project?.chainId == 1 ? 18 : 6))}</div>
 
             {!isConnected && (
               <Account />
             )}
             {isConnected && chain.id != project?.chainId && (
-              <div className='cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
+              <div style={{background:"#3EA7E1"}} className='cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
             px-2'
                 onClick={contribute}
               >
-                Switch
+                Contribute
               </div>
             )}
             {isConnected && chain.id == project?.chainId && (
               <Link
+              style={{background:"#3EA7E1"}}
                 to={`/buidls/${project?.id}/${project?.index}`}
                 className='bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
             px-2'
