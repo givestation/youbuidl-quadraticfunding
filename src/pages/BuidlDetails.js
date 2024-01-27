@@ -309,8 +309,8 @@ const BuidlDetails = () => {
         <div className="max-w-sm rounded-2xl bg-Pure-White">
           <img
           className="h-52 object-cover rounded-xl"
-            src={projectCover ? projectCover : "https://images.pexels.com/photos/1178758/pexels-photo-1178758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
-            alt="dog"
+            src={projectCover ? projectCover : "#"}
+            alt=""
           />
           <div className="px-3 pt-3 pb-1.5 space-y-4">
             <div className="space-y-1">
@@ -512,8 +512,8 @@ const BuidlDetails = () => {
           <div className=" w-full relative">
             <img
               className=" max-h-96 w-full object-cover"
-              src={projectCover ? projectCover : "https://images.pexels.com/photos/1178758/pexels-photo-1178758.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
-              alt="dog"
+              src={projectCover ? projectCover : "#"}
+              alt=""
             />
             <div className="absolute bottom-4 px-4 sm:px-10">
               <div className="flex items-center space-x-1">
