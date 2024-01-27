@@ -30,6 +30,7 @@ export const getProjects = async () => {
           socialUrl
           title
           websiteUrl
+          isOnQFRound
         }
       }`;
     try {

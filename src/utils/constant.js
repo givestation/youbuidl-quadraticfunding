@@ -31,3 +31,27 @@ export const subgraphURLs = {
     [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
     [polygonId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildpolygon",
 }
+
+export const contriTokens = {
+    [bscId]: [
+        {
+            "name": "USDT",
+            "address": "0xeB5062f050F7d0a74Ce8b1C683f2b3759961A3a1"
+        },
+        {
+            "name": "USDC",
+            "address": "0x5B63A80555819503e346676095EdFDDd1a73685e"
+        }
+    ],
+    [polygonId]: [
+        {
+            "name": "USDT",
+            "address": "0x0034690c00c9f7F37A3447DD98e26D4fBC83a42c"
+        },
+        {
+            "name": "USDC",
+            "address": "0x423C367F42272B7645824AEB19B8206931D0fec0"
+        }
+    ],
+
+}
