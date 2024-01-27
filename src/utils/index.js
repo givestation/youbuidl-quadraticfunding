@@ -1,7 +1,5 @@
 import axios from "axios";
-import { readContract, writeContract, waitForTransaction } from "@wagmi/core";
 import { subgraphURLs } from "./constant";
-import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 
 const getDataFromSubgraph = async (query, subgraphURL) => {
     try {
@@ -70,3 +68,48 @@ export const getProjects = async () => {
         return [];
     }
 };
+
+export const getProject = async (projectContractAddress, chainId) => {
+    const query = `{
+        project(id: "${projectContractAddress}") {
+          id
+          desc
+          currentState
+          currentAmount
+          creator
+          filterTags
+          goalAmount
+          noOfContributors
+          projectCoverUrl
+          projectDeadline
+          qfRoundID
+          socialUrl
+          githubUrl
+          title
+          websiteUrl
+        }
+        qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
+          id
+          amount
+        }
+      }`;
+
+    try {
+        const res = await getDataFromSubgraph(query, subgraphURLs[chainId]);
+        if (res.isSuccess) {
+            const project = res.data.project;
+            const qfRounds = res.data.qfrounds;
+            const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
+            if (qfRound && qfRound.id == project.qfRoundID) {
+                return { ...project, isOnQF: true, matchingPool: qfRound.amount }
+            }
+
+            return { ...project, isOnQF: false, matchingPool: 0 };
+        }
+
+        return null;
+    } catch (e) {
+        console.log(e, "=========error in get projects============")
+        return [];
+    }
+}

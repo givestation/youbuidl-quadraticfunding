@@ -13,18 +13,26 @@ export const optimismId = 10;
 
 export const contractAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
-    [bscId]: "0xabc3C864E5fBdcF2B03fBC1833E17D730f5105fa",
-    [polygonId]: "0x5b5C90327bE2279c281A2375fa923A4b8ED08CD7",
+    [bscId]: "0x52b752b2Fa271488a715e2cED4B381915B2bF197",
+    [polygonId]: "0x1cf463703c52045eCfA52907F83CDD67a2DA944F",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
 }
 
 export const qfRoundsAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
-    [bscId]: "0x455bC1eC9B9C8540D9a4f2283DFE5f51ac47843A",
-    [polygonId]: "0xc65b38c537390eA9758171ac77BAD490A14d1D05",
+    [bscId]: "0x726b812AD028d977D52acbDfB81f565f63AbD776",
+    [polygonId]: "0x2a774B919B3E2545097B1231065e2b4f649A3FA0",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
+}
+
+export const defaultEthLink = {
+    [mainnetId]: "https://etherscan.io/address/",
+    [bscId]: "https://bscscan.com/address/",
+    [polygonId]: "https://polygonscan.com/address/",
+    [arbitrumId]: "https://arbiscan.io/address/",
+    [optimismId]: "https://optimistic.etherscan.io/address/"
 }
 
 export const subgraphURLs = {
@@ -36,21 +44,21 @@ export const contriTokens = {
     [bscId]: [
         {
             "name": "USDT",
-            "address": "0xeB5062f050F7d0a74Ce8b1C683f2b3759961A3a1"
+            "address": "0x11E3008c59b8A55B7525150c61b12b3Fd2415a77"
         },
         {
             "name": "USDC",
-            "address": "0x5B63A80555819503e346676095EdFDDd1a73685e"
+            "address": "0x5C2D5798Ba7D59C381FaED3A7A3565c0d51b81a8"
         }
     ],
     [polygonId]: [
         {
             "name": "USDT",
-            "address": "0x0034690c00c9f7F37A3447DD98e26D4fBC83a42c"
+            "address": "0xC0447C56964CBF539B5d645C013DE488CcfC21C1"
         },
         {
             "name": "USDC",
-            "address": "0x423C367F42272B7645824AEB19B8206931D0fec0"
+            "address": "0xb82F2BD8cc846DFdfDa0D3D846f7EAe5d1d871cf"
         }
     ],
 

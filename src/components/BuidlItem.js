@@ -3,16 +3,12 @@ import { useNetwork, useAccount, mainnet } from 'wagmi';
 import { formatUnits } from 'viem';
 import Account from './Account';
 import { useSwitchNetwork } from 'wagmi'
-import { bscId, mainnetId } from '../utils/constant';
+import { bscId, defaultEthLink, mainnetId, polygonId } from '../utils/constant';
 
 const BuidlItem = ({ project, tag }) => {
   const { isConnected } = useAccount();
 
   const { chain } = useNetwork()
-  let defaultEthLink = chain?.id === 56 ? "https://bscscan.com/address/"
-    : (chain?.id === 1 ? "https://etherscan.io/address/"
-      : (chain?.id === 10 ? "https://optimistic.etherscan.io/address/"
-        : "https://arbiscan.io/address/"));
 
   const isRevealed = true;
   const isVerified = true;
@@ -49,7 +45,7 @@ const BuidlItem = ({ project, tag }) => {
               <img src='/assets/icons/identicon.svg' width={25} height={25} alt='avatar' className='rounded-2xl	' />
               <a
                 style={{ color: "white" }}
-                href={defaultEthLink?.concat("", project?.id)}
+                href={defaultEthLink[chain?.id]?.concat("", project?.id)}
                 className='text-white  font-medium text-xs'
               >
                 {project?.creator?.slice(0, 15)}...
@@ -126,16 +122,16 @@ const BuidlItem = ({ project, tag }) => {
           <div className='space-y-1'>
             <div className='flex items-center justify-between'>
               <h3 className=' font-normal text-xs flex items-center gap-0.5'>
-                <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == bscId || project?.chainId == mainnetId ? 18 : 6))}</div>
+                <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == bscId  ? 18 : 6))}</div>
                 <span className='text-Vampire-Black'>
-                  ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == bscId || project?.chainId == mainnetId ? 18 : 6)) || 0}
+                  ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == bscId ? 18 : 6)) || 0}
                 </span>
               </h3>
               {
                 project?.isOnQF && (
                   <h3 className='text-emerald-400 font-bold text-xl '>
                     <span className='text-emerald-400' style={{ color: "#12D69B" }}>
-                      ${formatUnits?.(project?.matchingPool === undefined ? 0 : (project?.matchingPool), (project?.chainId == bscId || project?.chainId == mainnetId ? 18 : 6))}
+                      ${formatUnits?.(project?.matchingPool === undefined ? 0 : (project?.matchingPool), (project?.chainId == bscId ? 18 : 6))}
                     </span>
                   </h3>
                 )

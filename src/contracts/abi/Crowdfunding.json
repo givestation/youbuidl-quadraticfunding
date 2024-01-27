@@ -136,6 +136,12 @@
       {
         "indexed": false,
         "internalType": "string",
+        "name": "githubUrl",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
         "name": "socialUrl",
         "type": "string"
       },

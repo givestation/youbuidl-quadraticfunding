@@ -10,7 +10,7 @@ import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 import web3 from 'web3';
 import Loader from '../components/Loader';
 import { useNavigate} from 'react-router-dom';
-import { contractAddresses, contriTokens } from '../utils/constant';
+import { bscId, contractAddresses, contriTokens } from '../utils/constant';
 
 const CLOUDINARY_UPLOAD_URL =
   'https://api.cloudinary.com/v1_1/dvwdyqvzt/image/upload';
@@ -133,7 +133,7 @@ const CreateProject = () => {
 
   const onTargetContributionChange = (e) => {
     setTargetContribution(
-      web3.utils.toBigInt(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))
+      web3.utils.toBigInt(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
     );
   };
 
