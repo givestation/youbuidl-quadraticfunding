@@ -1,5 +1,7 @@
 import axios from "axios";
+import { readContract, writeContract, waitForTransaction } from "@wagmi/core";
 import { subgraphURLs } from "./constant";
+import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
 
 const getDataFromSubgraph = async (query, subgraphURL) => {
     try {
@@ -30,7 +32,11 @@ export const getProjects = async () => {
           socialUrl
           title
           websiteUrl
-          isOnQFRound
+          qfRoundID
+        }
+        qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
+          id
+          amount
         }
       }`;
     try {
@@ -42,7 +48,17 @@ export const getProjects = async () => {
                 if (res.isSuccess) {
                     let index = 0;
                     let projectsList = res.data.projects;
-                    projectsList = projectsList.map((project) => { return { ...project, chainId: key, index:index++ } })
+                    const qfRounds = res.data.qfrounds;
+                    const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
+
+                    projectsList = projectsList.map((project) => {
+                        if (qfRound && qfRound.id == project.qfRoundID) {
+                            return { ...project, chainId: key, index: index++, isOnQF: true, matchingPool: qfRound.amount }
+                        }
+
+                        return { ...project, chainId: key, index: index++, isOnQF: false, matchingPool: 0 }
+                    }
+                    )
                     projects = projects.concat(projectsList);
                 }
             })
