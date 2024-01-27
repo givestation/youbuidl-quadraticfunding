@@ -121,7 +121,7 @@ const BuidlItem = ({ project, tag }) => {
             </div>
           </div>
           <div className='space-y-1'>
-           
+          <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.4">Target $50,000</div>           
           <div className='flex items-center justify-between'>
           <h3 className=' font-normal text-xs flex items-center gap-0.5'>
           <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.4">Target $50,000</div>
@@ -131,9 +131,7 @@ const BuidlItem = ({ project, tag }) => {
                 <span className='text-Vampire-Black'>
                   ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == 56 || project?.chainId == 1 ? 18 : 6)) || 0}
                 </span>
-              </h3>
-              <h3 className='text-emerald-400 font-bold text-xl '>
-              <div style={{color:"#818283",background:"#DADFE2"}} className="bg-gray-400 rounded p-0.4">Target $50,000</div>
+            
                 <span className='text-emerald-400' style={{color:"#12D69B"}}>
                   ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == 56 || project?.chainId == 1 ? 18 : 6))}
                 </span>
