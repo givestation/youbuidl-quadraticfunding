@@ -1,3 +1,10 @@
+<p align=”center”>
+
+<img width=”200" height=”200" src=”https://user-images.blahblah/75753187/123358567-aac7b900-d539-11eb-8275-0b380264bb4c.png" alt=”my banner”>
+
+</p>
+
+
 # YouBuidl
 
 YouBuidl is an open-source multi-chain web3 funding platform designed to empower and reward contributors for projects and ideas uploaded and submitted by open-source developers. Created by Givestation with a mission to foster innovation and collaboration within the decentralized ecosystem, YouBuidl facilitates the funding of projects across various blockchain networks while incentivizing active participation.
