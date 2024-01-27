@@ -6,14 +6,15 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  zkSync,
-  hardhat,
-  bsc,
-  
+  // mainnet,
+  // polygon,
+  // optimism,
+  // arbitrum,
+  // zkSync,
+  // hardhat,
+  // bsc,
+  bscTestnet,
+  polygonMumbai
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
@@ -34,7 +35,8 @@ import Withdraw from './pages/Withdraw';
 
 
 const { chains, publicClient } = configureChains(
-  [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
+  // [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
+  [bscTestnet, polygonMumbai],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),

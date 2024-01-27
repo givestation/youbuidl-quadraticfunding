@@ -2,11 +2,11 @@
     "cryptosBNB": [
       {
         "name": "USDT",
-        "address": "0x55d398326f99059ff775485246999027b3197955"
+        "address": "0xeB5062f050F7d0a74Ce8b1C683f2b3759961A3a1"
       },
       {
         "name": "USDC",
-        "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d"
+        "address": "0x5B63A80555819503e346676095EdFDDd1a73685e"
       }
     ],
     "cryptosETH": [
@@ -42,11 +42,11 @@
     "cryptosMatic": [
       {
         "name": "USDT",
-        "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+        "address": "0x0034690c00c9f7F37A3447DD98e26D4fBC83a42c"
       },
       {
         "name": "USDC",
-        "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"
+        "address": "0x423C367F42272B7645824AEB19B8206931D0fec0"
       }
     ]
   }
