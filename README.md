@@ -6,6 +6,7 @@ YouBuidl is an open-source multi-chain web3 funding platform designed to empower
 
 - **Multi-chain Support**: YouBuidl supports multiple blockchain networks, enabling developers to leverage different ecosystems for their projects.
 - **Funding Opportunities**: Open-source developers can upload their projects and ideas to YouBuidl, opening up opportunities for funding and support from the community.
+- **Quadratic Funding**: YouBuidl employs Quadratic Funding to allocate resources efficiently, ensuring that impactful projects receive adequate support.
 - **Rewards for Contributors**: Contributors are rewarded for their contributions to projects hosted on YouBuidl, fostering a culture of collaboration and innovation.
 - **Transparency and Decentralization**: Built on decentralized technologies, YouBuidl ensures transparency in funding processes and eliminates central points of control.
 
