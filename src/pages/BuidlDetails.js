@@ -49,25 +49,13 @@ const BuidlDetails = () => {
 
   const [crowdFundingConf, setCrowdFundingConf] = useState({});
   const [qfRoundsConf, setQFRoundsConf] = useState({});
+  const [erc20Conf, setERC20Conf] = useState(null)
 
-  useEffect(() => {
-    if (chain) {
-      setCrowdFundingConf({
-        address: contractAddresses[chain?.id],
-        abi: CrowdFundingContractInterface,
-      });
-      setQFRoundsConf({
-        address: qfRoundsAddresses[chain?.id],
-        abi: QFRoundsContractInterface,
-      });
-    }
-  }, [chain])
-
-  //===========stable token Contract Config================
-  const erc20ContractConfig = {
-    address: selectedCryptoAddress,
-    abi: Erc20Json,
-  };
+  const [isContributing, setIsContributing] = useState(false);
+  const [contributeSucc, setContributeSucc] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
+  const [approveSucc, setApproveSucc] = useState(false);
 
   //===========project Contract config==============
   const projectContractConfig = {
@@ -116,7 +104,35 @@ const BuidlDetails = () => {
   };
 
   const contributeSmart = async () => {
-    // await contribute?.();
+    setIsContributing(true)
+    try {
+      let hash;
+      if (projectDetails?.isQFAvailable) {
+        console.log("=============================")
+        hash = (await writeContract({
+          mode: "recklesslyUnprepared",
+          ...qfRoundsConf,
+          functionName: "qfContribute",
+          args: [projectContractAddress, selectedCryptoAddress, contributedAmount],
+        })).hash;
+      } else {
+        hash = (await writeContract({
+          mode: "recklesslyUnprepared",
+          ...crowdFundingConf,
+          functionName: "contribute",
+          args: [projectContractAddress, selectedCryptoAddress, contributedAmount],
+        })).hash;
+      }
+
+      const data = await waitForTransaction({ hash });
+      if (data.status == "success")
+        setContributeSucc(true)
+
+    } catch (e) {
+      setContributeSucc(false)
+      console.log(e);
+    }
+    setIsContributing(false)
   };
 
   const calculatingDate = () => {
@@ -131,18 +147,47 @@ const BuidlDetails = () => {
     console.log(daysLeft.toString(), "letft days")
   };
 
-  useEffect(() => {
-    if (projectDetails)
-      calculatingDate();
-  }, [projectDetails]);
+  const approveToken = async () => {
+    setIsApproving(true)
+    try {
+      const { hash } = await writeContract({
+        mode: "recklesslyUnprepared",
+        ...erc20Conf,
+        functionName: "approve",
+        args: [projectContractAddress, contributedAmount],
+      });
+
+      const data = await waitForTransaction({ hash });
+      if (data.status == "success") {
+        await getApporved()
+        setApproveSucc(true);
+      }
+
+    } catch (e) {
+      console.log(e, "error in Approve");
+    }
+    setIsApproving(false)
+  }
+
+  const getApporved = async () => {
+    const allowance = await readContract({
+      ...erc20Conf,
+      functionName: "allowance",
+      args: [address, projectContractAddress],
+    });
+
+    const amount = formatUnits(allowance, chain?.id === bscId ? 18 : 6)
+
+    if (+amount >= contributedNumAmount) setIsApproved(true)
+    else setIsApproved(false)
+  }
 
   const initProjectDetails = async () => {
-    try {
-      const data = await getProject(projectContractAddress, chain?.id)
+    const data = await getProject(projectContractAddress, chain?.id)
+    if (data)
       setProjectDetails(data);
-    } catch {
+    else
       navigate(-1)
-    }
   }
 
   useEffect(() => {
@@ -151,6 +196,37 @@ const BuidlDetails = () => {
     else
       navigate(-1)
   }, [chain])
+
+  useEffect(() => {
+    if (projectDetails)
+      calculatingDate();
+  }, [projectDetails]);
+
+  useEffect(() => {
+    if (chain) {
+      setCrowdFundingConf({
+        address: contractAddresses[chain?.id],
+        abi: CrowdFundingContractInterface,
+      });
+      setQFRoundsConf({
+        address: qfRoundsAddresses[chain?.id],
+        abi: QFRoundsContractInterface,
+      });
+    }
+  }, [chain])
+
+  useEffect(() => {
+    setERC20Conf({
+      address: selectedCryptoAddress,
+      abi: Erc20Json,
+    })
+  }, [selectedCryptoAddress])
+
+  useEffect(() => {
+    if (chain && erc20Conf) {
+      getApporved()
+    }
+  }, [contributedAmount, selectedCryptoAddress])
 
 
   return (
@@ -250,26 +326,28 @@ const BuidlDetails = () => {
               >
                 Cancel
               </button>
-              {/* <button
-                disabled={contributedAmount === 0n ? true : false}
-                onClick={() => {
-                  approveToken();
-                }}
-                className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
-              >
-                Approve
-              </button> */}
-              <button
-                disabled={contributedAmount === 0 ? true : false}
-                onClick={() => {
-                  contributeSmart();
-                }}
-                style={{ background: "#3EA7E1", borderColor: "#3EA7E1" }}
-                className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
-              >
-                Contribute
-              </button>
-
+              {isApproved ? (
+                <button
+                  disabled={contributedAmount === 0 ? true : false}
+                  onClick={() => {
+                    contributeSmart();
+                  }}
+                  style={{ background: "#3EA7E1", borderColor: "#3EA7E1" }}
+                  className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
+                >
+                  Contribute
+                </button>
+              ) : (
+                <button
+                  disabled={contributedAmount === 0n ? true : false}
+                  onClick={() => {
+                    approveToken();
+                  }}
+                  className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
+                >
+                  Approve
+                </button>
+              )}
             </div>
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
@@ -302,8 +380,8 @@ const BuidlDetails = () => {
       </Modals>
 
       {/* Approved Modal loading and congratulation */}
-      {/* {approvedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
-      {approvedSuccess &&
+      <Loader showModal={isApproving} setShowModal={setShowLoadingModal} />
+      {approveSucc &&
         <Modals
           showModal={approvedCongratsModal}
           setShowModal={setApprovedCongratsModal}
@@ -320,18 +398,18 @@ const BuidlDetails = () => {
               </h4>
             </div>
             <button
-              onClick={() => setApprovedCongratsModal(false)}
+              onClick={() => { setApprovedCongratsModal(false); setApproveSucc(false); }}
               className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
             >
               Close
             </button>
           </CongratsModalWrapper>
         </Modals>
-      } */}
+      }
 
       {/* Contributed Modal loading and congratulation*/}
-      {/* {contributedLoading && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
-      {contributedSucess &&
+      {isContributing && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
+      {contributeSucc &&
         <Modals
           showModal={contributedCongratsModal}
           setShowModal={setContributedCongratsModal}
@@ -351,14 +429,14 @@ const BuidlDetails = () => {
               </h4>
             </div>
             <button
-              onClick={() => setContributedCongratsModal(false)}
+              onClick={() => { setContributedCongratsModal(false); setContributeSucc(false) }}
               className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
             >
               Close
             </button>
           </CongratsModalWrapper>
         </Modals>
-      } */}
+      }
 
       <div className="space-y-4  max-w-5xl mx-auto">
         <h1 className="text-Raisin-Black font-semibold text-xl">
@@ -460,7 +538,7 @@ const BuidlDetails = () => {
               <div className='flex items-center justify-between'>
                 <h3 className='text-Philipine-Gray font-bold text-xl'>
                   <span className='text-Vampire-Black'>
-                    ${Number(projectDetails?.currentAmount)}
+                    ${formatUnits(projectDetails ? projectDetails.currentAmount : 0, (chain?.id === bscId ? 18 : 6))}
                   </span>
                 </h3>
                 {projectDetails?.isOnQF && (

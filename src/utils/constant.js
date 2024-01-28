@@ -14,7 +14,7 @@ export const optimismId = 10;
 export const contractAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0x52b752b2Fa271488a715e2cED4B381915B2bF197",
-    [polygonId]: "0x1cf463703c52045eCfA52907F83CDD67a2DA944F",
+    [polygonId]: "0x7189fD9220B1a5a8e3B35C8f9DB70cc5D9d7d393",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
 }
@@ -22,7 +22,7 @@ export const contractAddresses = {
 export const qfRoundsAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0x726b812AD028d977D52acbDfB81f565f63AbD776",
-    [polygonId]: "0x2a774B919B3E2545097B1231065e2b4f649A3FA0",
+    [polygonId]: "0x5F130D7DdCfd273b2d9C6325Bb13c0A5FbBD8F24",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
 }

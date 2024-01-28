@@ -91,6 +91,8 @@ export const getProject = async (projectContractAddress, chainId) => {
         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
           id
           amount
+          startTime
+          endTime
         }
       }`;
 
@@ -98,15 +100,19 @@ export const getProject = async (projectContractAddress, chainId) => {
         const res = await getDataFromSubgraph(query, subgraphURLs[chainId]);
         if (res.isSuccess) {
             const project = res.data.project;
-            const qfRounds = res.data.qfrounds;
-            const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
-            if (qfRound && qfRound.id == project.qfRoundID) {
-                return { ...project, isOnQF: true, matchingPool: qfRound.amount }
+            if (project) {
+                const qfRounds = res.data.qfrounds;
+                const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
+                if (qfRound && qfRound.id == project.qfRoundID) {
+                    const currentTime = Math.floor(Date.now() / 1000)
+                    const isQFAvailable = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
+                    return { ...project, isOnQF: true, matchingPool: qfRound.amount, isQFAvailable: isQFAvailable }
+                }
+
+                return { ...project, isOnQF: false, matchingPool: 0, isQFAvailable: false };
             }
-
-            return { ...project, isOnQF: false, matchingPool: 0 };
+            return null
         }
-
         return null;
     } catch (e) {
         console.log(e, "=========error in get projects============")

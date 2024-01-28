@@ -14,7 +14,7 @@ import {
   // hardhat,
   // bsc,
   bscTestnet,
-  polygonMumbai
+  // polygonMumbai
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
@@ -32,6 +32,7 @@ import CreateProject from './pages/CreateProject';
 import WithdrawRequest from './pages/WithdrawRequest';
 import VoteForRequest from './pages/VoteForRequest';
 import Withdraw from './pages/Withdraw';
+import { polygonMumbai } from './utils/networks';
 
 
 const { chains, publicClient } = configureChains(
