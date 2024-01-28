@@ -37,7 +37,7 @@ const NavbarData = {
       ),
     },
     {
-      label: "Home",
+      label: "Explore Rounds",
       href: "/",
       icon: (
         <svg
