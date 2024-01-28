@@ -2,17 +2,20 @@ import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import BuidlItem from '../components/BuidlItem';
 import CategoriesSelector from '../components/CategoriesSelector';
-import { getProjects } from "../utils";
+import { getMatchingPool, getProjects } from "../utils";
 
 const Dashboard = () => {
   const [tagOfProject, setTagOfProject] = useState('popular');
   const [projects, setProjects] = useState([]);
+  // const [matchingPool, setMatchingPool] = useState(null);
   // set tag of project
 
   useEffect(() => {
     const loadProjects = async () => {
       const projectsData = await getProjects();
       setProjects(projectsData)
+      // const data = await getMatchingPool();
+      // setMatchingPool(data)
     }
     loadProjects()
   }, [])

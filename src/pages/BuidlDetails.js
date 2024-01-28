@@ -2,7 +2,7 @@ import { useState, Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContractRead, usePrepareContractWrite, useContractWrite } from 'wagmi';
-import { readContract, writeContract, waitForTransaction } from "@wagmi/core";
+import { readContract, writeContract, waitForTransaction, watchContractEvent } from "@wagmi/core";
 import { formatUnits } from 'viem';
 import ProjectContractInterface from '../contracts/abi/Project.json';
 import Modals from "../components/modals";
@@ -56,6 +56,17 @@ const BuidlDetails = () => {
   const [isApproved, setIsApproved] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
   const [approveSucc, setApproveSucc] = useState(false);
+
+
+  watchContractEvent(
+    {
+      ...crowdFundingConf,
+      eventName: "ContributionReceived",
+    },
+    async () => {
+      await initProjectDetails()
+    }
+  );
 
   //===========project Contract config==============
   const projectContractConfig = {
@@ -228,7 +239,6 @@ const BuidlDetails = () => {
     }
   }, [contributedAmount, selectedCryptoAddress])
 
-
   return (
     <>
       {
@@ -288,7 +298,7 @@ const BuidlDetails = () => {
                     QF Matching
                   </h2>
                   <h2 className="font-medium text-base flex-1 text-right" style={{ color: "#12D69B" }}>
-                    ${formatUnits(projectDetails ? projectDetails?.matchingPool : 0, (chain?.id === bscId ? 18 : 6))}
+                    ${formatUnits(projectDetails ? projectDetails?.qfRaised : 0, (chain?.id === bscId ? 18 : 6))}
                   </h2>
                 </div>
               )}
@@ -544,7 +554,7 @@ const BuidlDetails = () => {
                 {projectDetails?.isOnQF && (
                   <h3 className='text-emerald-400 font-bold text-xl '>
                     <span className='text-emerald-400' style={{ color: "#12D69B" }}>
-                      ${formatUnits(projectDetails ? projectDetails?.matchingPool : 0, (chain?.id === bscId ? 18 : 6))}
+                      ${formatUnits(projectDetails ? projectDetails?.qfRaised : 0, (chain?.id === bscId ? 18 : 6))}
                     </span>
                   </h3>
                 )}

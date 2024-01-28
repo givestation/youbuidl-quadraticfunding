@@ -31,6 +31,7 @@ export const getProjects = async () => {
           title
           websiteUrl
           qfRoundID
+          qfRaised
         }
         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
           id
@@ -42,7 +43,6 @@ export const getProjects = async () => {
         await Promise.all(
             Object.entries(subgraphURLs).map(async ([key, value]) => {
                 const res = await getDataFromSubgraph(query, value);
-                console.log(res, "==========res==========")
                 if (res.isSuccess) {
                     let index = 0;
                     let projectsList = res.data.projects;
@@ -83,6 +83,7 @@ export const getProject = async (projectContractAddress, chainId) => {
           projectCoverUrl
           projectDeadline
           qfRoundID
+          qfRaised
           socialUrl
           githubUrl
           title
@@ -119,3 +120,28 @@ export const getProject = async (projectContractAddress, chainId) => {
         return [];
     }
 }
+
+// export const getMatchingPool = async () => {
+//     const query = `{
+//         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
+//           id
+//           amount
+//         }
+//       }`;
+
+//     try {
+//         const res = await getDataFromSubgraph(query, value);
+//         if (res.isSuccess) {
+//             const qfRounds = res.data.qfrounds;
+//             const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
+//             if (qfRound && qfRound.id == project.qfRoundID) {
+//                 return qfRound
+//             }
+//         }
+//         return null
+
+//     } catch (e) {
+//         console.log(e, "=========error in get projects============")
+//         return null;
+//     }
+// }

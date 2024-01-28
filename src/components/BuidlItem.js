@@ -131,7 +131,7 @@ const BuidlItem = ({ project, tag }) => {
                 project?.isOnQF && (
                   <h3 className='text-emerald-400 font-bold text-xl '>
                     <span className='text-emerald-400' style={{ color: "#12D69B" }}>
-                      ${formatUnits?.(project?.matchingPool === undefined ? 0 : (project?.matchingPool), (project?.chainId == bscId ? 18 : 6))}
+                      ${formatUnits?.(project ? project.qfRaised : 0, (project?.chainId == bscId ? 18 : 6))}
                     </span>
                   </h3>
                 )
