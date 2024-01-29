@@ -35,7 +35,6 @@ const BuidlDetails = () => {
   // Congrats Contributed Modal State
   const [contributedCongratsModal, setContributedCongratsModal] = useState(true);
   // change State
-  const [changeState, setChangeState] = useState(false);
   const [restHours, setRestHours] = useState(0);
   const [restDays, setRestDays] = useState(0);
 
@@ -560,9 +559,11 @@ const BuidlDetails = () => {
                 )}
               </div>
             </div>
-            <div className='flex items-center justify-between'>
-              <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.5 text-xs" >Target   ${formatUnits(projectDetails ? projectDetails?.goalAmount : 0, (chain?.id === bscId ? 18 : 6))}</div>
-            </div>
+            {!projectDetails?.isOnQF && (
+              <div className='flex items-center justify-between'>
+                <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.5 text-xs" >Target   ${formatUnits(projectDetails ? projectDetails?.goalAmount : 0, (chain?.id === bscId ? 18 : 6))}</div>
+              </div>
+            )}
             <div className="flex items-center justify-between !mt-10">
               <div>
                 <h1 className="text-Vampire-Black font-semibold text-xl">
@@ -595,33 +596,35 @@ const BuidlDetails = () => {
                   </svg>
                   <h3 className="text-Vampire-Black font-normal text-lg">{Number(projectDetails?.noOfContributors ?? 0)}</h3>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12.5587 23.0239C18.3387 23.0239 23.0243 18.3383 23.0243 12.5583C23.0243 6.77837 18.3387 2.09277 12.5587 2.09277C6.77873 2.09277 2.09314 6.77837 2.09314 12.5583C2.09314 18.3383 6.77873 23.0239 12.5587 23.0239Z"
-                      stroke="#ADADAD"
-                      strokeWidth="1.25587"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M12.5586 6.2793V12.5586L16.7448 14.6518"
-                      stroke="#ADADAD"
-                      strokeWidth="1.25587"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <h3 className="text-Vampire-Black font-normal text-lg">
-                    {restDays > 1 ? restDays + " days left" : restHours + " hours left"}
-                  </h3>
-                </div>
+                {!projectDetails?.isOnQF && (
+                  <div className="flex items-center space-x-2">
+                    <svg
+                      width="26"
+                      height="26"
+                      viewBox="0 0 26 26"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.5587 23.0239C18.3387 23.0239 23.0243 18.3383 23.0243 12.5583C23.0243 6.77837 18.3387 2.09277 12.5587 2.09277C6.77873 2.09277 2.09314 6.77837 2.09314 12.5583C2.09314 18.3383 6.77873 23.0239 12.5587 23.0239Z"
+                        stroke="#ADADAD"
+                        strokeWidth="1.25587"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M12.5586 6.2793V12.5586L16.7448 14.6518"
+                        stroke="#ADADAD"
+                        strokeWidth="1.25587"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <h3 className="text-Vampire-Black font-normal text-lg">
+                      {restDays > 1 ? restDays + " days left" : restHours + " hours left"}
+                    </h3>
+                  </div>
+                )}
               </div>
             </div>
             <div>

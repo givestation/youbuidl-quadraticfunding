@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-import BuidlItem from '../components/BuidlItem';
-import CategoriesSelector from '../components/CategoriesSelector';
-import { getMatchingPool, getProjects } from "../utils";
+import { getQFRounds } from "../utils";
+import { formatUnits } from "viem";
+import { bscId, chainLogos } from "../utils/constant";
 
 const ExploreRounds = () => {
-  const [tagOfProject, setTagOfProject] = useState('popular');
-  const [projects, setProjects] = useState([]);
-  // const [matchingPool, setMatchingPool] = useState(null);
-  // set tag of project
+  const [qfRounds, setQFRounds] = useState([]);
 
   useEffect(() => {
-    // const loadProjects = async () => {
-    //   const projectsData = await getProjects();
-    //   setProjects(projectsData)
-    //   // const data = await getMatchingPool();
-    //   // setMatchingPool(data)
-    // }
-    // loadProjects()
+    const loadQFRounds = async () => {
+      const data = await getQFRounds();
+      setQFRounds(data)
+    }
+    loadQFRounds()
   }, [])
   return (
 
@@ -36,8 +31,6 @@ const ExploreRounds = () => {
                 <div className='space-y-4 xl:space-y-0'>
                   <h1 className='flex-1 text-Bright-Gray font-bold text-xl sm:text-2xl xl:text-4xl'>
                     YouBuidl Quadratic Funding
-                    <br />
-                    Round 1. Matching Pool - $10,000
                   </h1>
                   <h6 className='text-Philipine-Silver font-normal text-xs md:text-sm xl:text-base'>
                     YouBuidl is crowdfunding web3 tool created by GiveStation
@@ -109,119 +102,45 @@ const ExploreRounds = () => {
 
         <section class="py-20">
           <div class="mx-auto grid max-w-screen-xl grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
-            <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl">
-              <a href="#">
-                <div class="relative flex items-end overflow-hidden rounded-xl">
-                  <img src="/assets/images/ai-cryptocurrencies-cover.jpg.jpg" alt="Hotel Photo" />
-                  <div class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
-                    <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#5AC5FF" }}>
-                      <div><img src="/assets/images/oplogosmall.png" alt="" /></div>
-                      <div style={{ color: "#fffff" }}><span class="text-lg font-bold text-black-500">233 Projects
-                      </span></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mt-1 p-2">
-                  <h2 class="text-slate-700">YouBuidl Optimism Builder Grants</h2>
-                  <p class="text-slate-400 mt-1 text-sm">This round is open for web3 devs building on opStack.
-                    Apply for the round and get funded by contributors.</p>
-
-                  <div class="mt-3 flex items-end justify-between">
-                    <p>
-                      <div className="font-normal text-lg flex items-center text-xs w-fit rounded-xl p-2 gap-0.5" style={{ background: "#C7FF7A" }}>
-                        <div><img src="/assets/images/oplogosmall.png" alt="" /></div>
-                        <div style={{ color: "#00000" }}><span class="text-lg font-bold text-black-500">$50,000
+            {qfRounds.map((qfRound, index) => (
+              <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl">
+                <a href="#">
+                  <div class="relative flex items-end overflow-hidden rounded-xl">
+                    <img src={qfRound.imgUrl} alt="Hotel Photo" />
+                    <div class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
+                      <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#5AC5FF" }}>
+                        <div><img src={chainLogos[qfRound.chainId]} alt="" /></div>
+                        <div style={{ color: "#fffff" }}><span class="text-lg font-bold text-black-500">{qfRound.projectNum} Projects
                         </span></div>
                       </div>
-                    </p>
+                    </div>
+                  </div>
 
+                  <div class="mt-1 p-2">
+                    <h2 class="text-slate-700">{qfRound.title}</h2>
+                    <p class="text-slate-400 mt-1 text-sm">{qfRound.desc}</p>
                     <div class="mt-3 flex items-end justify-between">
-                      <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#DADFE2" }}>
-                        <div><img src="/assets/images/schedule.png" alt="" /></div>
-                        <div style={{ color: "#818283" }}>3 more days to go</div>
+                      <p>
+                        <div className="font-normal text-lg flex items-center text-xs w-fit rounded-xl p-2 gap-0.5" style={{ background: "#C7FF7A" }}>
+                          <div><img src={chainLogos[qfRound.chainId]} alt="" /></div>
+                          <div style={{ color: "#00000" }}><span class="text-lg font-bold text-black-500">${formatUnits?.(qfRound.amount, (qfRound?.chainId == bscId ? 18 : 6))}
+                          </span></div>
+                        </div>
+                      </p>
+
+                      <div class="mt-3 flex items-end justify-between">
+                        <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#DADFE2" }}>
+                          <div><img src="/assets/images/schedule.png" alt="" /></div>
+                          <div style={{ color: "#818283" }}>
+                            {qfRound.leftDays > 1 ? qfRound.leftDays + " more days to go" : qfRound.leftHours + " more hours to go"}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </a>
-            </article>
-
-            <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl">
-              <a href="#">
-                <div class="relative flex items-end overflow-hidden rounded-xl">
-                  <img src="/assets/images/webwallet.jpg" alt="Hotel Photo" />
-                  <div class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
-                    <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#5AC5FF" }}>
-                      <div><img src="/assets/images/arbitrum.png" alt="" /></div>
-                      <div style={{ color: "#fffff" }}><span class="text-lg font-bold text-black-500">233 Projects
-                      </span></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mt-1 p-2">
-                  <h2 class="text-slate-700">Arbitrum Builder Grants</h2>
-                  <p class="text-slate-400 mt-1 text-sm">This round is open for web3 devs building on Arbitrum.
-                    Apply for the round and get funded by contributors.</p>
-
-                  <div class="mt-3 flex items-end justify-between">
-                    <p>
-                      <div className="font-normal text-lg flex items-center text-xs w-fit rounded-xl p-2 gap-0.5" style={{ background: "#C7FF7A" }}>
-                        <div><img src="/assets/images/arbitrum.png" alt="" /></div>
-                        <div style={{ color: "#00000" }}><span class="text-lg font-bold text-black-500">$50,000
-                        </span></div>
-                      </div>
-                    </p>
-
-                    <div class="mt-3 flex items-end justify-between">
-                      <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#DADFE2" }}>
-                        <div><img src="/assets/images/schedule.png" alt="" /></div>
-                        <div style={{ color: "#818283" }}>3 more days to go</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </article>
-
-            <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl">
-              <a href="#">
-                <div class="relative flex items-end overflow-hidden rounded-xl">
-                  <img src="/assets/images/webwallet.jpg" alt="Hotel Photo" />
-                  <div class="absolute bottom-3 left-3 inline-flex items-center rounded-lg bg-white p-2 shadow-md">
-                    <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#5AC5FF" }}>
-                      <div><img src="/assets/images/polyy.png" alt="" /></div>
-                      <div style={{ color: "#fffff" }}><span class="text-lg font-bold text-black-500">233 Projects
-                      </span></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mt-1 p-2">
-                  <h2 class="text-slate-700">Polygon Builder Grants</h2>
-                  <p class="text-slate-400 mt-1 text-sm">This round is open for web3 devs building on ZK EVM.
-                    Apply for the round and get funded by contributors.</p>
-
-                  <div class="mt-3 flex items-end justify-between">
-                    <p>
-                      <div className="font-normal text-lg flex items-center text-xs w-fit rounded-xl p-2 gap-0.5" style={{ background: "#C7FF7A" }}>
-                        <div><img src="/assets/images/polyy.png" alt="" /></div>
-                        <div style={{ color: "#00000" }}><span class="text-lg font-bold text-black-500">$50,000
-                        </span></div>
-                      </div>
-                    </p>
-
-                    <div class="mt-3 flex items-end justify-between">
-                      <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#DADFE2" }}>
-                        <div><img src="/assets/images/schedule.png" alt="" /></div>
-                        <div style={{ color: "#818283" }}>3 more days to go</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </article>
+                </a>
+              </article>
+            ))}
           </div>
         </section>
 

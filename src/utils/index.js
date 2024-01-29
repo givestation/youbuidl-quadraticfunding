@@ -35,6 +35,8 @@ export const getProjects = async () => {
         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
           id
           amount
+          startTime
+          endTime
         }
       }`;
     try {
@@ -49,11 +51,15 @@ export const getProjects = async () => {
                     const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
 
                     projectsList = projectsList.map((project) => {
+                        const currentTime = Math.floor(Date.now() / 1000)
+                        const isFinished = currentTime <= +(project.projectDeadline);
+
                         if (qfRound && qfRound.id == project.qfRoundID) {
-                            return { ...project, chainId: key, index: index++, isOnQF: true, matchingPool: qfRound.amount }
+                            const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
+                            return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: isOnQF, matchingPool: qfRound.amount }
                         }
 
-                        return { ...project, chainId: key, index: index++, isOnQF: false, matchingPool: 0 }
+                        return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: false, matchingPool: 0 }
                     }
                     )
                     projects = projects.concat(projectsList);
@@ -120,27 +126,47 @@ export const getProject = async (projectContractAddress, chainId) => {
     }
 }
 
-// export const getMatchingPool = async () => {
-//     const query = `{
-//         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
-//           id
-//           amount
-//         }
-//       }`;
+export const getQFRounds = async () => {
+    const query = `{
+        qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
+            id
+            title
+            imgUrl
+            desc
+            amount
+            token
+            projectNum
+            startTime
+            endTime
+        }
+      }`;
+    try {
+        let qfRoundsList = []
+        await Promise.all(
+            Object.entries(subgraphURLs).map(async ([key, value]) => {
+                const res = await getDataFromSubgraph(query, value);
+                if (res.isSuccess) {
+                    const qfRounds = res.data.qfrounds;
+                    if (qfRounds.length > 0) {
+                        const currentTime = Math.floor(Date.now() / 1000)
+                        let leftTime;
+                        if (currentTime >= +qfRounds[0].endTime) {
+                            leftTime = 0;
+                        } else {
+                            leftTime = +qfRounds[0].endTime - currentTime;
+                        }
 
-//     try {
-//         const res = await getDataFromSubgraph(query, value);
-//         if (res.isSuccess) {
-//             const qfRounds = res.data.qfrounds;
-//             const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
-//             if (qfRound && qfRound.id == project.qfRoundID) {
-//                 return qfRound
-//             }
-//         }
-//         return null
+                        const daysLeft = Math.floor(leftTime / (24 * 60 * 60));
+                        const hoursLeft = Math.floor((leftTime % (24 * 60 * 60)) / 3600);
+                        qfRoundsList.push({ ...qfRounds[0], chainId: key, leftDays: daysLeft, leftHours: hoursLeft });
+                    }
+                }
+            })
+        )
 
-//     } catch (e) {
-//         console.log(e, "=========error in get projects============")
-//         return null;
-//     }
-// }
+        return qfRoundsList
+    } catch (e) {
+        console.log(e, "=========error in get qfRoundsList============")
+        return [];
+    }
+};

@@ -104,8 +104,15 @@ const BuidlItem = ({ project, tag }) => {
           <div className='space-y-1'>
 
             <div className='flex items-center justify-between'>
-            <h3 className=' font-normal text-xs flex items-center gap-0.5'>
-                <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == bscId  ? 18 : 6))}</div>
+              <h3 className=' font-normal text-xs flex items-center gap-0.5'>
+                {!project?.isOnQF && !project?.isFinished && (
+                  <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == bscId ? 18 : 6))}
+                </div>
+                )}
+                {!project?.isOnQF && project?.isFinished && (
+                  <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target Reached
+                  </div>
+                ) }
                 <span className='text-Vampire-Black'>
                   ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == bscId ? 18 : 6)) || 0}
                 </span>
@@ -119,7 +126,7 @@ const BuidlItem = ({ project, tag }) => {
           </div>
           <div className='space-y-1'>
             <div className='flex items-center justify-between'>
-              <h3 className=' font-normal text-xs flex items-center gap-0.5'> 
+              <h3 className=' font-normal text-xs flex items-center gap-0.5'>
               </h3>
               {
                 project?.isOnQF && (
@@ -146,7 +153,14 @@ const BuidlItem = ({ project, tag }) => {
                 Contribute
               </div>
             )}
-            {isConnected && chain.id == project?.chainId && (
+            {isConnected && chain.id != project?.chainId && !project?.isOnQF && project?.isFinished && (
+              <div style={{ background: "#3EA7E1" }} className='cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
+            px-2'
+              >
+                Contribute
+              </div>
+            )}
+            {isConnected && chain.id == project?.chainId && (project?.isOnQF || !project?.isFinished) && (
               <Link
                 style={{ background: "#3EA7E1" }}
                 to={`/buidls/${project?.id}/${project?.index}`}
