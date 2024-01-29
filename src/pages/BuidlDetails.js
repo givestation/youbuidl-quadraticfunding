@@ -117,8 +117,7 @@ const BuidlDetails = () => {
     setIsContributing(true)
     try {
       let hash;
-      if (projectDetails?.isQFAvailable) {
-        console.log("=============================")
+      if (projectDetails?.isOnQF) {
         hash = (await writeContract({
           mode: "recklesslyUnprepared",
           ...qfRoundsConf,
@@ -297,7 +296,7 @@ const BuidlDetails = () => {
                     QF Matching
                   </h2>
                   <h2 className="font-medium text-base flex-1 text-right" style={{ color: "#12D69B" }}>
-                    ${formatUnits(projectDetails ? projectDetails?.qfRaised : 0, (chain?.id === bscId ? 18 : 6))}
+                    ${projectDetails ? (chain?.id === bscId ? Math.round(projectDetails.qfRaised / 10 ** 18) : Math.round(projectDetails.qfRaised / 10 ** 6)) : 0}
                   </h2>
                 </div>
               )}
@@ -553,7 +552,7 @@ const BuidlDetails = () => {
                 {projectDetails?.isOnQF && (
                   <h3 className='text-emerald-400 font-bold text-xl '>
                     <span className='text-emerald-400' style={{ color: "#12D69B" }}>
-                      ${formatUnits(projectDetails ? projectDetails?.qfRaised : 0, (chain?.id === bscId ? 18 : 6))}
+                      ${projectDetails ? (chain?.id === bscId ? Math.round(projectDetails.qfRaised / 10 ** 18) : Math.round(projectDetails.qfRaised / 10 ** 6)) : 0}
                     </span>
                   </h3>
                 )}

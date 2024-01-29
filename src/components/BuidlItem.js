@@ -107,12 +107,12 @@ const BuidlItem = ({ project, tag }) => {
               <h3 className=' font-normal text-xs flex items-center gap-0.5'>
                 {!project?.isOnQF && !project?.isFinished && (
                   <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == bscId ? 18 : 6))}
-                </div>
+                  </div>
                 )}
                 {!project?.isOnQF && project?.isFinished && (
                   <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target Reached
                   </div>
-                ) }
+                )}
                 <span className='text-Vampire-Black'>
                   ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == bscId ? 18 : 6)) || 0}
                 </span>
@@ -132,7 +132,7 @@ const BuidlItem = ({ project, tag }) => {
                 project?.isOnQF && (
                   <h3 className='text-emerald-400 font-bold text-xl '>
                     <span className='text-emerald-400' style={{ color: "#12D69B" }}>
-                      ${formatUnits?.(project ? project.qfRaised : 0, (project?.chainId == bscId ? 18 : 6))}
+                      ${(project ? (project.chainId == bscId ? Math.round(project.qfRaised / 10 ** 18) : Math.round(project.qfRaised / 10 ** 6)) : 0)}
                     </span>
                   </h3>
                 )

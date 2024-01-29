@@ -30,11 +30,12 @@ export const getProjects = async () => {
           title
           websiteUrl
           qfRoundID
-          qfRaised
+          qfMatched
         }
         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
           id
           amount
+          totalRootSum
           startTime
           endTime
         }
@@ -56,10 +57,10 @@ export const getProjects = async () => {
 
                         if (qfRound && qfRound.id == project.qfRoundID) {
                             const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
-                            return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: isOnQF, matchingPool: qfRound.amount }
+                            return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: project.qfMatched / qfRound.totalRootSum * qfRound.amount }
                         }
 
-                        return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: false, matchingPool: 0 }
+                        return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: false, matchingPool: 0, qfRaised: 0 }
                     }
                     )
                     projects = projects.concat(projectsList);
@@ -88,7 +89,7 @@ export const getProject = async (projectContractAddress, chainId) => {
           projectCoverUrl
           projectDeadline
           qfRoundID
-          qfRaised
+          qfMatched
           socialUrl
           githubUrl
           title
@@ -97,6 +98,7 @@ export const getProject = async (projectContractAddress, chainId) => {
         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
           id
           amount
+          totalRootSum
           startTime
           endTime
         }
@@ -111,11 +113,11 @@ export const getProject = async (projectContractAddress, chainId) => {
                 const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
                 if (qfRound && qfRound.id == project.qfRoundID) {
                     const currentTime = Math.floor(Date.now() / 1000)
-                    const isQFAvailable = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
-                    return { ...project, isOnQF: true, matchingPool: qfRound.amount, isQFAvailable: isQFAvailable }
+                    const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
+                    return { ...project, isOnQF: isOnQF, matchingPool: qfRound.amount,  qfRaised: project.qfMatched / qfRound.totalRootSum * qfRound.amount}
                 }
 
-                return { ...project, isOnQF: false, matchingPool: 0, isQFAvailable: false };
+                return { ...project, isOnQF: false, matchingPool: 0 };
             }
             return null
         }
