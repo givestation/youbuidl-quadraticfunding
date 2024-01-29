@@ -104,13 +104,11 @@ const BuidlItem = ({ project, tag }) => {
           <div className='space-y-1'>
 
             <div className='flex items-center justify-between'>
-              <h3 className=' font-normal text-xs flex items-center gap-0.5'>
-                <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Currently raising</div>
-                <div className='text-Vampire-Black mt-1'>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 7 7" fill="none">
-                    <ellipse cx="3.43124" cy="3.01465" rx="3.27187" ry="3.01465" fill="#12D69B" />
-                  </svg>
-                </div>
+            <h3 className=' font-normal text-xs flex items-center gap-0.5'>
+                <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == bscId  ? 18 : 6))}</div>
+                <span className='text-Vampire-Black'>
+                  ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == bscId ? 18 : 6)) || 0}
+                </span>
               </h3>
               {project?.isOnQF && (
                 <h3 className=' font-normal text-xs'>
@@ -121,11 +119,7 @@ const BuidlItem = ({ project, tag }) => {
           </div>
           <div className='space-y-1'>
             <div className='flex items-center justify-between'>
-              <h3 className=' font-normal text-xs flex items-center gap-0.5'>
-                <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target ${formatUnits?.(project?.goalAmount === undefined ? 0 : (project?.goalAmount), (project?.chainId == bscId  ? 18 : 6))}</div>
-                <span className='text-Vampire-Black'>
-                  ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == bscId ? 18 : 6)) || 0}
-                </span>
+              <h3 className=' font-normal text-xs flex items-center gap-0.5'> 
               </h3>
               {
                 project?.isOnQF && (
