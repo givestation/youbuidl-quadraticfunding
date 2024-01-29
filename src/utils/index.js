@@ -7,7 +7,6 @@ const getDataFromSubgraph = async (query, subgraphURL) => {
             query,
         });
 
-        console.log(result, "=========result=======")
         return { isSuccess: true, data: result.data.data };
     } catch (error) {
         return { isSuccess: false, data: "" };
