@@ -18,6 +18,21 @@ export const chainLogos = {
     [optimismId]: "/assets/images/oplogosmall.png"
 }
 
+export const categoryIcons = {
+    "popular": "/assets/icons/popular.svg",
+    "ai": "/assets/icons/icons8-ai-64.png",
+    "web3": "/assets/icons/icons8-web3-64.png",
+    "defi": "/assets/icons/gaming.svg",
+    "nfts": "/assets/icons/icons8-nft-64.png",
+    "tools": "assets/icons/icons8-tools-64.png",
+    "public goods": "/assets/icons/icons8-publicgoods-47.png",
+    "scholarships": "//assets/icons/icons8-scholarship-64.png",
+    "infrastructure": "/assets/icons/icons8-infrastructure-64.png",
+    "entertainment": "icons8-entertainment-64.png",
+    "events": "/assets/icons/icons8-events-48.png",
+    "gamefi": "/assets/icons/icons8-gamefi-64.png"
+}
+
 export const contractAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0xA1b918Fb5574C93AD2408C46C8Ad0677E915e44F",

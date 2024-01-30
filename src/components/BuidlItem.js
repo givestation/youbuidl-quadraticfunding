@@ -3,7 +3,7 @@ import { useNetwork, useAccount, mainnet } from 'wagmi';
 import { formatUnits } from 'viem';
 import Account from './Account';
 import { useSwitchNetwork } from 'wagmi'
-import { bscId, defaultEthLink, mainnetId, polygonId } from '../utils/constant';
+import { bscId, categoryIcons, defaultEthLink, mainnetId, polygonId } from '../utils/constant';
 
 const BuidlItem = ({ project, tag }) => {
   const { isConnected } = useAccount();
@@ -100,7 +100,7 @@ const BuidlItem = ({ project, tag }) => {
           </Link>
           <div>
             <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#CDEDFF" }}>
-              <div><img src="/assets/images/popularity 1.png" alt="" /></div>
+              <div><img src={categoryIcons[project?.filterTags]} alt="" /></div>
               <div style={{ color: "#3EA7E1" }}>{project?.filterTags}</div>
             </div>
             <p className='text-Nickle font-normal text-sm mt-5 flex flex-col'>
