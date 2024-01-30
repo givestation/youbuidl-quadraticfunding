@@ -115,7 +115,7 @@ export const getProject = async (projectContractAddress, chainId) => {
                 if (qfRound && qfRound.id == project.qfRoundID) {
                     const currentTime = Math.floor(Date.now() / 1000)
                     const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
-                    return { ...project, isOnQF: isOnQF, matchingPool: qfRound.amount,  qfRaised: project.qfMatched / qfRound.totalRootSum * qfRound.amount}
+                    return { ...project, isOnQF: isOnQF, matchingPool: qfRound.amount,  qfRaised: qfRound.totalRootSum == 0 ? 0 : project.qfMatched / qfRound.totalRootSum * qfRound.amount}
                 }
 
                 return { ...project, isOnQF: false, matchingPool: 0 };
