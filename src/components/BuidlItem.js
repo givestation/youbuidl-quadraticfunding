@@ -152,6 +152,7 @@ const BuidlItem = ({ project, tag }) => {
             </div>
           </div>
           <div className='flex items-center justify-between'>
+            <div></div>
             {
               project?.isVerified && (
                 <>
