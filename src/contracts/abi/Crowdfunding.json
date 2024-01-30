@@ -162,6 +162,63 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "projectAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "period",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpdateRoyaltyGracePeriod",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "projectAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isVerified",
+        "type": "bool"
+      }
+    ],
+    "name": "UpdateVerification",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "projectAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isShow",
+        "type": "bool"
+      }
+    ],
+    "name": "UpdateVisibility",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "QFRounds",
     "outputs": [
@@ -544,6 +601,60 @@
       }
     ],
     "name": "setQFRounds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_projectAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_unixTs",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRoyaltyGracePeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_projectAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isVerified",
+        "type": "bool"
+      }
+    ],
+    "name": "setVerification",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_projectAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isVisible",
+        "type": "bool"
+      }
+    ],
+    "name": "setVisibility",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

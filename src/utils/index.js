@@ -29,6 +29,7 @@ export const getProjects = async () => {
           socialUrl
           title
           websiteUrl
+          isVerified
           qfRoundID
           qfMatched
         }
