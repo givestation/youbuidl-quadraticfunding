@@ -100,7 +100,7 @@ const BuidlItem = ({ project, tag }) => {
           </Link>
           <div>
             <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#CDEDFF" }}>
-              <div><img src={categoryIcons[project?.filterTags]} alt="" /></div>
+              <div><img src={categoryIcons[project?.filterTags]} className="w-7 h-7" alt="" /></div>
               <div style={{ color: "#3EA7E1" }}>{project?.filterTags}</div>
             </div>
             <p className='text-Nickle font-normal text-sm mt-5 flex flex-col'>
