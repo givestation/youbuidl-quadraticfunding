@@ -53,7 +53,7 @@ export const getProjects = async () => {
 
                     projectsList = projectsList.map((project) => {
                         const currentTime = Math.floor(Date.now() / 1000)
-                        const isFinished = currentTime <= +(project.projectDeadline);
+                        const isFinished = currentTime >= +(project.projectDeadline);
 
                         if (qfRound && qfRound.id == project.qfRoundID) {
                             const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
