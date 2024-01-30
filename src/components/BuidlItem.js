@@ -101,7 +101,7 @@ const BuidlItem = ({ project, tag }) => {
           <div>
             <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#CDEDFF" }}>
               <div><img src="/assets/images/popularity 1.png" alt="" /></div>
-              <div style={{ color: "#3EA7E1" }}>Popular</div>
+              <div style={{ color: "#3EA7E1" }}>{project?.filterTags}</div>
             </div>
             <p className='text-Nickle font-normal text-sm mt-5 flex flex-col'>
               {project?.desc?.slice(0, 100)} ...
