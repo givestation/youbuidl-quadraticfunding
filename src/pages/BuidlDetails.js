@@ -122,14 +122,14 @@ const BuidlDetails = () => {
           mode: "recklesslyUnprepared",
           ...qfRoundsConf,
           functionName: "qfContribute",
-          args: [projectContractAddress, selectedCryptoAddress, contributedAmount],
+          args: [projectContractAddress, address, selectedCryptoAddress, contributedAmount],
         })).hash;
       } else {
         hash = (await writeContract({
           mode: "recklesslyUnprepared",
           ...crowdFundingConf,
           functionName: "contribute",
-          args: [projectContractAddress, selectedCryptoAddress, contributedAmount],
+          args: [projectContractAddress, address, selectedCryptoAddress, contributedAmount],
         })).hash;
       }
 
