@@ -36,7 +36,7 @@ export const categoryIcons = {
 export const contractAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0xA1b918Fb5574C93AD2408C46C8Ad0677E915e44F",
-    [polygonId]: "0xff01Da90AFb84CD98aD824AE3e807f3a900df1Ed",
+    [polygonId]: "0x949d2e4407A9BF09bd5240155DbfDc7feA7DD56a",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
 }
@@ -44,7 +44,7 @@ export const contractAddresses = {
 export const qfRoundsAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0x75C65b9ba125bbf623c260FE32fad84A14Cd6BCA",
-    [polygonId]: "0x5f0A49DDe944EC89F4462Ef52b30b0748c9D9739",
+    [polygonId]: "0x3FC760A2fC08E8E7ab6b011067065FdD5f25A486",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
 }
