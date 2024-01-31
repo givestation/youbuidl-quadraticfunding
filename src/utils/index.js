@@ -115,7 +115,7 @@ export const getProject = async (projectContractAddress, chainId) => {
                 if (qfRound && qfRound.id == project.qfRoundID) {
                     const currentTime = Math.floor(Date.now() / 1000)
                     const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
-                    return { ...project, isOnQF: isOnQF, matchingPool: qfRound.amount,  qfRaised: qfRound.totalRootSum == 0 ? 0 : project.qfMatched / qfRound.totalRootSum * qfRound.amount}
+                    return { ...project, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: qfRound.totalRootSum == 0 ? 0 : project.qfMatched / qfRound.totalRootSum * qfRound.amount }
                 }
 
                 return { ...project, isOnQF: false, matchingPool: 0 };
@@ -172,4 +172,67 @@ export const getQFRounds = async () => {
         console.log(e, "=========error in get qfRoundsList============")
         return [];
     }
+};
+
+export const getContributors = async (chainId) => {
+    const query = `{
+        contributors(orderBy: totalContribution) {
+          id
+          referralNumber
+          totalContribution
+          totalBuidlPointRewards
+          totalUSDTRewards
+          totalUSDTReferralRewards
+          totalBuidlPointReferralRewards
+        }
+      }`;
+    try {
+        const res = await getDataFromSubgraph(query, subgraphURLs[chainId]);
+        if (res.isSuccess) {
+            return res.data.contributors;
+        }
+
+        return []
+    } catch (e) {
+        console.log(e, "=========error in get contributors============")
+        return [];
+    }
+};
+
+export const getContributionDetails = async (address, chainId) => {
+    const query = `{
+        contributor(id: "${address}") {
+          referralNumber
+          totalBuidlPointReferralRewards
+          totalBuidlPointRewards
+          totalContribution
+          totalUSDTReferralRewards
+          totalUSDTRewards
+          claimableBuidlPointReferralRewards
+          claimableBuidlPointRewards
+          claimableUSDTReferralRewards
+          claimableUSDTRewards
+          contributions {
+            id
+          }
+        }
+      }`;
+    try {
+        const res = await getDataFromSubgraph(query, subgraphURLs[chainId]);
+        if (res.isSuccess) {
+            return res.data.contributor;
+        }
+
+        return null
+    } catch (e) {
+        console.log(e, "=========error in get contributor============")
+        return null;
+    }
+}
+
+export const getEllipsisTxt = (str, n = 6) => {
+    if (str) {
+        return `${str.slice(0, n)}...${str.slice(str.length - n)}`;
+    }
+    return '';
 };

@@ -126,7 +126,7 @@ const BuidlItem = ({ project, tag }) => {
                   </div>
                 )}
                 <span className='text-Vampire-Black'>
-                  ${formatUnits?.(project?.currentAmount === undefined ? 0 : (project?.currentAmount), (project?.chainId == bscId ? 18 : 6)) || 0}
+                  ${formatUnits?.(project ? (project?.currentAmount) : 0, (project?.chainId == bscId ? 18 : 6))}
                 </span>
               </h3>
               {project?.isOnQF && (
