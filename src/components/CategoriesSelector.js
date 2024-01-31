@@ -38,7 +38,7 @@ const CategoriesSelector = ({ onSubmit }) => {
         <div className="bg-Pure-White rounded-full flex items-center justify-center w-10 h-10 shadow-2xl">
           <img src="/assets/icons/icons8-nft-64.png" alt="nfts" className="w-7 h-7" />
         </div>
-        <h3 className="text-Spanish-Gray">NFTs</h3>
+        <h3 className="text-Spanish-Gray">Hackathons</h3>
       </button>
       <button className="flex items-center space-x-4 cursor-pointer"
         onClick={() => { onSubmit('tools') }}>
