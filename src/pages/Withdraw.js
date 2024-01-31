@@ -1,18 +1,10 @@
 import { useState, Fragment } from "react";
 import { useNavigate , useLocation} from "react-router-dom";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
-import ProjectContractInterface from '../contracts/abi/Project.json';
+import ProjectContractInterface from '../abi/Project.json';
 import Loader from '../components/Loader';
-import stableTokens from '../contracts/contant/contentStableTokens.json'
-import { formatEther,formatUnits } from 'viem';
-
-
-
-const cryptosBNB = stableTokens.cryptosBNB;
-const cryptosETH = stableTokens.cryptosETH;
-const cryptosArbi = stableTokens.cryptosArbi;
-const cryptosOpti = stableTokens.cryptosOpti;
-const cryptosMatic = stableTokens.cryptosMatic;
+import { formatUnits } from 'viem';
+import { bscId, contriTokens } from "../utils/constant";
 
 const Withdraw = () => {
   const { chain } = useNetwork();
@@ -92,7 +84,7 @@ const Withdraw = () => {
     functionName: 'withdrawRequestedAmount',
     args: [
       projectId,
-      ...(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi)))).map((crypto,index) => crypto.address)
+      ...(contriTokens[chain?.id]).map((crypto,index) => crypto.address)
     ],
   });
 
@@ -106,10 +98,6 @@ const Withdraw = () => {
 
   //==============main functions===========
   const withdrawToken = () => {
-    console.log("for args Withdrawal ",projectId,
-    ...(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi)))).map((crypto,index) => crypto.address)
-  );
-    console.log("=============withdraw error========",withdrawConfigError)
     withdrawRequestedAmount?.();
   }
 
@@ -237,8 +225,8 @@ const Withdraw = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount for Withdrawal</h4>
-                    <h2 className="font-bold">{formatUnits?.((wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
-                    <h2 className="font-bold">{formatUnits?.((wrChecking?.[2]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} USDC</h2>
+                    <h2 className="font-bold">{formatUnits?.((wrChecking?.[1]),(chain?.id === bscId ? 18 : 6) )} {contriTokens[chain?.id][0].name}</h2>
+                    <h2 className="font-bold">{formatUnits?.((wrChecking?.[2]),(chain?.id === bscId ? 18 : 6) )} USDC</h2>
                   </div>
                 </div>
 

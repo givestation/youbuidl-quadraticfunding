@@ -5,7 +5,7 @@ import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import { Menu, Transition } from "@headlessui/react";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
-import ProjectContractInterface from '../contracts/abi/Project.json';
+import ProjectContractInterface from '../abi/Project.json';
 
 const WidthdrawRequest = () => {
 

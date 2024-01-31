@@ -1,28 +1,20 @@
 import ContributionItem from "../components/ContributionItem";
-import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
 import {
   useNetwork,
   useContractRead
 } from 'wagmi';
-import addressContract from '../contracts/contant/contentContract.json'
-
+import { contractAddresses } from "../utils/constant";
 
 const Contributions = () => {
   const { chain } = useNetwork()
-  const addressBnb = addressContract.addressBnb;
-  const addressEth = addressContract.addresseth;
-  const addressArbi = addressContract.addressArbi;
-  const addressOpti = addressContract.addressOpti;
-  const addressMatic = addressContract.addressMatic;
-  const addressZksync =  addressContract.addressZksync;
 
   let crowdFundingContractConfig = {};
   if (chain === undefined){
-
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : (chain?.id === 42161 ? addressArbi : addressZksync))))),
+      address: contractAddresses[chain?.id],
       abi: CrowdFundingContractInterface,
     };
   }

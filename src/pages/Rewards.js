@@ -3,7 +3,7 @@ import TotalBalance from "../components/TotalBalance";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import CryptoDropdown from "../components/CryptoDropdown";
-import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
 import { formatEther,formatUnits  } from 'viem';
 import web3 from 'web3';
 import Loader from '../components/Loader';
@@ -14,18 +14,11 @@ import {
   usePrepareContractWrite,
   useContractWrite
 } from 'wagmi';
-import addressContract from '../contracts/contant/contentContract.json'
+import { contractAddresses } from "../utils/constant";
 
 const Rewards = () => {
   const { chain, chains } = useNetwork()
   const { address, connector, isConnected } = useAccount();
-  console.log(addressContract.addressBnb,"=-=-=-=-=-=-=-=-")
-  const addressBnb = addressContract.addressBnb;
-  const addressEth = addressContract.addresseth;
-  const addressArbi = addressContract.addressArbi;
-  const addressOpti = addressContract.addressOpti;
-  const addressMatic =  addressContract.addressMatic;
-  const addressZksync =  addressContract.addressZksync;
 
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
@@ -46,7 +39,7 @@ const Rewards = () => {
     console.log("plz connect metamask")
   }else{
     crowdFundingContractConfig = {
-      address: (chain?.id === 56 ? addressBnb : (chain?.id === 1 ? addressEth : (chain?.id === 10 ? addressOpti : (chain?.id === 137 ? addressMatic : (chain?.id === 42161 ? addressArbi : addressZksync))))),
+      address: contractAddresses[chain?.id],
       abi: CrowdFundingContractInterface,
     };
   }

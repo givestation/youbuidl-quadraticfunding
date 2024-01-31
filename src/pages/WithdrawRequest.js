@@ -1,52 +1,45 @@
 import { useState } from "react";
-import { useNavigate , useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
-import ProjectContractInterface from '../contracts/abi/Project.json';
-import { formatEther,formatUnits } from 'viem';
+import { useNetwork, useContractRead, useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import ProjectContractInterface from '../abi/Project.json';
+import { formatEther, formatUnits } from 'viem';
 import Loader from '../components/Loader';
-import stableTokens from '../contracts/contant/contentStableTokens.json'
 import web3 from 'web3';
-
-
-const cryptosBNB = stableTokens.cryptosBNB;
-const cryptosETH = stableTokens.cryptosETH;
-const cryptosArbi = stableTokens.cryptosArbi;
-const cryptosOpti = stableTokens.cryptosOpti;
-const cryptosMatic = stableTokens.cryptosMatic;
+import { bscId, contriTokens } from "../utils/constant";
 
 const WithdrawRequest = () => {
 
   const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const navigate = useNavigate();
-  const currentLocation  = useLocation();
-  const projectContractAddress = currentLocation.pathname?.slice(8,50);
-  const projectId = currentLocation.pathname?.slice(51,52);
+  const currentLocation = useLocation();
+  const projectContractAddress = currentLocation.pathname?.slice(8, 50);
+  const projectId = currentLocation.pathname?.slice(51, 52);
 
   // STRING
   const [projectWRDescription, setProjectWRDescription] = useState('');
- // Loading modal
- const [showLoadingModal, setShowLoadingModal] = useState(false);
+  // Loading modal
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
   // Details Modal State
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   // Congrats Modal State
   const [showCongratsModal, showShowCongratsModal] = useState(true);
   const [wrUSDTOrDaiAmount, setWRUSDTOrDaiAmount] = useState(0);
   const [wrUSDCAmount, setWRUSDCAmount] = useState(0);
-  
+
   const onWRequestUSDTOrDaiAmount = (e) => {
     setWRUSDTOrDaiAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
     );
   };
   const onWRequestUSDCAmount = (e) => {
     setWRUSDCAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
     );
   };
-//===========Project Contract Config===========
+  //===========Project Contract Config===========
   const projectContractConfig = {
     address: projectContractAddress,
     abi: ProjectContractInterface,
@@ -58,26 +51,26 @@ const WithdrawRequest = () => {
   });
   console.log('projectDetails value', projectDetails);
 
-  let projectStarter; 
+  let projectStarter;
   let projectDeadline;
-  let goalAmount ;
-  let completedTime ;
-  let currentAmount ;
+  let goalAmount;
+  let completedTime;
+  let currentAmount;
   let title;
-  let desc ;
-  let currentState; 
-  let balance ;
-  let website ;
-  let social ;
+  let desc;
+  let currentState;
+  let balance;
+  let website;
+  let social;
   let github;
   let projectCover;
   let noOfContributors;
 
-  if(projectDetails !== undefined ){
+  if (projectDetails !== undefined) {
     projectStarter = projectDetails[0];
     projectDeadline = projectDetails[3];
     goalAmount = projectDetails[4];
-    noOfContributors= projectDetails[5];
+    noOfContributors = projectDetails[5];
     completedTime = projectDetails[6];
     currentAmount = projectDetails[7];
     title = projectDetails[8];
@@ -88,32 +81,30 @@ const WithdrawRequest = () => {
     social = projectDetails[13];
     github = projectDetails[14];
     projectCover = projectDetails[15];
-  }else{
+  } else {
     console.log("projectDetails is undefined");
 
   }
 
-//==============get USDT and USDC balance=============
+  //==============get USDT and USDC balance=============
 
-const { data: getUSDTOrDaiBalance } = useContractRead({
-  ...projectContractConfig,
-  functionName: 'getContractBalance',
-  args : [
-    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].address
-  ]
-});
-console.log("USDT or DAI's balance",getUSDTOrDaiBalance);
+  const { data: getUSDTOrDaiBalance } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'getContractBalance',
+    args: [
+      contriTokens[chain?.id][0].address
+    ]
+  });
 
-const { data: getUSDCBalance } = useContractRead({
-  ...projectContractConfig,
-  functionName: 'getContractBalance',
-  args : [
-    (chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[1].address
-  ]
-});
-console.log("USDC's balance",getUSDCBalance)
+  const { data: getUSDCBalance } = useContractRead({
+    ...projectContractConfig,
+    functionName: 'getContractBalance',
+    args: [
+      contriTokens[chain?.id][1].address
+    ]
+  });
 
-//===============Witdraw Request Config=============
+  //===============Witdraw Request Config=============
   const {
     config: withdrawRequestConfig,
     error: withdrawRequestConfigError,
@@ -143,13 +134,6 @@ console.log("USDC's balance",getUSDCBalance)
   };
 
   const withdrawRequest = () => {
-    console.log("withdrawRequest args!!",projectWRDescription,
-    wrUSDTOrDaiAmount,
-    wrUSDCAmount,
-    projectStarter,
-    cryptosBNB[0].address,
-    cryptosBNB[1].address,
-    projectId)
     createWithdrawRequest?.();
   }
 
@@ -162,7 +146,7 @@ console.log("USDC's balance",getUSDCBalance)
             <div className="max-w-xs mx-auto py-5 space-y-4">
               <div className="space-y-1 ">
                 <h1 className="font-normal text-base ">
-                  {wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name} Requested for withdrawal by
+                  {wrUSDTOrDaiAmount} {contriTokens[chain?.id][0].name} Requested for withdrawal by
                 </h1>
                 <h1 className="font-normal text-base ">
                   {wrUSDCAmount} USDC Requested for withdrawal by
@@ -177,13 +161,13 @@ console.log("USDC's balance",getUSDCBalance)
 
               <div className="text-Eire-Black space-y-0.5">
                 <div className="flex justify-between ">
-                    <h2 className="font-normal text-base ">Request Desc</h2>
-                    <h2 className="font-normal text-base ">{projectWRDescription?.slice(0,15)}...</h2>
+                  <h2 className="font-normal text-base ">Request Desc</h2>
+                  <h2 className="font-normal text-base ">{projectWRDescription?.slice(0, 15)}...</h2>
                 </div>
 
                 <div className="flex justify-between ">
                   <h2 className="font-normal text-base ">Amount Requested</h2>
-                  <h2 className="font-normal text-base ">{wrUSDTOrDaiAmount} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
+                  <h2 className="font-normal text-base ">{wrUSDTOrDaiAmount} {contriTokens[chain?.id][0].name}</h2>
                   <h2 className="font-normal text-base ">{wrUSDCAmount} USDC</h2>
                 </div>
 
@@ -215,8 +199,8 @@ console.log("USDC's balance",getUSDCBalance)
       </Modals>
 
       {/* Congrats Modal */}
-      {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
-      {isSuccess && 
+      {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
+      {isSuccess &&
         <Modals
           showModal={showCongratsModal}
           setShowModal={showShowCongratsModal}
@@ -240,7 +224,7 @@ console.log("USDC's balance",getUSDCBalance)
           </CongratsModalWrapper>
         </Modals>
       }
-      
+
       <div className="flex relative">
         <div className="flex-1 space-y-4 md:space-y-6 mr-4">
           <div className="flex items-center justify-between">
@@ -364,22 +348,22 @@ console.log("USDC's balance",getUSDCBalance)
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Contract Balance </h4>
-                    <h2 className="font-bold">{getUSDTOrDaiBalance === undefined ? 0 :formatUnits?.(Number(getUSDTOrDaiBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
-                    <h2 className="font-bold">{getUSDCBalance === undefined ? 0 :formatUnits?.(Number(getUSDCBalance),(chain?.id === 56 || chain?.id === 1 ? 18 : 6))} USDC</h2>
-                    
+                    <h2 className="font-bold">{getUSDTOrDaiBalance === undefined ? 0 : formatUnits?.(Number(getUSDTOrDaiBalance), (chain?.id === bscId ? 18 : 6))} {contriTokens[chain?.id][0].name}</h2>
+                    <h2 className="font-bold">{getUSDCBalance === undefined ? 0 : formatUnits?.(Number(getUSDCBalance), (chain?.id === bscId ? 18 : 6))} USDC</h2>
+
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-                
+
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDTOrDaiAmount}/>
-                  <img src={`/assets/icons/${(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}.svg`} alt="usdtOrdai" />
+                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant" onChange={onWRequestUSDTOrDaiAmount} />
+                  <img src={`/assets/icons/${contriTokens[chain?.id][0].name}.svg`} alt="usdtOrdai" />
                 </div>
 
                 <div className="rounded-4xl shadow-details px-4 py-2 flex items-center">
-                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant"  onChange={onWRequestUSDCAmount}/>
+                  <input className="outline-none max-w-[120px] text-sm " placeholder="Withdraw your grant" onChange={onWRequestUSDCAmount} />
                   <img src={`/assets/icons/USDC.svg`} alt="usdc" />
                 </div>
 

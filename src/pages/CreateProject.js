@@ -6,7 +6,7 @@ import {
   usePrepareContractWrite,
   useNetwork
 } from 'wagmi';
-import CrowdFundingContractInterface from '../contracts/abi/Crowdfunding.json';
+import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
 import web3 from 'web3';
 import Loader from '../components/Loader';
 import { useNavigate} from 'react-router-dom';

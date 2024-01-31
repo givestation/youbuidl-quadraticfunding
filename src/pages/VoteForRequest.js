@@ -1,16 +1,10 @@
 import { useState, Fragment } from "react";
 import { useNavigate , useLocation} from "react-router-dom";
 import { useNetwork, useContractRead,useAccount,useContractWrite,usePrepareContractWrite } from 'wagmi';
-import ProjectContractInterface from '../contracts/abi/Project.json';
+import ProjectContractInterface from '../abi/Project.json';
 import Loader from '../components/Loader';
-import { formatEther,formatUnits } from 'viem';
-import stableTokens from '../contracts/contant/contentStableTokens.json'
-
-const cryptosBNB = stableTokens.cryptosBNB;
-const cryptosETH = stableTokens.cryptosETH;
-const cryptosArbi = stableTokens.cryptosArbi;
-const cryptosOpti = stableTokens.cryptosOpti;
-const cryptosMatic = stableTokens.cryptosMatic;
+import { formatUnits } from 'viem';
+import { contriTokens } from "../utils/constant";
 
 const VoteForRequest = () => {
   const { chain, chains } = useNetwork()
@@ -244,7 +238,7 @@ const VoteForRequest = () => {
                   </svg>
                   <div className="text-Light-Slate-Gray">
                     <h4 className="font-medium">Amount of Requested</h4>
-                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {(chain?.id === 56 ? cryptosBNB : (chain?.id === 1 ? cryptosETH : (chain?.id === 10 ? cryptosOpti : (chain?.id === 137 ? cryptosMatic : cryptosArbi))))[0].name}</h2>
+                    <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[1]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} {contriTokens[chain?.id][0].name}</h2>
                     <h2 className="font-bold">{formatUnits?.(Number(wrChecking?.[2]),(chain?.id === 56 || chain?.id === 1 ? 18 : 6) )} USDC</h2>
                   </div>
                 </div>

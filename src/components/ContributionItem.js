@@ -1,4 +1,4 @@
-import ProjectContractInterface from '../contracts/abi/Project.json';
+import ProjectContractInterface from '../abi/Project.json';
 import {  useContractRead, useNetwork , useAccount} from 'wagmi';
 import { useState, useEffect} from 'react';
 import { formatEther,formatUnits } from 'viem';
