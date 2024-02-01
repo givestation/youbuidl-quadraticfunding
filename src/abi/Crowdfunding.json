@@ -47,6 +47,12 @@
         "internalType": "address",
         "name": "contributor",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isBuidl",
+        "type": "bool"
       }
     ],
     "name": "ClaimRewards",
@@ -201,12 +207,6 @@
         "internalType": "address",
         "name": "referrer",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "usdtAmount",
-        "type": "uint256"
       },
       {
         "indexed": false,
@@ -489,6 +489,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "isBuidlClaimable",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -545,11 +558,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "name": "referralRewards",
@@ -642,6 +650,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isClaimable",
+        "type": "bool"
+      }
+    ],
+    "name": "setBuidlClaimable",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -758,7 +779,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isBuidl",
+        "type": "bool"
+      }
+    ],
     "name": "withdrawUserRewards",
     "outputs": [],
     "stateMutability": "nonpayable",

@@ -182,7 +182,6 @@ export const getContributors = async (chainId) => {
           totalContribution
           totalBuidlPointRewards
           totalUSDTRewards
-          totalUSDTReferralRewards
           totalBuidlPointReferralRewards
         }
       }`;
@@ -206,11 +205,9 @@ export const getContributionDetails = async (address, chainId) => {
           totalBuidlPointReferralRewards
           totalBuidlPointRewards
           totalContribution
-          totalUSDTReferralRewards
           totalUSDTRewards
           claimableBuidlPointReferralRewards
           claimableBuidlPointRewards
-          claimableUSDTReferralRewards
           claimableUSDTRewards
           contributions {
             id

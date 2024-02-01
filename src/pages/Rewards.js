@@ -54,7 +54,7 @@ const Rewards = () => {
         mode: "recklesslyUnprepared",
         ...crowdFundingContractConfig,
         functionName: "withdrawUserRewards",
-        args: [],
+        args: [false],
       });
 
       const data = await waitForTransaction({ hash });
