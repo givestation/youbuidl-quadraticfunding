@@ -15,6 +15,7 @@ import Loader from '../components/Loader';
 import web3 from 'web3';
 import { bscId, contractAddresses, contriTokens, defaultEthLink, qfRoundsAddresses } from "../utils/constant";
 import { getProject } from "../utils";
+import { useChainContext } from "../utils/Context";
 
 const BuidlDetails = () => {
   const navigate = useNavigate();
@@ -37,6 +38,10 @@ const BuidlDetails = () => {
   // change State
   const [restHours, setRestHours] = useState(0);
   const [restDays, setRestDays] = useState(0);
+
+  const {
+    referral,
+  } = useChainContext();
 
   // set token
   const [contributedAmount, setContributedAmount] = useState(0);
@@ -122,14 +127,14 @@ const BuidlDetails = () => {
           mode: "recklesslyUnprepared",
           ...qfRoundsConf,
           functionName: "qfContribute",
-          args: [projectContractAddress, address, selectedCryptoAddress, contributedAmount],
+          args: [projectContractAddress, referral != "" ? window.atob(referral) : address, selectedCryptoAddress, contributedAmount],
         })).hash;
       } else {
         hash = (await writeContract({
           mode: "recklesslyUnprepared",
           ...crowdFundingConf,
           functionName: "contribute",
-          args: [projectContractAddress, address, selectedCryptoAddress, contributedAmount],
+          args: [projectContractAddress, referral != "" ? window.atob(referral) : address, selectedCryptoAddress, contributedAmount],
         })).hash;
       }
 

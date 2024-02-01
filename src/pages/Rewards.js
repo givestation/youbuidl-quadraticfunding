@@ -4,8 +4,8 @@ import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import CryptoDropdown from "../components/CryptoDropdown";
 import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
+import { readContract, writeContract, waitForTransaction, watchContractEvent } from "@wagmi/core";
 import { formatEther, formatUnits } from 'viem';
-import web3 from 'web3';
 import Loader from '../components/Loader';
 import {
   useNetwork,
@@ -19,6 +19,15 @@ const Rewards = () => {
   const { address, connector, isConnected } = useAccount();
   const [contributors, setContributors] = useState([]);
   const [contriDetail, setContriDetail] = useState(null)
+
+  const [isClaiming, setIsClaming] = useState(false);
+  const [claimSucc, setClaimSucc] = useState(false);
+
+  const referralURL = "https://" + (window.location.host ?? 'no-host') + "?r=" + window.btoa(address ?? '')
+  const textURI = encodeURIComponent("Use my referral code to take part in the grant platform.");
+  const urlURI = encodeURIComponent(referralURL);
+  const tweetIntent = `https://twitter.com/intent/tweet?text=${textURI}&url=${urlURI}`;
+
 
   //===============crowdfunding Contract config===============
   let crowdFundingContractConfig = {};
@@ -38,6 +47,26 @@ const Rewards = () => {
     setContriDetail(contriData);
   }
 
+  const claimReward = async () => {
+    setIsClaming(true);
+    try {
+      const { hash } = await writeContract({
+        mode: "recklesslyUnprepared",
+        ...crowdFundingContractConfig,
+        functionName: "withdrawUserRewards",
+        args: [],
+      });
+
+      const data = await waitForTransaction({ hash });
+      if (data.status == "success") {
+        setClaimSucc(true);
+      }
+    } catch (e) {
+      console.log(e, "error in claim reward");
+    }
+    setIsClaming(false);
+  }
+
   useEffect(() => {
     if (chain) {
       intContributors()
@@ -49,7 +78,7 @@ const Rewards = () => {
     <>
       {contriDetail && (
         <div class='flex items-center justify-center space-x-4'>
-          <div class='break-inside relative overflow-hidden flex flex-col justify-between space-y-2 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-cyan-500 text-white h-[170px]'>
+          <div class='break-inside relative overflow-hidden flex flex-col justify-between space-y-2 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-Chinese-Blue text-Pure-White h-[170px]'>
             <span class='uppercase text-xs'>BuidlPoints</span>
             <div class='flex flex-row items-center space-x-3'>
               <svg width='58' height='56' viewBox='0 0 52 50' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -59,12 +88,9 @@ const Rewards = () => {
             </div>
             <div class='flex justify-between items-center'>
               <span>{contriDetail.claimableBuidlPointRewards / 10 ** 18}</span>
-              <button className='flex items-center justify-center text-xs rounded-full px-4 py-2 space-x-1 text-white'>
-                Claim
-              </button>
             </div>
           </div>
-          <div className='break-inside relative overflow-hidden flex flex-col justify-between space-y-2 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-cyan-500 text-white h-[170px]'>
+          <div className='break-inside relative overflow-hidden flex flex-col justify-between space-y-2 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-Chinese-Blue text-Pure-White h-[170px]'>
             <span class='uppercase text-xs'>Contribution Rewards</span>
             <div class='flex flex-row items-center space-x-3'>
               <svg width='58' height='56' viewBox='0 0 52 50' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -74,12 +100,12 @@ const Rewards = () => {
             </div>
             <div class='flex justify-between items-center'>
               <span>{formatUnits?.(contriDetail?.claimableUSDTRewards, (chain?.id == bscId ? 18 : 6))}</span>
-              <button className='flex items-center justify-center text-xs rounded-full px-4 py-2 space-x-1 text-white'>
+              <button className='flex items-center justify-center text-xs rounded-full px-4 py-2 space-x-1' onClick={claimReward}>
                 Claim
               </button>
             </div>
           </div>
-          <div class='break-inside relative overflow-hidden flex flex-col justify-between space-y-2 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-cyan-500 text-white h-[170px]'>
+          <div class='break-inside relative overflow-hidden flex flex-col justify-between space-y-2 text-sm rounded-xl max-w-[23rem] p-4 mb-4 bg-Chinese-Blue text-Pure-White h-[170px]'>
             <span class='uppercase text-xs'>Referrals</span>
             <div class='flex flex-row items-center space-x-3'>
               <svg width='58' height='56' viewBox='0 0 52 50' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -88,12 +114,15 @@ const Rewards = () => {
               <span class='text-base font-medium'>You have been referred on {contriDetail.referralNumber} contributions.<br />You get 10% of the referee's reward</span>
             </div>
             <div class='flex justify-between items-center'>
-              <span>{contriDetail.claimableBuidlPointReferralRewards}</span>
-              <button class='flex items-center justify-center text-xs font-medium rounded-full px-4 py-2 space-x-1 bg-white text-black'>
+              <span>{contriDetail.claimableBuidlPointReferralRewards / 10 ** 18}</span>
+              <button class='flex items-center justify-center text-xs font-medium rounded-full px-4 py-2 space-x-1 bg-Pure-White text-Pure-Black' onClick={() => { navigator.clipboard.writeText(referralURL) }}>
                 <span>Copy Referral</span>
               </button>
-              <button class='flex items-center justify-center text-xs font-medium rounded-full px-4 py-2 space-x-1 bg-white text-black'>
-                <span>Tweet Link</span>
+              <button class='flex items-center justify-center text-xs font-medium rounded-full px-4 py-2 space-x-1 bg-Pure-White text-Pure-Black'>
+                <a href={tweetIntent} target="_new">
+                  {' '}
+                  Tweet Link
+                </a>
               </button>
             </div>
           </div>
@@ -148,12 +177,30 @@ const Rewards = () => {
             </tbody>
           </table>
         </div>
-
-
-
       </div>
-
-
+      <Loader showModal={isClaiming} setShowModal={() => { setIsClaming(false) }} />
+      <Modals
+        showModal={claimSucc}
+        setShowModal={() => { setClaimSucc(false) }}
+      >
+        <CongratsModalWrapper>
+          {" "}
+          <div className="space-y-2 py-6">
+            <h1 className="text-Bright-Gray font-medium text-xl">
+              Congratulation!
+            </h1>
+            <h4 className="text-Bright-Gray/90 font-normal text-sm">
+              You have successfully claimed
+            </h4>
+          </div>
+          <button
+            onClick={() => { setClaimSucc(false); }}
+            className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
+          >
+            Close
+          </button>
+        </CongratsModalWrapper>
+      </Modals>
     </>
   );
 };

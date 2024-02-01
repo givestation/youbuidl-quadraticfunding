@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import BuidlItem from '../components/BuidlItem';
 import CategoriesSelector from '../components/CategoriesSelector';
-import { getMatchingPool, getProjects } from "../utils";
+import { getProjects } from "../utils";
+import { useChainContext } from "../utils/Context";
 
 const Dashboard = () => {
   const [tagOfProject, setTagOfProject] = useState('popular');
   const [projects, setProjects] = useState([]);
   // const [matchingPool, setMatchingPool] = useState(null);
   // set tag of project
+
+  const { setReferral } = useChainContext();
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -18,7 +21,15 @@ const Dashboard = () => {
       // setMatchingPool(data)
     }
     loadProjects()
+
+    const pathName = window.location.href;
+    const pieces = pathName.split('?r=');
+    if (pieces.length == 2) {
+      const referral = pieces[1];
+      setReferral(referral);
+    }
   }, [])
+
   return (
 
     <div className='max-w-20xl mx-auto flex relative flex-col space-y-4 xl:space-y-0 xl:flex-row'>
