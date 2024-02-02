@@ -13,7 +13,7 @@ import {
 import { formatEther, formatUnits } from "viem";
 import Loader from "../components/Loader";
 import { useNetwork, useAccount } from "wagmi";
-import { bscId, contractAddresses } from "../utils/constant";
+import { bscId, chainLogos, contractAddresses } from "../utils/constant";
 import {
   getContributionDetails,
   getContributors,
@@ -143,10 +143,10 @@ const Rewards = () => {
               <div className=" z-10 relative flex flex-col justify-between h-full">
                 <div>
                   <h1 className="font-bold text-2xl">BuildPoints</h1>
-                  <p>You have received Points for funding </p>
+                  <p>You have received Points for funding {contriDetail?.contributions.length} projects.</p>
                 </div>
                 <div className="mt-10">
-                  <h2 className="font-bold text-xl">7,500</h2>
+                  <h2 className="font-bold text-xl">{formatUnits(contriDetail ? contriDetail.claimableBuidlPointRewards : 0, 18)} </h2>
                 </div>
               </div>
               <div className="absolute bottom-0 z-0 right-0">
@@ -185,25 +185,23 @@ const Rewards = () => {
               </div>
               <div className="z-10 relative flex flex-col justify-between h-full">
                 <div>
-                  <h1 className="font-bold text-2xl">BuildPoints</h1>
-                  <p>You have received Points for funding </p>
+                  <h1 className="font-bold text-2xl">Contribution Rewards</h1>
+                  <p>You have received USDT for funding {contriDetail?.contributions.length} projects.</p>
                 </div>
                 <div className="mt-10 flex justify-between ">
                   <div className="flex items-center gap-1">
                     <img
-                      src="/assets/images/arbitrum.png"
+                      src={chainLogos[chain?.id]}
                       className="w-6 h-6 rounded-full object-contain"
                       alt="coin"
                     />
                     <div>
-                      <h1 className="font-bold text-lg">2.00</h1>
+                      <h1 className="font-bold text-lg">{formatUnits(contriDetail ? contriDetail.claimableUSDTRewards : 0, (chain?.id === bscId ? 18 : 6))}</h1>
                       <p className="font-medium text-sm">USDT</p>
                     </div>
                   </div>
                   <button
-                    onClick={() => {
-                      setClaimSucc(true);
-                    }}
+                    onClick={claimReward}
                     className="rounded-md bg-[#12D69B] py-1 px-4 sm:py-2 sm:px-8 "
                   >
                     Claim
@@ -245,27 +243,26 @@ const Rewards = () => {
               </div>
               <div className="z-10 relative">
                 <div>
-                  <h1 className="font-bold text-2xl">BuildPoints</h1>
-                  <p>You have received Points for funding </p>
+                  <h1 className="font-bold text-2xl">Referrals</h1>
+                  <p>You have referred {contriDetail?.referralNumber} contributors.</p>
+                  <p>You get 10% of the referred user rewards.</p>
                 </div>
                 <div className="mt-10 flex justify-between  items-center gap-4">
-                  <h2 className="font-bold text-xl">7,500</h2>
+                  <h2 className="font-bold text-xl">{contriDetail?.claimableBuidlPointReferralRewards}</h2>
                   <div className="flex sm:items-center gap-4 flex-1 flex-col sm:flex-row xl:items-start 2xl:items-center xl:flex-col 2xl:flex-row ">
                     <button
-                      onClick={() => {
-                        setClaimSucc(true);
-                      }}
+                      onClick={() => { navigator.clipboard.writeText(referralURL) }}
                       className="rounded-md flex-1 bg-[#12D69B] py-1 w-full  sm:py-2  "
                     >
                       Copy Referral
                     </button>
                     <button
-                      onClick={() => {
-                        setClaimSucc(true);
-                      }}
                       className="rounded-md flex-1 bg-[#12D69B] py-1 w-full sm:py-2  "
                     >
-                      Tweet Link
+                      <a href={tweetIntent} target="_new">
+                        {' '}
+                        Tweet Link
+                      </a>
                     </button>
                   </div>
                 </div>
@@ -368,241 +365,61 @@ const Rewards = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    <tr>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium  text-gray-900 sm:pl-0 ">
-                        <div className="flex items-center gap-3 min-w-max">
-                          <img
-                            src="/assets/images/arbitrum.png"
-                            className="w-8 h-8 rounded-full object-contain"
-                            alt="coin"
-                          />
-                          <img
-                            src="/assets/images/avatar.png"
-                            className="w-12 h-12 rounded-xl object-contain"
-                            alt="avatar"
-                          />
-
-                          <p className="font-medium text-sm text-[#525252]">
-                            0xXDGET46RG37FD....
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            525252
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            56,000
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="px-2 py-1 max-w-fit	 rounded-md bg-[#E6E6F2] flex items-center gap-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={22}
-                            height={24}
-                            fill="none"
-                          >
-                            <path
-                              fill="#12D69B"
-                              d="M1.512 12.053C8.355 10.62 10.742 8.335 11.807.988c1.459 7.653 3.652 10.092 10.195 11.065-7.413 1.581-9.144 4.472-10.195 11.316-1.346-7.845-3.73-10.16-10.295-11.316Z"
-                            />
-                            <path
-                              fill="#12D69B"
-                              d="M15.736 5.418c1.393-.292 1.88-.756 2.096-2.25.297 1.556.744 2.052 2.075 2.25-1.509.321-1.861.909-2.075 2.3-.274-1.595-.759-2.065-2.096-2.3ZM-.002 19.28c2.818-.59 3.8-1.527 4.24-4.546.6 3.144 1.503 4.146 4.197 4.546-3.052.65-3.765 1.837-4.198 4.65-.554-3.224-1.535-4.175-4.239-4.65Z"
-                            />
-                          </svg>
-
-                          <p className="text-[#525252]">56,000</p>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium  text-gray-900 sm:pl-0 ">
-                        <div className="flex items-center gap-3 min-w-max">
-                          <img
-                            src="/assets/images/arbitrum.png"
-                            className="w-8 h-8 rounded-full object-contain"
-                            alt="coin"
-                          />
-                          <img
-                            src="/assets/images/avatar.png"
-                            className="w-12 h-12 rounded-xl object-contain"
-                            alt="avatar"
-                          />
-
-                          <p className="font-medium text-sm text-[#525252]">
-                            0xXDGET46RG37FD....
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            525252
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            56,000
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="px-2 py-1 max-w-fit	 rounded-md bg-[#E6E6F2] flex items-center gap-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={22}
-                            height={24}
-                            fill="none"
-                          >
-                            <path
-                              fill="#12D69B"
-                              d="M1.512 12.053C8.355 10.62 10.742 8.335 11.807.988c1.459 7.653 3.652 10.092 10.195 11.065-7.413 1.581-9.144 4.472-10.195 11.316-1.346-7.845-3.73-10.16-10.295-11.316Z"
-                            />
-                            <path
-                              fill="#12D69B"
-                              d="M15.736 5.418c1.393-.292 1.88-.756 2.096-2.25.297 1.556.744 2.052 2.075 2.25-1.509.321-1.861.909-2.075 2.3-.274-1.595-.759-2.065-2.096-2.3ZM-.002 19.28c2.818-.59 3.8-1.527 4.24-4.546.6 3.144 1.503 4.146 4.197 4.546-3.052.65-3.765 1.837-4.198 4.65-.554-3.224-1.535-4.175-4.239-4.65Z"
-                            />
-                          </svg>
-
-                          <p className="text-[#525252]">56,000</p>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium  text-gray-900 sm:pl-0 ">
-                        <div className="flex items-center gap-3 min-w-max">
-                          <img
-                            src="/assets/images/arbitrum.png"
-                            className="w-8 h-8 rounded-full object-contain"
-                            alt="coin"
-                          />
-                          <img
-                            src="/assets/images/avatar.png"
-                            className="w-12 h-12 rounded-xl object-contain"
-                            alt="avatar"
-                          />
-
-                          <p className="font-medium text-sm text-[#525252]">
-                            0xXDGET46RG37FD....
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            525252
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            56,000
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="px-2 py-1 max-w-fit	 rounded-md bg-[#E6E6F2] flex items-center gap-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={22}
-                            height={24}
-                            fill="none"
-                          >
-                            <path
-                              fill="#12D69B"
-                              d="M1.512 12.053C8.355 10.62 10.742 8.335 11.807.988c1.459 7.653 3.652 10.092 10.195 11.065-7.413 1.581-9.144 4.472-10.195 11.316-1.346-7.845-3.73-10.16-10.295-11.316Z"
-                            />
-                            <path
-                              fill="#12D69B"
-                              d="M15.736 5.418c1.393-.292 1.88-.756 2.096-2.25.297 1.556.744 2.052 2.075 2.25-1.509.321-1.861.909-2.075 2.3-.274-1.595-.759-2.065-2.096-2.3ZM-.002 19.28c2.818-.59 3.8-1.527 4.24-4.546.6 3.144 1.503 4.146 4.197 4.546-3.052.65-3.765 1.837-4.198 4.65-.554-3.224-1.535-4.175-4.239-4.65Z"
-                            />
-                          </svg>
-
-                          <p className="text-[#525252]">56,000</p>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium  text-gray-900 sm:pl-0 ">
-                        <div className="flex items-center gap-3 min-w-max">
-                          <img
-                            src="/assets/images/arbitrum.png"
-                            className="w-8 h-8 rounded-full object-contain"
-                            alt="coin"
-                          />
-                          <img
-                            src="/assets/images/avatar.png"
-                            className="w-12 h-12 rounded-xl object-contain"
-                            alt="avatar"
-                          />
-
-                          <p className="font-medium text-sm text-[#525252]">
-                            0xXDGET46RG37FD....
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            525252
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
-                          <p className="font-medium text-base text-[#525252]">
-                            56,000
-                          </p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="px-2 py-1 max-w-fit	 rounded-md bg-[#E6E6F2] flex items-center gap-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={22}
-                            height={24}
-                            fill="none"
-                          >
-                            <path
-                              fill="#12D69B"
-                              d="M1.512 12.053C8.355 10.62 10.742 8.335 11.807.988c1.459 7.653 3.652 10.092 10.195 11.065-7.413 1.581-9.144 4.472-10.195 11.316-1.346-7.845-3.73-10.16-10.295-11.316Z"
-                            />
-                            <path
-                              fill="#12D69B"
-                              d="M15.736 5.418c1.393-.292 1.88-.756 2.096-2.25.297 1.556.744 2.052 2.075 2.25-1.509.321-1.861.909-2.075 2.3-.274-1.595-.759-2.065-2.096-2.3ZM-.002 19.28c2.818-.59 3.8-1.527 4.24-4.546.6 3.144 1.503 4.146 4.197 4.546-3.052.65-3.765 1.837-4.198 4.65-.554-3.224-1.535-4.175-4.239-4.65Z"
-                            />
-                          </svg>
-
-                          <p className="text-[#525252]">56,000</p>
-                        </div>
-                      </td>
-                    </tr>
+                    {contributors.map((contributor, index) => (
+                      <tr>
+                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm font-medium  text-gray-900 sm:pl-0 ">
+                          <div className="flex items-center gap-3 min-w-max">
+                            <p className="font-bold">{index + 1}</p>
+                            <p className="font-medium text-sm text-[#525252]">
+                              {getEllipsisTxt(contributor.id)}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
+                            <p className="font-medium text-base text-[#525252]">
+                              {formatUnits?.(contributor?.totalContribution, (chain?.id == bscId ? 18 : 6))}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
+                            <p className="font-medium text-base text-[#525252]">
+                              {contributor.referralNumber}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <div className="px-2 py-1 max-w-fit	 rounded-md bg-[#E6E6F2] flex items-center gap-2">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width={22}
+                              height={24}
+                              fill="none"
+                            >
+                              <path
+                                fill="#12D69B"
+                                d="M1.512 12.053C8.355 10.62 10.742 8.335 11.807.988c1.459 7.653 3.652 10.092 10.195 11.065-7.413 1.581-9.144 4.472-10.195 11.316-1.346-7.845-3.73-10.16-10.295-11.316Z"
+                              />
+                              <path
+                                fill="#12D69B"
+                                d="M15.736 5.418c1.393-.292 1.88-.756 2.096-2.25.297 1.556.744 2.052 2.075 2.25-1.509.321-1.861.909-2.075 2.3-.274-1.595-.759-2.065-2.096-2.3ZM-.002 19.28c2.818-.59 3.8-1.527 4.24-4.546.6 3.144 1.503 4.146 4.197 4.546-3.052.65-3.765 1.837-4.198 4.65-.554-3.224-1.535-4.175-4.239-4.65Z"
+                              />
+                            </svg>
+                            <p className="text-[#525252]">{contributor.totalBuidlPointRewards / 10 ** 18}</p>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div >
       <Modals
         showModal={claimSucc}
         setShowModal={() => {
@@ -615,8 +432,8 @@ const Rewards = () => {
               Congratulation! 💐
             </h1>
             <h4 className="text-Bright-Gray/90 font-normal text-sm">
-              You have claimed <span className="font-bold"> $500</span> for
-              funding 200 projects.
+              You have claimed <span className="font-bold"> ${contriDetail?.claimableUSDTRewards}</span> for
+              funding {contriDetail?.contributions.length} projects.
             </h4>
           </div>
           <button
@@ -633,4 +450,4 @@ const Rewards = () => {
   );
 };
 
-export default temp;
+export default Rewards;
