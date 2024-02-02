@@ -16,9 +16,10 @@ const ExploreRounds = () => {
   }, [])
   return (
 
-    <div className='max-w-20xl mx-auto flex relative flex-col space-y-4 xl:space-y-0 xl:flex-row'>
-      <div className='flex-1 overflow-hidden space-y-4 md:space-y-6 xl:mr-4'>
-        <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-b from-Liberty to-Spanish-Violet   py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
+
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="grid xl:grid-cols-3 gap-4">
+        <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-r from-cyan-700 to-blue-500  py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
           <img
             className='absolute  top-0 left-10 z-0'
             src='/assets/images/pattren.png'
@@ -29,39 +30,77 @@ const ExploreRounds = () => {
             <div>
               <div className='flex items-center  justify-between'>
                 <div className='space-y-4 xl:space-y-0'>
-                  <h1 className='flex-1 text-Bright-Gray font-bold text-xl sm:text-2xl xl:text-4xl'>
-                    YouBuidl Quadratic Funding
+                  <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-3xl xl:text-3xl'>
+                 $50,000
                   </h1>
-                  <h6 className='text-Philipine-Silver font-normal text-xs md:text-sm xl:text-base'>
-                    YouBuidl is crowdfunding web3 tool created by GiveStation
-                    for developers, creators and teams.
-                  </h6>
+                  <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
+                  Total Matching Pools
+                  </h5>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div className='hidden xl:block   z-10'>
+          </div>
+        </div>
+
+    
+        <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-r from-cyan-700 to-blue-500  py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
+          <img
+            className='absolute  top-0 left-10 z-0'
+            src='/assets/images/pattren.png'
+            alt='pattren'
+          />
+
+          <div className='flex-1 xl:mt-0 text-left space-y-4 xl:space-y-2 z-10'>
+            <div>
+              <div className='flex items-center  justify-between'>
+                <div className='space-y-4 xl:space-y-0'>
+                <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
+                 $100,000
+                  </h1>
+                  <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
+                  Total Contributions
+                  </h5>
                 </div>
                 <img
                   className='max-w-[8rem] md:max-w-xs xl:hidden'
-                  src='/assets/images/rocket.png'
                   alt='rocket'
                 />
               </div>
             </div>
+          </div>
+          <div className='hidden xl:block   z-10'>
+          </div>
+        </div>
 
-            <div className='flex items-center flex-row w-full space-x-1.5 sm:space-x-3 justify-around'>
-              <Link
-                to='/projects'
-                className='w-1/3 text-base text-center bg-Pure-White text-Chinese-Blue rounded-4xl py-2 md:py-3 xl:py-4 sm:font-semibold w-full  xl:font-bold '
-              >
-                Explore Rounds
-              </Link>
-              <Link
-                to='/create-project'
-                className='w-1/3 text-center text-base duration-300 text-Philipine-Silver hover:bg-Pure-White hover:text-Chinese-Blue rounded-4xl py-2 md:py-3 xl:py-4 sm:font-semibold w-full  xl:font-bold'
-              >
-                Apply for a round
-              </Link>
+        <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-r from-cyan-700 to-blue-500  py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
+          <img
+            className='absolute  top-0 left-10 z-0'
+            src='/assets/images/pattren.png'
+            alt='pattren'
+          />
+
+          <div className='flex-1 xl:mt-0 text-left space-y-4 xl:space-y-2 z-10'>
+            <div>
+              <div className='flex items-center  justify-between'>
+                <div className='space-y-4 xl:space-y-0'>
+                <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
+                 6,789
+                  </h1>
+                  <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
+                  Total Contributors
+                  </h5>
+                </div>
+                <img
+                  className='max-w-[8rem] md:max-w-xs xl:hidden'
+                  alt='rocket'
+                />
+              </div>
             </div>
           </div>
           <div className='hidden xl:block   z-10'>
-            <img className='' src='/assets/images/rocket.png' alt='rocket' />
           </div>
         </div>
 
