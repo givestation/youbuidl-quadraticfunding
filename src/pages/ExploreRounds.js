@@ -59,7 +59,7 @@ const ExploreRounds = () => {
               <div className='flex items-center  justify-between'>
                 <div className='space-y-4 xl:space-y-0'>
                   <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
-                    ${qfRounds.totalContributions}
+                    ${qfRounds?.totalContributions}
                   </h1>
                   <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
                     Total Contributions
