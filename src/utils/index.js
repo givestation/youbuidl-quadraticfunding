@@ -137,6 +137,8 @@ export const getQFRounds = async () => {
             imgUrl
             desc
             amount
+            totalContributions
+            contriNumber
             token
             projectNum
             startTime
@@ -145,6 +147,9 @@ export const getQFRounds = async () => {
       }`;
     try {
         let qfRoundsList = []
+        let totalMatchingPool = 0;
+        let totalContributions = 0;
+        let contriNumber = 0;
         await Promise.all(
             Object.entries(subgraphURLs).map(async ([key, value]) => {
                 const res = await getDataFromSubgraph(query, value);
@@ -158,6 +163,9 @@ export const getQFRounds = async () => {
                         } else {
                             leftTime = +qfRounds[0].endTime - currentTime;
                         }
+                        totalMatchingPool += +qfRounds[0].amount / 10;
+                        totalContributions += +qfRounds[0].totalContributions;
+                        contriNumber += qfRounds[0].contriNumber;
 
                         const daysLeft = Math.floor(leftTime / (24 * 60 * 60));
                         const hoursLeft = Math.floor((leftTime % (24 * 60 * 60)) / 3600);
@@ -167,10 +175,10 @@ export const getQFRounds = async () => {
             })
         )
 
-        return qfRoundsList
+        return { qfRoundsList: qfRoundsList, totalMatchingPool: totalMatchingPool, totalContributions: totalContributions, contriNumber: contriNumber }
     } catch (e) {
         console.log(e, "=========error in get qfRoundsList============")
-        return [];
+        return { qfRoundsList: [], totalMatchingPool: 0, totalContributions: 0, contriNumber: 0 };
     }
 };
 

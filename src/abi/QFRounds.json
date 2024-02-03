@@ -347,6 +347,11 @@
         "type": "address"
       },
       {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
+      },
+      {
         "internalType": "contract IERC20",
         "name": "_token",
         "type": "address"
@@ -482,19 +487,6 @@
       }
     ],
     "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "totalProjectNumber",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

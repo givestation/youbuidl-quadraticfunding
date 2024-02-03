@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
 import { getQFRounds } from "../utils";
 import { formatUnits } from "viem";
 import { bscId, chainLogos } from "../utils/constant";
+import { useNetwork } from "wagmi";
 
 const ExploreRounds = () => {
-  const [qfRounds, setQFRounds] = useState([]);
+  const [qfRounds, setQFRounds] = useState(null);
+  const { chain } = useNetwork();
 
   useEffect(() => {
     const loadQFRounds = async () => {
@@ -17,8 +18,8 @@ const ExploreRounds = () => {
   return (
 
 
-        <div className="px-4 sm:px-6 lg:px-8">
-          <div className="grid xl:grid-cols-3 gap-4">
+    <div className="px-4 sm:px-6 lg:px-8">
+      <div className="grid xl:grid-cols-3 gap-4">
         <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-r from-cyan-700 to-blue-500  py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
           <img
             className='absolute  top-0 left-10 z-0'
@@ -31,13 +32,13 @@ const ExploreRounds = () => {
               <div className='flex items-center  justify-between'>
                 <div className='space-y-4 xl:space-y-0'>
                   <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-3xl xl:text-3xl'>
-                 $50,000
+                    ${formatUnits(qfRounds ? qfRounds.totalMatchingPool : 0, (chain?.id === bscId ? 18 : 6))}
                   </h1>
                   <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
-                  Total Matching Pools
+                    Total Matching Pools
                   </h5>
                 </div>
-                
+
               </div>
             </div>
           </div>
@@ -45,7 +46,7 @@ const ExploreRounds = () => {
           </div>
         </div>
 
-    
+
         <div className='w-full relative rounded-2xl xl:rounded-3xl bg-gradient-to-r from-cyan-700 to-blue-500  py-1.5 px-2 md:p-4 xl:px-6 xl:py-4 flex items-center flex-col xl:flex-row xl:space-x-4'>
           <img
             className='absolute  top-0 left-10 z-0'
@@ -57,11 +58,11 @@ const ExploreRounds = () => {
             <div>
               <div className='flex items-center  justify-between'>
                 <div className='space-y-4 xl:space-y-0'>
-                <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
-                 $100,000
+                  <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
+                    ${formatUnits(qfRounds ? qfRounds.totalContributions : 0, (chain?.id === bscId ? 18 : 6))}
                   </h1>
                   <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
-                  Total Contributions
+                    Total Contributions
                   </h5>
                 </div>
                 <img
@@ -86,11 +87,11 @@ const ExploreRounds = () => {
             <div>
               <div className='flex items-center  justify-between'>
                 <div className='space-y-4 xl:space-y-0'>
-                <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
-                 6,789
+                  <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
+                    {qfRounds?.contriNumber}
                   </h1>
                   <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
-                  Total Contributors
+                    Total Contributors
                   </h5>
                 </div>
                 <img
@@ -141,7 +142,7 @@ const ExploreRounds = () => {
 
         <section class="py-20">
           <div class="mx-auto grid max-w-screen-xl grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
-            {qfRounds.map((qfRound, index) => (
+            {qfRounds?.qfRoundsList.map((qfRound, index) => (
               <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl">
                 <a href="#">
                   <div class="relative flex items-end overflow-hidden rounded-xl">
