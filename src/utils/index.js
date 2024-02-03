@@ -1,5 +1,6 @@
 import axios from "axios";
-import { subgraphURLs } from "./constant";
+import { bscId, subgraphURLs } from "./constant";
+import { formatUnits } from "viem";
 
 const getDataFromSubgraph = async (query, subgraphURL) => {
     try {
@@ -163,8 +164,9 @@ export const getQFRounds = async () => {
                         } else {
                             leftTime = +qfRounds[0].endTime - currentTime;
                         }
-                        totalMatchingPool += +qfRounds[0].amount / 10;
-                        totalContributions += +qfRounds[0].totalContributions;
+                        console.log(key, "=======before total===========")
+                        totalMatchingPool += +formatUnits(qfRounds[0].amount, (key == bscId ? 18 : 6))
+                        totalContributions += +formatUnits(qfRounds[0].totalContributions, (key == bscId ? 18 : 6))
                         contriNumber += qfRounds[0].contriNumber;
 
                         const daysLeft = Math.floor(leftTime / (24 * 60 * 60));

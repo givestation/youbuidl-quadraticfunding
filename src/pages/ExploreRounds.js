@@ -32,7 +32,7 @@ const ExploreRounds = () => {
               <div className='flex items-center  justify-between'>
                 <div className='space-y-4 xl:space-y-0'>
                   <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-3xl xl:text-3xl'>
-                    ${formatUnits(qfRounds ? qfRounds.totalMatchingPool : 0, (chain?.id === bscId ? 18 : 6))}
+                    ${qfRounds?.totalMatchingPool}
                   </h1>
                   <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
                     Total Matching Pools
@@ -59,7 +59,7 @@ const ExploreRounds = () => {
               <div className='flex items-center  justify-between'>
                 <div className='space-y-4 xl:space-y-0'>
                   <h1 className='flex-1 text-Bright-Gray font-bold text-lg sm:text-2xl xl:text-3xl'>
-                    ${formatUnits(qfRounds ? qfRounds.totalContributions : 0, (chain?.id === bscId ? 18 : 6))}
+                    ${qfRounds.totalContributions}
                   </h1>
                   <h5 className='text-Philipine-Silver font-normal text-bold md:text-sm xl:text-base'>
                     Total Contributions
