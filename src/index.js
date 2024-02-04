@@ -118,7 +118,7 @@ const router = createBrowserRouter([
         element: <CreateProject />,
       },
       {
-        path: '/min-domain',
+        path: '/mint-domain',
         element: <MintDomain />,
       },
     ],
