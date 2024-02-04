@@ -100,7 +100,7 @@ const BuidlItem = ({ project, tag }) => {
           </Link>
           <div>
             <div className="flex items-center text-xs w-fit rounded-xl p-1 gap-0.5" style={{ background: "#CDEDFF" }}>
-              <div><img src={categoryIcons[project?.filterTags]} className="w-7 h-7" alt="" /></div>
+              <div><img src={categoryIcons[project?.filterTags]} className="w-6 h-6" alt="" /></div>
               <div style={{ color: "#3EA7E1" }}>{project?.filterTags}</div>
             </div>
             <p className='text-Nickle font-normal text-sm mt-5 flex flex-col'>
@@ -152,6 +152,9 @@ const BuidlItem = ({ project, tag }) => {
             </div>
           </div>
           <div className='flex items-center justify-between'>
+          <h3 className=' font-normal text-xs'>
+                  <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Contributors</div>500
+                </h3>
             <div></div>
             {
               project?.isVerified && (
