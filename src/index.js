@@ -14,6 +14,7 @@ import {
   // hardhat,
   // bsc,
   bscTestnet,
+  bsc,
   // polygonMumbai
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
@@ -34,12 +35,11 @@ import CreateProject from './pages/CreateProject';
 import WithdrawRequest from './pages/WithdrawRequest';
 import VoteForRequest from './pages/VoteForRequest';
 import Withdraw from './pages/Withdraw';
-import { polygonMumbai } from './utils/networks';
 
 
 const { chains, publicClient } = configureChains(
   // [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
-  [polygon],
+  [polygon, bsc],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),
