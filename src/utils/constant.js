@@ -1,12 +1,6 @@
-// export const arbitrumId = 42161;
-// export const bscId = 56;
-// export const polygonId = 137;
-// export const mainnetId = 1;
-// export const optimismId = 10;
-
 export const arbitrumId = 42161;
-export const bscId = 97;
-export const polygonId = 80001;
+export const bscId = 56;
+export const polygonId = 137;
 export const mainnetId = 1;
 export const optimismId = 10;
 
@@ -36,7 +30,7 @@ export const categoryIcons = {
 export const contractAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0x64893916187dA6A4d643e84468984BD6945c870f",
-    [polygonId]: "0xea6910176595890b4E0eE19440f5A4E5af4FDd48",
+    [polygonId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
 }
@@ -44,7 +38,7 @@ export const contractAddresses = {
 export const qfRoundsAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0xf6e16272A91d994d24652303190aAC73cc62a4Db",
-    [polygonId]: "0x4187062B3117B28CFe71c4f7b9686Ac8E169AD1B",
+    [polygonId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
     [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
 }
@@ -76,11 +70,11 @@ export const contriTokens = {
     [polygonId]: [
         {
             "name": "USDT",
-            "address": "0xC0447C56964CBF539B5d645C013DE488CcfC21C1"
+            "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
         },
         {
             "name": "USDC",
-            "address": "0xb82F2BD8cc846DFdfDa0D3D846f7EAe5d1d871cf"
+            "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
         }
     ],
 

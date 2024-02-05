@@ -7,7 +7,7 @@ import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
   // mainnet,
-  // polygon,
+  polygon,
   // optimism,
   // arbitrum,
   // zkSync,
@@ -39,7 +39,7 @@ import { polygonMumbai } from './utils/networks';
 
 const { chains, publicClient } = configureChains(
   // [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
-  [bscTestnet, polygonMumbai],
+  [polygon],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),
