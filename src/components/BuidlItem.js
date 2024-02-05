@@ -153,7 +153,7 @@ const BuidlItem = ({ project, tag }) => {
           </div>
           <div className='flex items-center justify-between'>
           <h3 className=' font-normal text-xs'>
-                  <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Contributors</div>500
+                  <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Contributors</div>{project?.noOfContributors}
                 </h3>
             <div></div>
             {
