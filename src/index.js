@@ -8,7 +8,7 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
   // mainnet,
   polygon,
-  // arbitrum,
+  arbitrum,
   // zkSync,
   bsc,
   optimism,
@@ -35,7 +35,7 @@ import Withdraw from './pages/Withdraw';
 
 const { chains, publicClient } = configureChains(
   // [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
-  [polygon, bsc, optimism],
+  [polygon, bsc, optimism, arbitrum],
   [
     // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),
