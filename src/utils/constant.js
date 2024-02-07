@@ -32,7 +32,7 @@ export const contractAddresses = {
     [bscId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [polygonId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
-    [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
+    [optimismId]: "0x3E551e54B49154E78bF5Ea9A92F83aeA3B813797"
 }
 
 export const qfRoundsAddresses = {
@@ -40,7 +40,7 @@ export const qfRoundsAddresses = {
     [bscId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [polygonId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [arbitrumId]: "0x0FE6Aff847e18853ddC0fC02a8e2F7c867585916",
-    [optimismId]: "0xBBD52136eFB864692554996aaB7D52c2c8f43520"
+    [optimismId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4"
 }
 
 export const defaultEthLink = {
@@ -54,6 +54,7 @@ export const defaultEthLink = {
 export const subgraphURLs = {
     [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
     [polygonId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildpolygon",
+    [optimismId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuidl-optimism",
 }
 
 export const contriTokens = {
@@ -77,5 +78,14 @@ export const contriTokens = {
             "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
         }
     ],
-
+    [optimismId]: [
+        {
+            "name": "USDT",
+            "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58"
+        },
+        {
+            "name": "USDC",
+            "address": "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85"
+        }
+    ],
 }
