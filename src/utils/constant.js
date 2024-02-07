@@ -89,4 +89,14 @@ export const contriTokens = {
             "address": "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85"
         }
     ],
+    [arbitrumId]: [
+        {
+            "name": "USDT",
+            "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+        },
+        {
+            "name": "USDC",
+            "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+        }
+    ],
 }
