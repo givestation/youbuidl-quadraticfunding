@@ -6,12 +6,20 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
+  // mainnet,
   polygon,
-  arbitrum,
+  // optimism,
+  // arbitrum,
+  // zkSync,
+  // hardhat,
+  // bsc,
+  bscTestnet,
   bsc,
-  optimism,
+  // polygonMumbai
 } from 'wagmi/chains';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
 import Layout from './components/layout';
 import FundToFarm from './pages/FundToFarm';
@@ -30,10 +38,19 @@ import Withdraw from './pages/Withdraw';
 
 
 const { chains, publicClient } = configureChains(
-  [polygon, bsc, optimism, arbitrum],
+  // [bsc, mainnet, optimism, arbitrum,polygon,zkSync],
+  [polygon, bsc],
   [
+    // alchemyProvider({ apiKey: 'ZbcJUctTzRg0qySTHx0jmolpmxP-5V3g' }),
     publicProvider(),
   ],
+  // [
+  //   jsonRpcProvider({
+  //     rpc: (chain) => ({
+  //       https: `https://data-seed-prebsc-1-s1.binance.org:8545`,
+  //     }),
+  //   }),
+  // ]
 );
 
 const { connectors } = getDefaultWallets({

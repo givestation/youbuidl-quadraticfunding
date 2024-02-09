@@ -104,7 +104,7 @@ const Rewards = () => {
       />
 
       <div className="max-w-7xl mx-auto">
-        <div className="px-4 sm:px-6 lg:px-8">
+        <div className="">
           <div className="grid xl:grid-cols-3 gap-6">
             <div className="bg-[#3EA7E1] text-white px-4 py-3 rounded-2xl shadow-md shadow-[#3EA7E1] overflow-hidden relative">
               <div className="absolute top-0 left-0 z-0">
@@ -140,13 +140,23 @@ const Rewards = () => {
                   />
                 </svg>
               </div>
-              <div className=" z-10 relative flex flex-col justify-between h-full">
+              <div className=" z-10 relative flex flex-col justify-between gap-5 h-full">
                 <div>
                   <h1 className="font-bold text-2xl">BuildPoints</h1>
-                  <p>You have received Points for funding {contriDetail?.contributions.length} projects.</p>
+                  <p>
+                    You have received Points for funding{" "}
+                    {contriDetail?.contributions.length} projects.
+                  </p>
                 </div>
-                <div className="mt-10">
-                  <h2 className="font-bold text-xl">{formatUnits(contriDetail ? contriDetail.claimableBuidlPointRewards : 0, 18)} </h2>
+                <div className="">
+                  <h2 className="font-bold text-xl">
+                    {formatUnits(
+                      contriDetail
+                        ? contriDetail.claimableBuidlPointRewards
+                        : 0,
+                      18
+                    )}{" "}
+                  </h2>
                 </div>
               </div>
               <div className="absolute bottom-0 z-0 right-0">
@@ -183,12 +193,15 @@ const Rewards = () => {
                   />
                 </svg>
               </div>
-              <div className="z-10 relative flex flex-col justify-between h-full">
+              <div className="z-10 relative flex flex-col gap-5 justify-between h-full">
                 <div>
                   <h1 className="font-bold text-2xl">Contribution Rewards</h1>
-                  <p>You have received USDT for funding {contriDetail?.contributions.length} projects.</p>
+                  <p>
+                    You have received USDT for funding{" "}
+                    {contriDetail?.contributions.length} projects.
+                  </p>
                 </div>
-                <div className="mt-10 flex justify-between ">
+                <div className=" flex justify-between items-center">
                   <div className="flex items-center gap-1">
                     <img
                       src={chainLogos[chain?.id]}
@@ -196,7 +209,12 @@ const Rewards = () => {
                       alt="coin"
                     />
                     <div>
-                      <h1 className="font-bold text-lg">{formatUnits(contriDetail ? contriDetail.claimableUSDTRewards : 0, (chain?.id === bscId ? 18 : 6))}</h1>
+                      <h1 className="font-bold text-lg">
+                        {formatUnits(
+                          contriDetail ? contriDetail.claimableUSDTRewards : 0,
+                          chain?.id === bscId ? 18 : 6
+                        )}
+                      </h1>
                       <p className="font-medium text-sm">USDT</p>
                     </div>
                   </div>
@@ -241,26 +259,31 @@ const Rewards = () => {
                   />
                 </svg>
               </div>
-              <div className="z-10 relative">
+              <div className="z-10 relative flex flex-col gap-5">
                 <div>
                   <h1 className="font-bold text-2xl">Referrals</h1>
-                  <p>You have referred {contriDetail?.referralNumber} contributors.</p>
+                  <p>
+                    You have referred {contriDetail?.referralNumber}{" "}
+                    contributors.
+                  </p>
                   <p>You get 10% of the referred user rewards.</p>
                 </div>
-                <div className="mt-10 flex justify-between  items-center gap-4">
-                  <h2 className="font-bold text-xl">{contriDetail?.claimableBuidlPointReferralRewards}</h2>
-                  <div className="flex sm:items-center gap-4 flex-1 flex-col sm:flex-row xl:items-start 2xl:items-center xl:flex-col 2xl:flex-row ">
+                <div className=" flex justify-between  items-center gap-4  xl:gap-2 2xl:gap-4">
+                  <h2 className="font-bold text-xl">
+                    {contriDetail?.claimableBuidlPointReferralRewards || "10"}
+                  </h2>
+                  <div className="flex sm:items-center gap-4 flex-1 xl:gap-2 2xl:gap-4 flex-col sm:flex-row xl:items-start 2xl:items-center 2xl:flex-row ">
                     <button
-                      onClick={() => { navigator.clipboard.writeText(referralURL) }}
+                      onClick={() => {
+                        navigator.clipboard.writeText(referralURL);
+                      }}
                       className="rounded-md flex-1 bg-[#12D69B] py-1 w-full  sm:py-2  "
                     >
                       Copy Referral
                     </button>
-                    <button
-                      className="rounded-md flex-1 bg-[#12D69B] py-1 w-full sm:py-2  "
-                    >
+                    <button className="rounded-md flex-1 bg-[#12D69B] py-1 w-full sm:py-2  ">
                       <a href={tweetIntent} target="_new">
-                        {' '}
+                        {" "}
                         Tweet Link
                       </a>
                     </button>
@@ -379,7 +402,10 @@ const Rewards = () => {
                           <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-[#12D69B]"></div>
                             <p className="font-medium text-base text-[#525252]">
-                              {formatUnits?.(contributor?.totalContribution, (chain?.id == bscId ? 18 : 6))}
+                              {formatUnits?.(
+                                contributor?.totalContribution,
+                                chain?.id == bscId ? 18 : 6
+                              )}
                             </p>
                           </div>
                         </td>
@@ -408,7 +434,9 @@ const Rewards = () => {
                                 d="M15.736 5.418c1.393-.292 1.88-.756 2.096-2.25.297 1.556.744 2.052 2.075 2.25-1.509.321-1.861.909-2.075 2.3-.274-1.595-.759-2.065-2.096-2.3ZM-.002 19.28c2.818-.59 3.8-1.527 4.24-4.546.6 3.144 1.503 4.146 4.197 4.546-3.052.65-3.765 1.837-4.198 4.65-.554-3.224-1.535-4.175-4.239-4.65Z"
                               />
                             </svg>
-                            <p className="text-[#525252]">{contributor.totalBuidlPointRewards / 10 ** 18}</p>
+                            <p className="text-[#525252]">
+                              {contributor.totalBuidlPointRewards / 10 ** 18}
+                            </p>
                           </div>
                         </td>
                       </tr>
@@ -419,7 +447,7 @@ const Rewards = () => {
             </div>
           </div>
         </div>
-      </div >
+      </div>
       <Modals
         showModal={claimSucc}
         setShowModal={() => {
@@ -432,8 +460,12 @@ const Rewards = () => {
               Congratulation! 💐
             </h1>
             <h4 className="text-Bright-Gray/90 font-normal text-sm">
-              You have claimed <span className="font-bold"> ${contriDetail?.claimableUSDTRewards}</span> for
-              funding {contriDetail?.contributions.length} projects.
+              You have claimed{" "}
+              <span className="font-bold">
+                {" "}
+                ${contriDetail?.claimableUSDTRewards}
+              </span>{" "}
+              for funding {contriDetail?.contributions.length} projects.
             </h4>
           </div>
           <button

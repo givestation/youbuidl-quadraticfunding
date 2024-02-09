@@ -7,10 +7,10 @@ import {
   useNetwork
 } from 'wagmi';
 import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
+import web3 from 'web3';
 import Loader from '../components/Loader';
 import { useNavigate} from 'react-router-dom';
 import { bscId, contractAddresses, contriTokens } from '../utils/constant';
-import { parseUnits } from 'viem';
 
 const CLOUDINARY_UPLOAD_URL =
   'https://api.cloudinary.com/v1_1/dvwdyqvzt/image/upload';
@@ -133,7 +133,7 @@ const CreateProject = () => {
 
   const onTargetContributionChange = (e) => {
     setTargetContribution(
-      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
+      web3.utils.toBigInt(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
     );
   };
 
