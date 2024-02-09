@@ -61,17 +61,6 @@ const BuidlDetails = () => {
   const [isApproving, setIsApproving] = useState(false);
   const [approveSucc, setApproveSucc] = useState(false);
 
-
-  watchContractEvent(
-    {
-      ...crowdFundingConf,
-      eventName: "ContributionReceived",
-    },
-    async () => {
-      await initProjectDetails()
-    }
-  );
-
   //===========project Contract config==============
   const projectContractConfig = {
     address: projectContractAddress,
