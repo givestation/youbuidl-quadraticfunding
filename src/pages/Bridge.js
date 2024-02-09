@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import TotalBalance from "../components/TotalBalance";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
-import { formatEther, formatUnits, parseUnits } from 'viem';
-import Loader from '../components/Loader';
+import CryptoDropdown from "../components/CryptoDropdown";
+import CrowdFundingContractInterface from "../abi/Crowdfunding.json";
+import { formatEther, formatUnits } from "viem";
+import web3 from "web3";
+import Loader from "../components/Loader";
 import {
   useContractRead,
   useNetwork,
   useAccount,
   usePrepareContractWrite,
-  useContractWrite
-} from 'wagmi';
-import { bscId, contractAddresses } from "../utils/constant";
+  useContractWrite,
+} from "wagmi";
+import { contractAddresses } from "../utils/constant";
 
 const Rewards = () => {
-  const { chain, chains } = useNetwork()
+  const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
 
   // Loading modal
@@ -34,7 +36,7 @@ const Rewards = () => {
   //===============crowdfunding Contract config===============
   let crowdFundingContractConfig = {};
   if (chain === undefined) {
-    console.log("plz connect metamask")
+    console.log("plz connect metamask");
   } else {
     crowdFundingContractConfig = {
       address: contractAddresses[chain?.id],
@@ -44,12 +46,10 @@ const Rewards = () => {
   //=============show Reward of user========
   const { data: showRewardUserData } = useContractRead({
     ...crowdFundingContractConfig,
-    functionName: 'showRewardUser',
-    args: [
-      address
-    ],
+    functionName: "showRewardUser",
+    args: [address],
   });
-  console.log("reward show", showRewardUserData)
+  console.log("reward show", showRewardUserData);
   //================user can Withdraw reward==============
   const {
     config: userRewardConfig,
@@ -57,7 +57,7 @@ const Rewards = () => {
     isError: isUserRewardConfigError,
   } = usePrepareContractWrite({
     ...crowdFundingContractConfig,
-    functionName: 'withdrawUserRewards',
+    functionName: "withdrawUserRewards",
     // args: [
 
     // ],
@@ -68,13 +68,18 @@ const Rewards = () => {
     write: withdrawUserRewards,
     error: userRewardReturnError,
     isLoading,
-    isSuccess
+    isSuccess,
   } = useContractWrite(userRewardConfig);
 
   //==============main functions===========
   const onEtherRmount = (e) => {
     setEtherRAmount(
-      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
+      web3.utils.toNumber(
+        web3.utils.toWei(
+          e.target.value,
+          chain?.id === 56 || chain?.id === 1 ? "ether" : "mwei"
+        )
+      ) //mwei
     );
     if (chain?.id === 56) {
       getPriceBNB(e.target.value);
@@ -82,61 +87,91 @@ const Rewards = () => {
       getPriceETH(e.target.value);
     }
   };
-  console.log(etherRAmount, "reasdsfcasd-=-=--=-=-==-=")
+  console.log(etherRAmount, "reasdsfcasd-=-=--=-=-==-=");
   const rewardWithdraw = () => {
-    console.log("args for withdraw reward", etherRAmount)
+    console.log("args for withdraw reward", etherRAmount);
     withdrawUserRewards?.();
-  }
+  };
 
   const getPriceBNB = async (amount) => {
-    const api_call = await fetch(`https://www.binance.com/api/v3/ticker/price?symbol=BNBUSDT`);
+    const api_call = await fetch(
+      `https://www.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
+    );
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
     console.log(price?.price, amount, "===============");
-  }
+  };
 
   const getPriceETH = async (amount) => {
-    const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
+    const api_call = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`
+    );
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
     console.log(price?.price, amount, "===============");
-  }
+  };
 
   const getPriceArbi = async (amount) => {
-    const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
+    const api_call = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`
+    );
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
     console.log(price?.price, amount, "===============");
-  }
+  };
 
   const getPriceOpti = async (amount) => {
-    const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
+    const api_call = await fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`
+    );
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
     console.log(price?.price, amount, "===============");
-  }
+  };
 
   useEffect(() => {
     // setVerification?.();
-    console.log(etherRAmount, "=-=-=000==")
+    console.log(etherRAmount, "=-=-=000==");
   }, [etherRAmount]);
 
-
   // console.log( "reward Error!",userRewardConfigError)
-  console.log(chain?.nativeCurrency, "current network info")
+  console.log(chain?.nativeCurrency, "current network info");
+  useEffect(() => {
+    // Create a script element
+    const script = document.createElement("script");
+    script.src = "https://app.debridge.finance/assets/scripts/widget.js";
+    script.async = true;
+
+    // Append the script to the document body
+    document.body.appendChild(script);
+
+    // Callback to initialize the widget once the script is loaded
+    script.onload = () => {
+      window.deBridge?.widget({
+        v: "1",
+        element: "debridgeWidget",
+        // ... (rest of your configuration)
+      });
+    };
+
+    // Cleanup function to remove the script when the component unmounts
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <>
-      {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
+      {isLoading && (
+        <Loader showModal={true} setShowModal={setShowLoadingModal} />
+      )}
       {/* Details Modal */}
       {
         // showRewardUserData &&
         <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
-
           <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
             <div className="px-3 pt-3 pb-1.5 space-y-4">
               <div className="max-w-xs mx-auto py-5 space-y-4">
-
                 {/* <div>
                 <CryptoDropdown classes={"left-0"} />
 
@@ -144,24 +179,47 @@ const Rewards = () => {
 
                 <div className="text-Eire-Black space-y-0.5">
                   <div className="flex justify-between items-center space-x-14 ">
-                    <h2 className="font-normal text-base  flex-1">Enter
-                      Amount</h2>
-                    <input onChange={onEtherRmount}
-                      className="bg-Anti-Flash-White outline-none max-w-[120px] text-center text-Light-Slate-Gray rounded-2xl p-3" />
+                    <h2 className="font-normal text-base  flex-1">
+                      Enter Amount
+                    </h2>
+                    <input
+                      onChange={onEtherRmount}
+                      className="bg-Anti-Flash-White outline-none max-w-[120px] text-center text-Light-Slate-Gray rounded-2xl p-3"
+                    />
                   </div>
 
                   <div className="flex justify-between ">
                     <h2 className="font-normal text-base ">Value USD</h2>
-                    <h2 className="font-normal text-base ">${Number(priceToken).toFixed(2)}</h2>
+                    <h2 className="font-normal text-base ">
+                      ${Number(priceToken).toFixed(2)}
+                    </h2>
                   </div>
                   <div className="flex justify-between ">
                     <h2 className="font-normal text-base ">Status</h2>
                     <h2 className="font-normal text-base flex items-center space-x-2">
-                      <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle opacity="0.6" cx="8.5" cy="9.39453" r="8.5" fill="#73FE5C" />
-                        <circle cx="8.50018" cy="9.39446" r="6.18182" fill="#4DED33" />
+                      <svg
+                        width="17"
+                        height="18"
+                        viewBox="0 0 17 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          opacity="0.6"
+                          cx="8.5"
+                          cy="9.39453"
+                          r="8.5"
+                          fill="#73FE5C"
+                        />
+                        <circle
+                          cx="8.50018"
+                          cy="9.39446"
+                          r="6.18182"
+                          fill="#4DED33"
+                        />
                       </svg>
-                      <span>Earned</span></h2>
+                      <span>Earned</span>
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -173,13 +231,16 @@ const Rewards = () => {
                   Cancel
                 </button>
                 <button
-                  disabled={showRewardUserData === undefined || etherRAmount === 0 ? true : false}
+                  disabled={
+                    showRewardUserData === undefined || etherRAmount === 0
+                      ? true
+                      : false
+                  }
                   onClick={() => {
                     rewardWithdraw();
-
                   }}
                   className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
-                // #ADADAD
+                  // #ADADAD
                 >
                   Withdraw
                 </button>
@@ -191,11 +252,8 @@ const Rewards = () => {
       }
 
       {/* Congrats Modal */}
-      {isSuccess &&
-        <Modals
-          showModal={true}
-          setShowModal={showShowCongratsModal}
-        >
+      {isSuccess && (
+        <Modals showModal={true} setShowModal={showShowCongratsModal}>
           <CongratsModalWrapper>
             {" "}
             <div className="space-y-2 py-6">
@@ -203,8 +261,17 @@ const Rewards = () => {
                 Congratulation!
               </h1>
               <h4 className="text-Bright-Gray/90 font-normal text-base">
-                You have successfully Withdraw {etherRAmount === undefined ? 0 : formatUnits?.(Number(etherRAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
-                <span className="font-bold">{chain?.nativeCurrency?.symbol}</span> to your wallet.
+                You have successfully Withdraw{" "}
+                {etherRAmount === undefined
+                  ? 0
+                  : formatUnits?.(
+                      Number(etherRAmount),
+                      chain?.id === 56 || chain?.id === 1 ? 18 : 6
+                    )}
+                <span className="font-bold">
+                  {chain?.nativeCurrency?.symbol}
+                </span>{" "}
+                to your wallet.
               </h4>
             </div>
             <button
@@ -215,8 +282,7 @@ const Rewards = () => {
             </button>
           </CongratsModalWrapper>
         </Modals>
-      }
-
+      )}
 
       <div className="max-w-7xl mx-auto w-full space-y-4 md:space-y-8 flex flex-col items-center">
         <div className="flex items-center space-x-4">
@@ -234,27 +300,40 @@ const Rewards = () => {
           </svg>
 
           <h1 className="text-Chinese-Blue font-semibold text-base">
-            Claim your BuidlPoints rewards.
+            Bridge tokens on YouBridge.
           </h1>
         </div>
 
-        <div className="w-full flex flex-col  lg:flex-row items-stretch space-y-6 lg:space-y-0 lg:space-x-4">
+        <div id="debridgeWidget"></div>
+
+        {/* <div className="w-full flex flex-col  lg:flex-row items-stretch space-y-6 lg:space-y-0 lg:space-x-4">
           <div className="flex-1 border border-Bright-Gray rounded-2xl p-6 pl-0 pb-0 flex flex-col overflow-hidden space-y-4">
             <div className="flex-1 pl-6">
               <p className="text-Old-Silver font-normal text-base">
-                {(showRewardUserData?.[0] === 0n || showRewardUserData?.[0] === undefined) ? "" : "Congratulations 🎊"}
-                <br /> You have earned {' '}
+                {showRewardUserData?.[0] === 0n ||
+                showRewardUserData?.[0] === undefined
+                  ? ""
+                  : "Congratulations 🎊"}
+                <br /> You have earned{" "}
                 <span className="font-extrabold">
-                  {showRewardUserData?.[0] === undefined ? 0 : formatEther(showRewardUserData?.[0])} {chain?.nativeCurrency?.symbol}
-                </span>{' '}
-                and{' '}
+                  {showRewardUserData?.[0] === undefined
+                    ? 0
+                    : formatEther(showRewardUserData?.[0])}{" "}
+                  {chain?.nativeCurrency?.symbol}
+                </span>{" "}
+                and{" "}
                 <span className="font-extrabold">
-                  {showRewardUserData?.[1] === undefined ? 0 : formatEther(showRewardUserData?.[1])} BuidlPoints
+                  {showRewardUserData?.[1] === undefined
+                    ? 0
+                    : formatEther(showRewardUserData?.[1])}{" "}
+                  BuidlPoints
                 </span>
-
               </p>
               <h1 className="text-Pure-Black font-semibold text-2xl sm:text-3xl">
-                {showRewardUserData?.[0] === undefined ? 0 : formatEther(showRewardUserData?.[0])} {chain?.nativeCurrency?.symbol}
+                {showRewardUserData?.[0] === undefined
+                  ? 0
+                  : formatEther(showRewardUserData?.[0])}{" "}
+                {chain?.nativeCurrency?.symbol}
               </h1>
             </div>
             <img
@@ -268,10 +347,14 @@ const Rewards = () => {
           </div>
         </div>
         <button
-          // disabled = {showRewardUserData === undefined ? true : false} 
-          onClick={() => { rewardWithdraw(); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
+          // disabled = {showRewardUserData === undefined ? true : false}
+          onClick={() => {
+            rewardWithdraw();
+          }}
+          className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White"
+        >
           Withdraw
-        </button>
+        </button> */}
       </div>
     </>
   );

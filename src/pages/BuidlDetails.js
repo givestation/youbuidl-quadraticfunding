@@ -3,7 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContractRead, usePrepareContractWrite, useContractWrite } from 'wagmi';
 import { readContract, writeContract, waitForTransaction, watchContractEvent } from "@wagmi/core";
-import { formatUnits, parseUnits } from 'viem';
+import { formatUnits } from 'viem';
 import ProjectContractInterface from '../abi/Project.json';
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
@@ -12,6 +12,7 @@ import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
 import QFRoundsContractInterface from '../abi/QFRounds.json';
 import Erc20Json from '../abi/ERC20.json';
 import Loader from '../components/Loader';
+import web3 from 'web3';
 import { bscId, contractAddresses, contriTokens, defaultEthLink, qfRoundsAddresses } from "../utils/constant";
 import { getProject } from "../utils";
 import { useChainContext } from "../utils/Context";
@@ -60,6 +61,17 @@ const BuidlDetails = () => {
   const [isApproving, setIsApproving] = useState(false);
   const [approveSucc, setApproveSucc] = useState(false);
 
+
+  watchContractEvent(
+    {
+      ...crowdFundingConf,
+      eventName: "ContributionReceived",
+    },
+    async () => {
+      await initProjectDetails()
+    }
+  );
+
   //===========project Contract config==============
   const projectContractConfig = {
     address: projectContractAddress,
@@ -87,7 +99,7 @@ const BuidlDetails = () => {
 
   const onContributedAmount = (e) => {
     setContributedAmount(
-      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
+      web3.utils.toBigInt(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
     );
     setContributedNumAmount(e.target.value);
 

@@ -4,8 +4,9 @@ import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
 import { useNetwork, useContractRead, useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../abi/Project.json';
-import { formatUnits, parseUnits } from 'viem';
+import { formatEther, formatUnits } from 'viem';
 import Loader from '../components/Loader';
+import web3 from 'web3';
 import { bscId, contriTokens } from "../utils/constant";
 
 const WithdrawRequest = () => {
@@ -30,12 +31,12 @@ const WithdrawRequest = () => {
 
   const onWRequestUSDTOrDaiAmount = (e) => {
     setWRUSDTOrDaiAmount(
-      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
     );
   };
   const onWRequestUSDCAmount = (e) => {
     setWRUSDCAmount(
-      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
+      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
     );
   };
   //===========Project Contract Config===========
