@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import TotalBalance from "../components/TotalBalance";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import CryptoDropdown from "../components/CryptoDropdown";
 import CrowdFundingContractInterface from '../abi/Crowdfunding.json';
-import { formatEther,formatUnits  } from 'viem';
-import web3 from 'web3';
+import { formatEther, formatUnits, parseUnits } from 'viem';
 import Loader from '../components/Loader';
 import {
   useContractRead,
@@ -14,7 +12,7 @@ import {
   usePrepareContractWrite,
   useContractWrite
 } from 'wagmi';
-import { contractAddresses } from "../utils/constant";
+import { bscId, contractAddresses } from "../utils/constant";
 
 const Rewards = () => {
   const { chain, chains } = useNetwork()
@@ -35,15 +33,15 @@ const Rewards = () => {
 
   //===============crowdfunding Contract config===============
   let crowdFundingContractConfig = {};
-  if (chain === undefined){
+  if (chain === undefined) {
     console.log("plz connect metamask")
-  }else{
+  } else {
     crowdFundingContractConfig = {
       address: contractAddresses[chain?.id],
       abi: CrowdFundingContractInterface,
     };
   }
-//=============show Reward of user========
+  //=============show Reward of user========
   const { data: showRewardUserData } = useContractRead({
     ...crowdFundingContractConfig,
     functionName: 'showRewardUser',
@@ -52,7 +50,7 @@ const Rewards = () => {
     ],
   });
   console.log("reward show", showRewardUserData)
-//================user can Withdraw reward==============
+  //================user can Withdraw reward==============
   const {
     config: userRewardConfig,
     error: userRewardConfigError,
@@ -61,32 +59,32 @@ const Rewards = () => {
     ...crowdFundingContractConfig,
     functionName: 'withdrawUserRewards',
     // args: [
-      
+
     // ],
   });
- 
+
   const {
     data: userRewardReturnData,
     write: withdrawUserRewards,
     error: userRewardReturnError,
     isLoading,
-    isSuccess 
+    isSuccess
   } = useContractWrite(userRewardConfig);
 
   //==============main functions===========
   const onEtherRmount = (e) => {
     setEtherRAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === 56 || chain?.id === 1 ? 'ether' : 'mwei')))//mwei
+      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
     );
-    if(chain?.id === 56){
+    if (chain?.id === 56) {
       getPriceBNB(e.target.value);
-    } else if(chain?.id === 1){
+    } else if (chain?.id === 1) {
       getPriceETH(e.target.value);
     }
   };
-  console.log(etherRAmount,"reasdsfcasd-=-=--=-=-==-=")
-  const rewardWithdraw = () =>{
-   console.log("args for withdraw reward", etherRAmount)
+  console.log(etherRAmount, "reasdsfcasd-=-=--=-=-==-=")
+  const rewardWithdraw = () => {
+    console.log("args for withdraw reward", etherRAmount)
     withdrawUserRewards?.();
   }
 
@@ -94,106 +92,106 @@ const Rewards = () => {
     const api_call = await fetch(`https://www.binance.com/api/v3/ticker/price?symbol=BNBUSDT`);
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
-    console.log(price?.price,amount,"===============");
+    console.log(price?.price, amount, "===============");
   }
 
   const getPriceETH = async (amount) => {
     const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
-    console.log(price?.price,amount,"===============");
+    console.log(price?.price, amount, "===============");
   }
 
   const getPriceArbi = async (amount) => {
     const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
-    console.log(price?.price,amount,"===============");
+    console.log(price?.price, amount, "===============");
   }
 
   const getPriceOpti = async (amount) => {
     const api_call = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`);
     const price = await api_call.json();
     setPriceToken(price?.price * amount);
-    console.log(price?.price,amount,"===============");
+    console.log(price?.price, amount, "===============");
   }
 
   useEffect(() => {
     // setVerification?.();
-    console.log(etherRAmount,"=-=-=000==")
-},[etherRAmount]);
+    console.log(etherRAmount, "=-=-=000==")
+  }, [etherRAmount]);
 
 
   // console.log( "reward Error!",userRewardConfigError)
-  console.log(chain?.nativeCurrency,"current network info")
+  console.log(chain?.nativeCurrency, "current network info")
 
   return (
     <>
-       {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal}/>}
+      {isLoading && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
       {/* Details Modal */}
-      { 
-      // showRewardUserData &&
+      {
+        // showRewardUserData &&
         <Modals showModal={showDetailsModal} setShowModal={setShowDetailsModal}>
-      
-        <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
-          <div className="px-3 pt-3 pb-1.5 space-y-4">
-            <div className="max-w-xs mx-auto py-5 space-y-4">
-            
-              {/* <div>
+
+          <div className="max-w-sm sm:w-96 rounded-2xl bg-Pure-White">
+            <div className="px-3 pt-3 pb-1.5 space-y-4">
+              <div className="max-w-xs mx-auto py-5 space-y-4">
+
+                {/* <div>
                 <CryptoDropdown classes={"left-0"} />
 
               </div> */}
 
-              <div className="text-Eire-Black space-y-0.5">
-                <div className="flex justify-between items-center space-x-14 ">
-                  <h2 className="font-normal text-base  flex-1">Enter
-                    Amount</h2>
-                  <input onChange={onEtherRmount}
-                    className="bg-Anti-Flash-White outline-none max-w-[120px] text-center text-Light-Slate-Gray rounded-2xl p-3" />
-                </div>
+                <div className="text-Eire-Black space-y-0.5">
+                  <div className="flex justify-between items-center space-x-14 ">
+                    <h2 className="font-normal text-base  flex-1">Enter
+                      Amount</h2>
+                    <input onChange={onEtherRmount}
+                      className="bg-Anti-Flash-White outline-none max-w-[120px] text-center text-Light-Slate-Gray rounded-2xl p-3" />
+                  </div>
 
-                <div className="flex justify-between ">
-                  <h2 className="font-normal text-base ">Value USD</h2>
-                  <h2 className="font-normal text-base ">${Number(priceToken).toFixed(2) }</h2>
-                </div>
-                <div className="flex justify-between ">
-                  <h2 className="font-normal text-base ">Status</h2>
-                  <h2 className="font-normal text-base flex items-center space-x-2">
-                    <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle opacity="0.6" cx="8.5" cy="9.39453" r="8.5" fill="#73FE5C" />
-                      <circle cx="8.50018" cy="9.39446" r="6.18182" fill="#4DED33" />
-                    </svg>
-                    <span>Earned</span></h2>
+                  <div className="flex justify-between ">
+                    <h2 className="font-normal text-base ">Value USD</h2>
+                    <h2 className="font-normal text-base ">${Number(priceToken).toFixed(2)}</h2>
+                  </div>
+                  <div className="flex justify-between ">
+                    <h2 className="font-normal text-base ">Status</h2>
+                    <h2 className="font-normal text-base flex items-center space-x-2">
+                      <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle opacity="0.6" cx="8.5" cy="9.39453" r="8.5" fill="#73FE5C" />
+                        <circle cx="8.50018" cy="9.39446" r="6.18182" fill="#4DED33" />
+                      </svg>
+                      <span>Earned</span></h2>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex items-center space-x-4 font-semibold text-base">
-              <button
-                onClick={() => setShowDetailsModal(false)}
-                className="text-Chinese-Blue border-2 border-Chinese-Blue flex-1 py-2 rounded-4xl"
-              >
-                Cancel
-              </button>
-              <button
-                disabled={showRewardUserData === undefined  || etherRAmount === 0 ? true : false}
-                onClick={() => {
-                  rewardWithdraw();
-                  
-                }}
-                className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
+              <div className="flex items-center space-x-4 font-semibold text-base">
+                <button
+                  onClick={() => setShowDetailsModal(false)}
+                  className="text-Chinese-Blue border-2 border-Chinese-Blue flex-1 py-2 rounded-4xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  disabled={showRewardUserData === undefined || etherRAmount === 0 ? true : false}
+                  onClick={() => {
+                    rewardWithdraw();
+
+                  }}
+                  className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
                 // #ADADAD
-              >
-                Withdraw
-              </button>
+                >
+                  Withdraw
+                </button>
+              </div>
+              <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
             </div>
-            <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
-        </div>
         </Modals>
       }
 
       {/* Congrats Modal */}
-      { isSuccess &&
+      {isSuccess &&
         <Modals
           showModal={true}
           setShowModal={showShowCongratsModal}
@@ -205,7 +203,7 @@ const Rewards = () => {
                 Congratulation!
               </h1>
               <h4 className="text-Bright-Gray/90 font-normal text-base">
-                You have successfully Withdraw { etherRAmount === undefined ? 0 : formatUnits?.(Number(etherRAmount),(chain?.id === 56 || chain?.id === 1 ? 18 : 6)) } 
+                You have successfully Withdraw {etherRAmount === undefined ? 0 : formatUnits?.(Number(etherRAmount), (chain?.id === 56 || chain?.id === 1 ? 18 : 6))}
                 <span className="font-bold">{chain?.nativeCurrency?.symbol}</span> to your wallet.
               </h4>
             </div>
@@ -244,19 +242,19 @@ const Rewards = () => {
           <div className="flex-1 border border-Bright-Gray rounded-2xl p-6 pl-0 pb-0 flex flex-col overflow-hidden space-y-4">
             <div className="flex-1 pl-6">
               <p className="text-Old-Silver font-normal text-base">
-              { (showRewardUserData?.[0] === 0n || showRewardUserData?.[0] === undefined) ? "" : "Congratulations 🎊" }
-               <br/> You have earned {' '}
+                {(showRewardUserData?.[0] === 0n || showRewardUserData?.[0] === undefined) ? "" : "Congratulations 🎊"}
+                <br /> You have earned {' '}
                 <span className="font-extrabold">
-                   { showRewardUserData?.[0] === undefined ? 0 : formatEther(showRewardUserData?.[0]) } {chain?.nativeCurrency?.symbol}
+                  {showRewardUserData?.[0] === undefined ? 0 : formatEther(showRewardUserData?.[0])} {chain?.nativeCurrency?.symbol}
                 </span>{' '}
                 and{' '}
                 <span className="font-extrabold">
-                   { showRewardUserData?.[1] === undefined ? 0 : formatEther(showRewardUserData?.[1]) } BuidlPoints
-                </span> 
-                 
+                  {showRewardUserData?.[1] === undefined ? 0 : formatEther(showRewardUserData?.[1])} BuidlPoints
+                </span>
+
               </p>
               <h1 className="text-Pure-Black font-semibold text-2xl sm:text-3xl">
-                { showRewardUserData?.[0] === undefined ? 0 : formatEther(showRewardUserData?.[0]) } {chain?.nativeCurrency?.symbol}
+                {showRewardUserData?.[0] === undefined ? 0 : formatEther(showRewardUserData?.[0])} {chain?.nativeCurrency?.symbol}
               </h1>
             </div>
             <img
@@ -266,13 +264,13 @@ const Rewards = () => {
             />
           </div>
           <div className="w-auto">
-            <TotalBalance/>
+            <TotalBalance />
           </div>
         </div>
-        <button 
+        <button
           // disabled = {showRewardUserData === undefined ? true : false} 
           onClick={() => { rewardWithdraw(); }} className="bg-gradient-to-b from-Chinese-Blue to-Celestial-Blue py-2  rounded-lg max-w-xs w-full text-Pure-White">
-            Withdraw
+          Withdraw
         </button>
       </div>
     </>
