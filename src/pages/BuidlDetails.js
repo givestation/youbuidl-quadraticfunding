@@ -19,7 +19,7 @@ import { useChainContext } from "../utils/Context";
 
 const BuidlDetails = () => {
   const navigate = useNavigate();
-  const { chain } = useNetwork();
+  const { chain, chains } = useNetwork();
   const { address } = useAccount();
   const currentLocation = useLocation();
   const projectContractAddress = currentLocation.pathname?.slice(8, 50);
@@ -49,7 +49,7 @@ const BuidlDetails = () => {
   const [rewardCalculat, setRewardCalculat] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDC");
   const [projectDetails, setProjectDetails] = useState(undefined)
-  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState(contriTokens[chain?.id][1]?.address);
+  const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("");
 
   const [crowdFundingConf, setCrowdFundingConf] = useState({});
   const [qfRoundsConf, setQFRoundsConf] = useState({});
@@ -203,8 +203,10 @@ const BuidlDetails = () => {
   }
 
   useEffect(() => {
-    if (chain != undefined)
+    if (chain != undefined && chains.includes(chain?.id)) {
+      setSelectedCryptoAddress(contriTokens[chain?.id][1]?.address)
       initProjectDetails()
+    }
     else
       navigate(-1)
   }, [chain])
@@ -228,11 +230,13 @@ const BuidlDetails = () => {
   }, [chain])
 
   useEffect(() => {
-    setERC20Conf({
-      address: selectedCryptoAddress,
-      abi: Erc20Json,
-    })
-  }, [selectedCryptoAddress])
+    if (selectedCryptoAddress != "") {
+      setERC20Conf({
+        address: selectedCryptoAddress,
+        abi: Erc20Json,
+      })
+    }
+  }, [chain, selectedCryptoAddress])
 
   useEffect(() => {
     if (chain && erc20Conf) {
@@ -719,7 +723,7 @@ const BuidlDetails = () => {
                       <Menu.Items className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}>
                         <div className="font-medium text-sm text-Light-Slate-Gray">
                           {
-                            (contriTokens[chain?.id]).map((crypto, index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
+                            (contriTokens[chain?.id])?.map((crypto, index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
                               onClick={() => {
                                 setSelectedCrypto(crypto.name);
                                 setSelectedCryptoAddress(crypto.address);
