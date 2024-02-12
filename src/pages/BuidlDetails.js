@@ -158,7 +158,6 @@ const BuidlDetails = () => {
     // let hours = dataObj.getUTCHours();
     setRestDays(daysLeft);
     setRestHours(hoursLeft)
-    console.log(daysLeft.toString(), "letft days")
   };
 
   const approveToken = async () => {
@@ -189,7 +188,6 @@ const BuidlDetails = () => {
       functionName: "allowance",
       args: [address, projectContractAddress],
     });
-
     const amount = formatUnits(allowance, chain?.id === bscId ? 18 : 6)
 
     if (+amount >= contributedNumAmount) setIsApproved(true)
@@ -353,9 +351,9 @@ const BuidlDetails = () => {
               ) : (
                 <button
                   disabled={contributedAmount === 0n ? true : false}
-                  onClick={() => {
-                    approveToken();
-                  }}
+                  onClick={
+                    approveToken
+                  }
                   className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
                 >
                   Approve
@@ -365,7 +363,7 @@ const BuidlDetails = () => {
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
         </div>
-      </Modals>
+      </Modals >
 
       <Modals showModal={showDescModal} setShowModal={setShowDescModal}>
 
@@ -394,7 +392,8 @@ const BuidlDetails = () => {
 
       {/* Approved Modal loading and congratulation */}
       <Loader showModal={isApproving} setShowModal={setShowLoadingModal} />
-      {approveSucc &&
+      {
+        approveSucc &&
         <Modals
           showModal={approvedCongratsModal}
           setShowModal={setApprovedCongratsModal}
@@ -422,7 +421,8 @@ const BuidlDetails = () => {
 
       {/* Contributed Modal loading and congratulation*/}
       {isContributing && <Loader showModal={true} setShowModal={setShowLoadingModal} />}
-      {contributeSucc &&
+      {
+        contributeSucc &&
         <Modals
           showModal={contributedCongratsModal}
           setShowModal={setContributedCongratsModal}

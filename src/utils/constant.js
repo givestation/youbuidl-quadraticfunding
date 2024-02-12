@@ -2,7 +2,8 @@ export const arbitrumId = 42161;
 export const bscId = 56;
 export const polygonId = 137;
 export const mainnetId = 1;
-export const optimismId = 10;
+export const optimismId = 420 ;
+// export const optimismId = 10;
 
 export const chainLogos = {
     [mainnetId]: "/assets/images/polygon.png",
@@ -32,7 +33,7 @@ export const contractAddresses = {
     [bscId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [polygonId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [arbitrumId]: "0x26BCc65416366110c0A07aF49CD4C531614cf034",
-    [optimismId]: "0x3E551e54B49154E78bF5Ea9A92F83aeA3B813797"
+    [optimismId]: "0xa2526d89FF5B0AC7a417320752E2f8a2c09E7d9D"
 }
 
 export const qfRoundsAddresses = {
@@ -40,7 +41,7 @@ export const qfRoundsAddresses = {
     [bscId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [polygonId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [arbitrumId]: "0x789f71868a6fa58f1354e1226f807c51edbee3d6",
-    [optimismId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4"
+    [optimismId]: "0x65Ca4795348100E11a96c9A15d2aBA5C8eE3b505"
 }
 
 export const defaultEthLink = {
@@ -52,10 +53,10 @@ export const defaultEthLink = {
 }
 
 export const subgraphURLs = {
-    [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
-    [polygonId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildpolygon",
+    // [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
+    // [polygonId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildpolygon",
     [optimismId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuidl-optimism",
-    [arbitrumId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildarbitrum",
+    // [arbitrumId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildarbitrum",
 }
 
 export const contriTokens = {
@@ -82,11 +83,11 @@ export const contriTokens = {
     [optimismId]: [
         {
             "name": "USDT",
-            "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58"
+            "address": "0xEfe7483324eE2c544C6817ebd7308134D5aEC5D4"
         },
         {
             "name": "USDC",
-            "address": "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85"
+            "address": "0x1797336097b623Aaa192E16F68091E7fE6d21aaB"
         }
     ],
     [arbitrumId]: [
