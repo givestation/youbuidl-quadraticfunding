@@ -51,6 +51,29 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+}
+/* .react-datepicker-wrapper,
+.react-datepicker, */
+.react-datepicker__input-container > input {
+  width: 98px;
+  height: 32px;
+  margin: 0 -98px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.react-datepicker-popper {
+  transform: translate(-96px, 50px) !important;
+}
+
+@media (min-width: 768px) {
+  .sm-min-h {
+    min-height: calc(100vh - 216p);
+  }
+}
+
+.sm-min-h {
+  min-height: calc(100vh - 140px);
 }
