@@ -143,10 +143,20 @@ const Rewards = () => {
               <div className=" z-10 relative flex flex-col justify-between gap-5 h-full">
                 <div>
                   <h1 className="font-bold text-2xl">BuildPoints</h1>
-                  <p>
-                    You have received Points for funding{" "}
-                    {contriDetail?.contributions.length} projects.
-                  </p>
+
+                  {contriDetail?.totalBuidlPointRewards > 0 ? (
+                    <p>
+                      You have received {contriDetail?.totalBuidlPointRewards} Points for funding{" "}
+                      {contriDetail?.contributions.length} projects.
+                    </p>
+                  ) : (
+                    <p>
+                      You currently have 0 BuildPoints. <br />
+                      Please fund verified projects.
+                    </p>
+                  )}
+
+
                 </div>
                 <div className="">
                   <h2 className="font-bold text-xl">
@@ -197,7 +207,7 @@ const Rewards = () => {
                 <div>
                   <h1 className="font-bold text-2xl">Contribution Rewards</h1>
                   <p>
-                    You have received USDT for funding{" "}
+                    You have received {contriDetail?.totalUSDTRewards} USDT for funding{" "}
                     {contriDetail?.contributions.length} projects.
                   </p>
                 </div>
@@ -220,6 +230,7 @@ const Rewards = () => {
                   </div>
                   <button
                     onClick={claimReward}
+                    disabled={contriDetail?.claimableUSDTRewards > 0 ? false : true}
                     className="rounded-md bg-[#12D69B] py-1 px-4 sm:py-2 sm:px-8 "
                   >
                     Claim
@@ -276,6 +287,7 @@ const Rewards = () => {
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(referralURL);
+                        alert("Copied!")
                       }}
                       className="rounded-md flex-1 bg-[#12D69B] py-1 w-full  sm:py-2  "
                     >
