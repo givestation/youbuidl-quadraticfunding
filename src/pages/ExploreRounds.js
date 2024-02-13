@@ -197,7 +197,7 @@ const ExploreRounds = () => {
                       </div>
                       <div style={{ color: "#fffff" }}>
                         <span class="text-lg font-bold text-black-500">
-                          {qfRound.projectNum} Projects
+                          {qfRound?.projectNum} Projects
                         </span>
                       </div>
                     </div>
