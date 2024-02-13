@@ -2,17 +2,15 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import { useNetwork, useContractRead, useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useNetwork, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import ProjectContractInterface from '../abi/Project.json';
-import { formatEther, formatUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 import Loader from '../components/Loader';
-import web3 from 'web3';
 import { bscId, contriTokens } from "../utils/constant";
 
 const WithdrawRequest = () => {
 
-  const { chain, chains } = useNetwork();
-  const { address, connector, isConnected } = useAccount();
+  const { chain } = useNetwork();
   const navigate = useNavigate();
   const currentLocation = useLocation();
   const projectContractAddress = currentLocation.pathname?.slice(8, 50);
@@ -31,13 +29,12 @@ const WithdrawRequest = () => {
 
   const onWRequestUSDTOrDaiAmount = (e) => {
     setWRUSDTOrDaiAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
+      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
     );
   };
   const onWRequestUSDCAmount = (e) => {
     setWRUSDCAmount(
-      web3.utils.toNumber(web3.utils.toWei(e.target.value, (chain?.id === bscId ? 'ether' : 'mwei')))
-    );
+      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6)))
   };
   //===========Project Contract Config===========
   const projectContractConfig = {

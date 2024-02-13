@@ -1,11 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import TotalBalance from "../components/TotalBalance";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
-import CryptoDropdown from "../components/CryptoDropdown";
 import CrowdFundingContractInterface from "../abi/Crowdfunding.json";
-import { formatEther, formatUnits } from "viem";
-import web3 from "web3";
+import { formatUnits, parseUnits } from "viem";
 import Loader from "../components/Loader";
 import {
   useContractRead,
@@ -14,7 +11,7 @@ import {
   usePrepareContractWrite,
   useContractWrite,
 } from "wagmi";
-import { contractAddresses } from "../utils/constant";
+import { bscId, contractAddresses } from "../utils/constant";
 
 const Rewards = () => {
   const { chain, chains } = useNetwork();
@@ -74,12 +71,7 @@ const Rewards = () => {
   //==============main functions===========
   const onEtherRmount = (e) => {
     setEtherRAmount(
-      web3.utils.toNumber(
-        web3.utils.toWei(
-          e.target.value,
-          chain?.id === 56 || chain?.id === 1 ? "ether" : "mwei"
-        )
-      ) //mwei
+      parseUnits(e.target.value, chain?.id === bscId ? 18 : 6)
     );
     if (chain?.id === 56) {
       getPriceBNB(e.target.value);
@@ -87,7 +79,6 @@ const Rewards = () => {
       getPriceETH(e.target.value);
     }
   };
-  console.log(etherRAmount, "reasdsfcasd-=-=--=-=-==-=");
   const rewardWithdraw = () => {
     console.log("args for withdraw reward", etherRAmount);
     withdrawUserRewards?.();
