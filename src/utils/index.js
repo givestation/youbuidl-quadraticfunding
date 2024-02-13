@@ -187,7 +187,7 @@ export const getQFRounds = async () => {
 
 export const getContributors = async (chainId) => {
     const query = `{
-        contributors(orderBy: totalContribution) {
+        contributors(orderBy: totalContribution, orderDirection: desc) {
           id
           referralNumber
           totalContribution
