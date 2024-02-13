@@ -14,21 +14,6 @@ import {
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 
-import Layout from './components/layout';
-import FundToFarm from './pages/FundToFarm';
-import Dashboard from './pages/Dashboard';
-import ExploreRounds from './pages/ExploreRounds';
-import Rewards from './pages/Rewards';
-import BuidlDetails from './pages/BuidlDetails';
-import Projects from './pages/Projects';
-import Bridge from './pages/Bridge';
-import Contributions from './pages/Contributions';
-import MintDomain from './pages/MintDomain';
-import CreateProject from './pages/CreateProject';
-import WithdrawRequest from './pages/WithdrawRequest';
-import VoteForRequest from './pages/VoteForRequest';
-import Withdraw from './pages/Withdraw';
-
 import Layout from "./components/layout";
 import FundToFarm from "./pages/FundToFarm";
 import Dashboard from "./pages/Dashboard";
