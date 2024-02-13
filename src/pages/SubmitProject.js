@@ -5,7 +5,6 @@ const SubmitProject = () => {
   return (
     <div>
       <h1 className="text-xl font-semibold">Submit a Buidl</h1>
-
       <MultiStepForm />
     </div>
   );

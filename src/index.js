@@ -3,16 +3,10 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "@rainbow-me/rainbowkit/styles.css";
 
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {
-  polygon,
-  arbitrum,
-  bsc,
-  optimism,
-  optimismGoerli
-} from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { polygon, arbitrum, bsc, optimism, optimismGoerli } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
 
 import Layout from "./components/layout";
 import FundToFarm from "./pages/FundToFarm";
@@ -33,9 +27,7 @@ import SubmitProject from "./pages/SubmitProject";
 const { chains, publicClient } = configureChains(
   // [polygon, bsc, optimism, arbitrum],
   [optimismGoerli],
-  [
-    publicProvider(),
-  ],
+  [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
@@ -100,10 +92,6 @@ const router = createBrowserRouter([
       },
       {
         path: "/create-project",
-        element: <CreateProject />,
-      },
-      {
-        path: "/submit-project",
         element: <SubmitProject />,
       },
       {
