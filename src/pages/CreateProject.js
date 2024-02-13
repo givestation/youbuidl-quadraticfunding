@@ -6,6 +6,7 @@ import CrowdFundingContractInterface from "../abi/Crowdfunding.json";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 import { bscId, contractAddresses, contriTokens } from "../utils/constant";
+import { parseUnits } from "viem";
 
 const CLOUDINARY_UPLOAD_URL =
   "https://api.cloudinary.com/v1_1/dvwdyqvzt/image/upload";

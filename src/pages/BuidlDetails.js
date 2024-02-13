@@ -10,7 +10,7 @@ import {
   waitForTransaction,
   watchContractEvent,
 } from "@wagmi/core";
-import { formatUnits } from "viem";
+import { formatUnits, parseUnits } from "viem";
 import ProjectContractInterface from "../abi/Project.json";
 import Modals from "../components/modals";
 import CongratsModalWrapper from "../components/modals/CongratsModalWrapper";
