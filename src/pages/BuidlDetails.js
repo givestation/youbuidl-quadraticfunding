@@ -487,39 +487,39 @@ const BuidlDetails = () => {
 
       {/* Approved Modal loading and congratulation */}
       <Loader showModal={isApproving} setShowModal={setShowLoadingModal} />
-      approveSucc &&
-      <Modals
-        showModal={approvedCongratsModal}
-        setShowModal={setApprovedCongratsModal}
-      >
-        <CongratsModalWrapper>
-          {" "}
-          <div className="space-y-2 py-6">
-            <h1 className="text-Bright-Gray font-medium text-xl">
-              Congratulation!
-            </h1>
-            <h4 className="text-Bright-Gray/90 font-normal text-sm">
-              You have successfully approved
-              <span className="font-semibold">
-                {" "}
-                {contributedNumAmount === "" ? 0 : contributedNumAmount}{" "}
-                {selectedCrypto}
-              </span>{" "}
-              from your wallet!
-            </h4>
-          </div>
-          <button
-            onClick={() => {
-              setApprovedCongratsModal(false);
-              setApproveSucc(false);
-            }}
-            className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
-          >
-            Close
-          </button>
-        </CongratsModalWrapper>
-      </Modals>
-
+      {approveSucc &&
+        <Modals
+          showModal={approvedCongratsModal}
+          setShowModal={setApprovedCongratsModal}
+        >
+          <CongratsModalWrapper>
+            {" "}
+            <div className="space-y-2 py-6">
+              <h1 className="text-Bright-Gray font-medium text-xl">
+                Congratulation!
+              </h1>
+              <h4 className="text-Bright-Gray/90 font-normal text-sm">
+                You have successfully approved
+                <span className="font-semibold">
+                  {" "}
+                  {contributedNumAmount === "" ? 0 : contributedNumAmount}{" "}
+                  {selectedCrypto}
+                </span>{" "}
+                from your wallet!
+              </h4>
+            </div>
+            <button
+              onClick={() => {
+                setApprovedCongratsModal(false);
+                setApproveSucc(false);
+              }}
+              className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
+            >
+              Close
+            </button>
+          </CongratsModalWrapper>
+        </Modals>
+      }
       {/* Contributed Modal loading and congratulation*/}
       {isContributing && (
         <Loader showModal={true} setShowModal={setShowLoadingModal} />
