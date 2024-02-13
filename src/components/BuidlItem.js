@@ -110,7 +110,7 @@ const BuidlItem = ({ project, tag }) => {
                   <div style={{ color: "#818283", background: "#DADFE2" }} className="bg-gray-400 rounded p-0.4">Target Reached
                   </div>
                 )}
-                <span className='text-Vampire-Black'>
+                <span className='text-Vampire-Black font-bold'>
                   ${formatUnits?.(project ? (project?.currentAmount) : 0, (project?.chainId == bscId ? 18 : 6))}
                 </span>
               </h3>
