@@ -96,6 +96,7 @@ export const getProject = async (projectContractAddress, chainId) => {
           githubUrl
           title
           websiteUrl
+          isVerified
         }
         qfrounds(first: 1, orderBy: blockTime, orderDirection: desc) {
           id

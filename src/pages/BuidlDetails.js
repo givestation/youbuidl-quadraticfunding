@@ -110,7 +110,7 @@ const BuidlDetails = () => {
     setContributedNumAmount(e.target.value);
 
     if (e.target.value >= 3 && e.target.value <= 5) {
-      setRewardCalculat(0.002);
+      setRewardCalculat(0.001);
     }
 
     if (e.target.value > 5 && e.target.value <= 10) {
@@ -120,7 +120,7 @@ const BuidlDetails = () => {
       setRewardCalculat(0.005);
     }
     if (e.target.value > 50) {
-      setRewardCalculat(0.08);
+      setRewardCalculat(0.009);
     }
   };
 
@@ -404,10 +404,10 @@ const BuidlDetails = () => {
               )}
               <div className="flex justify-center ">
                 <h2 className="font-medium text-base flex-1 ">
-                  {chain?.nativeCurrency?.symbol} Reward
+                  USDT Reward
                 </h2>
                 <h2 className="font-medium text-base flex-1 text-right">
-                  {rewardCalculat} {chain?.nativeCurrency?.symbol}
+                  {projectDetails?.isVerified ? rewardCalculat : 0} USDT
                 </h2>
               </div>
               <div className="flex justify-center ">
@@ -415,7 +415,8 @@ const BuidlDetails = () => {
                   GivePoints Reward
                 </h2>
                 <h2 className="font-medium text-base flex-1 text-right">
-                  {contributedNumAmount} {selectedCrypto}
+                  {projectDetails?.isVerified ? contributedNumAmount * 100 : 0}
+                  BuidlPoints
                 </h2>
               </div>
               <div className="flex justify-center !mt-5">
@@ -546,7 +547,7 @@ const BuidlDetails = () => {
                 Kindly check the reward page to claim your
                 <span className="font-semibold">
                   {" "}
-                  {rewardCalculat} {chain?.nativeCurrency?.symbol}
+                  {projectDetails?.isVerified ? rewardCalculat : 0} USDT
                 </span>
               </h4>
             </div>
@@ -948,7 +949,6 @@ const BuidlDetails = () => {
                           }}
                         >
                           <div>Select Token</div>
-
                           <div
                             className="bg-Chinese-Blue rounded-lg h-7 w-7 flex items-center justify-center"
                             style={{ background: "transparent" }}
@@ -961,7 +961,6 @@ const BuidlDetails = () => {
                         </div>
                       </Menu.Button>
                     </div>
-
                     <Transition
                       as={Fragment}
                       enter="transition ease-out duration-100"
@@ -976,16 +975,19 @@ const BuidlDetails = () => {
                       >
                         <div className="font-medium text-sm text-Light-Slate-Gray">
                           {
-                            (contriTokens[chain?.id]) ?? [].map((crypto, index) => crypto.name !== selectedCrypto && <Menu.Item key={crypto.name}
-                              onClick={() => {
-                                setSelectedCrypto(crypto.name);
-                                setSelectedCryptoAddress(crypto.address);
-                              }}
-                              as="div"
-                              className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
-                            >
-                              <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
-                            </Menu.Item>
+                            (contriTokens[chain?.id] ?? []).map((crypto, index) => crypto.name !== selectedCrypto &&
+                              (
+                                <Menu.Item key={crypto.name}
+                                  onClick={() => {
+                                    setSelectedCrypto(crypto.name);
+                                    setSelectedCryptoAddress(crypto.address);
+                                  }}
+                                  as="div"
+                                  className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
+                                >
+                                  <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
+                                </Menu.Item>
+                              )
                             )
                           }
                         </div>
