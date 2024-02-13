@@ -454,9 +454,9 @@ const BuidlDetails = () => {
               ) : (
                 <button
                   disabled={contributedAmount === 0n ? true : false}
-                  onClick={() => {
-                    approveToken();
-                  }}
+                  onClick={
+                    approveToken
+                  }
                   className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
                 >
                   Approve
@@ -466,7 +466,7 @@ const BuidlDetails = () => {
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
         </div>
-      </Modals>
+      </Modals >
 
       <Modals showModal={showDescModal} setShowModal={setShowDescModal}>
         <div className=" max-w-md  rounded-2xl bg-Pure-White">
@@ -492,7 +492,7 @@ const BuidlDetails = () => {
 
       {/* Approved Modal loading and congratulation */}
       <Loader showModal={isApproving} setShowModal={setShowLoadingModal} />
-      {approveSucc && (
+        approveSucc &&
         <Modals
           showModal={approvedCongratsModal}
           setShowModal={setApprovedCongratsModal}
