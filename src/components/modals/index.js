@@ -21,7 +21,7 @@ const Modals = ({ children, showModal, setShowModal, classes }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0" />
+            <Dialog.Overlay className="fixed" />
           </Transition.Child>
           <Transition.Child
             as={Fragment}

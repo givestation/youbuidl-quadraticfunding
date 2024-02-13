@@ -151,16 +151,9 @@ const BuidlItem = ({ project, tag }) => {
                 Contribute
               </div>
             )}
-            {isConnected && chain.id == project?.chainId && !project?.isVerified && (
-              <div style={{ background: "#3EA7E1" }} className='cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5 px-2'
-              >
-                Contribute
-              </div>
-            )}
             {
-              isConnected && chain.id == project?.chainId && project?.isVerified && (
+              isConnected && chain.id == project?.chainId && (
                 <>
-
                   {!project?.isOnQF && project?.isFinished && (
                     <div style={{ background: "#3EA7E1" }} className='cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5 px-2'
                     >

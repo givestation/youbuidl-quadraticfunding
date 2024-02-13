@@ -10,6 +10,7 @@ import {
   arbitrum,
   bsc,
   optimism,
+  optimismGoerli
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 
@@ -30,7 +31,8 @@ import Withdraw from './pages/Withdraw';
 
 
 const { chains, publicClient } = configureChains(
-  [polygon, bsc, optimism, arbitrum],
+  // [polygon, bsc, optimism, arbitrum],
+  [optimismGoerli],
   [
     publicProvider(),
   ],
