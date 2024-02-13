@@ -180,8 +180,8 @@ const ExploreRounds = () => {
           </nav>
         </details>
       </div>
-      <section class="py-20">
-        <div class="mx-auto grid max-w-screen-xl grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
+      <section class="py-10">
+        <div class="mx-auto grid max-w-screen-xl grid-cols-1 gap-6  lg:grid-cols-2 xl:grid-cols-3">
           {qfRounds?.qfRoundsList.map((qfRound, index) => (
             <article class="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl">
               <a href="#">
