@@ -16,7 +16,7 @@ const getDataFromSubgraph = async (query, subgraphURL) => {
 
 export const getProjects = async () => {
     const query = `{
-        projects(orderBy: blockTime) {
+        projects(orderBy: blockTime, orderDirection: desc) {
           id
           creator
           projectDeadline
