@@ -18,7 +18,6 @@ import Projects from "./pages/Projects";
 import Bridge from "./pages/Bridge";
 import Contributions from "./pages/Contributions";
 import MintDomain from "./pages/MintDomain";
-import CreateProject from "./pages/CreateProject";
 import WithdrawRequest from "./pages/WithdrawRequest";
 import VoteForRequest from "./pages/VoteForRequest";
 import Withdraw from "./pages/Withdraw";

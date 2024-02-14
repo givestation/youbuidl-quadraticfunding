@@ -383,6 +383,7 @@ const NavbarData = {
           />
         </svg>
       ),
+      isBeta: true
     },
     {
       label: "Docs",
@@ -562,6 +563,16 @@ const Navbar = ({ setShowSideBar }) => {
                       <h1 className={`flex-1 text-base font-normal`}>
                         {NavBarItem?.label}
                       </h1>
+                    </div>
+                  ) : NavBarItem?.isBeta ? (
+                    <div
+                      className={`flex relative items-center justify-between w-full rounded-xl py-2.5 space-x-4 text-Light-Slate-Gray`}
+                    >
+                      <div>{NavBarItem?.icon}</div>
+                      <h1 className={`flex-1 text-base font-normal`}>
+                        {NavBarItem?.label}
+                      </h1>
+                      <div className="float-right rounded-2xl text-sm px-2 bg-red-600 w-fit text-white">Beta</div>
                     </div>
                   ) : (
                     <NavItem
