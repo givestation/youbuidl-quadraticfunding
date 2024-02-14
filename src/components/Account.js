@@ -28,9 +28,8 @@ const Account = () => {
                       <button
                         onClick={openConnectModal}
                       >
-                        <div className="cursor-pointer bg-Chinese-Blue text-Pure-White rounded-lg text-xs py-0.5
-            px-2">
-                          Contribute
+                        <div className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4">
+                          Donate Now
                         </div>
                       </button>
                     </div>

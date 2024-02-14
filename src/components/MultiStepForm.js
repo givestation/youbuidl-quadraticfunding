@@ -14,8 +14,9 @@ import { useNetwork } from "wagmi";
 
 import CrowdFundingContractInterface from "../abi/Crowdfunding.json";
 
-import { contractAddresses, contriTokens } from "../utils/constant";
+import { bscId, contractAddresses, contriTokens } from "../utils/constant";
 import Loader from "./Loader";
+import { parseUnits } from "viem";
 
 const CLOUDINARY_UPLOAD_URL =
   "https://api.cloudinary.com/v1_1/dvwdyqvzt/image/upload";
@@ -56,7 +57,7 @@ const MultiStepForm = () => {
             functionName: "createProject",
             args: [
               parseInt((new Date(formData.projectDate).getTime() / 1000).toFixed(0)),
-              formData.projectTarget,
+              parseUnits(formData.projectTarget, (chain?.id === bscId ? 18 : 6)) ,
               formData.title,
               formData.description,
               formData.website,
