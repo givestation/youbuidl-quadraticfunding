@@ -572,7 +572,7 @@ const Navbar = ({ setShowSideBar }) => {
                       <h1 className={`flex-1 text-base font-normal`}>
                         {NavBarItem?.label}
                       </h1>
-                      <div className="float-right rounded-2xl text-sm px-2 bg-red-600 w-fit text-white">Beta</div>
+                      <div className="float-right rounded-2xl text-sm px-2 bg-[#00a4ff] w-fit text-white">Beta</div>
                     </div>
                   ) : (
                     <NavItem
