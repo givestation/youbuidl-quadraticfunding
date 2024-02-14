@@ -49,7 +49,6 @@ const MultiStepForm = () => {
     if (formData.isAgree) {
       setShowLoadingModal(true)
       try {
-        console.log(formData, "========data========")
         const { hash } =
           await writeContract({
             mode: "recklesslyUnprepared",
@@ -237,9 +236,9 @@ const FirstStep = ({ formData, setFormData }) => {
       setLoading(true);
       const image = e.target.files[0];
       if (!image) return;
-      const formData = new FormData();
-      formData.append("file", image);
-      formData.append("upload_preset", "sjcclscl");
+      const form = new FormData();
+      form.append("file", image);
+      form.append("upload_preset", "sjcclscl");
 
       const reader = new FileReader();
 
@@ -255,7 +254,7 @@ const FirstStep = ({ formData, setFormData }) => {
       try {
         const response = await fetch(CLOUDINARY_UPLOAD_URL, {
           method: "POST",
-          body: formData,
+          body: form,
         });
 
         if (!response.ok) {
