@@ -5,16 +5,16 @@ import { getProjects } from "../utils";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
-   // set tag of project
-   const [tagOfProject, setTagOfProject] = useState('popular');
+  // set tag of project
+  const [tagOfProject, setTagOfProject] = useState("popular");
 
   useEffect(() => {
     const loadProjects = async () => {
       const projectsData = await getProjects();
-      setProjects(projectsData)
-    }
-    loadProjects()
-  }, [])
+      setProjects(projectsData);
+    };
+    loadProjects();
+  }, []);
   return (
     <div className="max-w-6xl mx-auto space-y-4 md:space-y-6 ">
       <div className="flex items-center justify-between">
@@ -112,14 +112,16 @@ const Projects = () => {
           </svg>
         </div>
       </div>
-      <CategoriesSelector onSubmit = {(args) => {
-          setTagOfProject(args)
-        }}/>
+      <CategoriesSelector
+        onSubmit={(args) => {
+          setTagOfProject(args);
+        }}
+      />
 
       <div className="grid  sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
-      {projects?.map((item ,index) => (
-            <BuidlItem key={index} project={item} tag={tagOfProject} />
-          ))}
+        {projects?.map((item, index) => (
+          <BuidlItem key={index} project={item} tag={tagOfProject} />
+        ))}
       </div>
     </div>
   );

@@ -541,8 +541,8 @@ const BuidlDetails = () => {
         <h1 className="text-Raisin-Black font-semibold text-xl">
           Buidl Details
         </h1>
-        <div className="rounded-xl md:rounded-4xl overflow-hidden bg-Pure-White shadow-details">
-          <div className=" w-full relative">
+        <div className="rounded-xl relative md:rounded-4xl overflow-hidden bg-Pure-White shadow-details">
+          <div className="w-full relative">
             <img
               className=" max-h-96 w-full object-cover"
               src={projectDetails ? projectDetails?.projectCoverUrl : "#"}
@@ -628,7 +628,7 @@ const BuidlDetails = () => {
               </a>
             </div>
           </div>
-          <div className="px-6 py-4 space-y-4">
+          <div className="px-6  py-4 space-y-4">
             <div className="space-y-1">
               <div className="flex items-center justify-between">
                 <h3 className=" font-normal text-xs flex items-center gap-0.5">
@@ -761,22 +761,21 @@ const BuidlDetails = () => {
                 )}
               </div>
             </div>
-            <div>
+            <div className="pb-10">
               <p className="text-Nickle font-normal text-sm sm:text-base">
-                {projectDetails?.desc.length < 500 ? (
+                {projectDetails?.desc.length < 100 ? (
                   <>{projectDetails?.desc}</>
                 ) : (
                   <>
                     {showFullDesc ? (
                       <>{projectDetails?.desc}</>
                     ) : (
-                      <>{projectDetails?.desc.slice(0, 500)}...</>
+                      <>{projectDetails?.desc.slice(0, 100)}...</>
                     )}
                   </>
                 )}
-
                 <br />
-                {projectDetails?.desc.length > 500 && (
+                {projectDetails?.desc.length > 100 && (
                   <span className="text-Vampire-Black font-semibold cursor-pointer text-base ">
                     <button
                       className="underline"
@@ -791,7 +790,7 @@ const BuidlDetails = () => {
               </p>
             </div>
 
-            <div className=" !mt-20 flex w-full items-center justify-between flex-col space-y-4 sm:space-y-0 sm:flex-row">
+            <div className="bg-white sticky sm:py-4  bottom-0 left-0 right-0  flex w-full items-center justify-between flex-col space-y-4 sm:space-y-0 sm:flex-row">
               <div className="flex items-center space-x-2">
                 <a
                   className="rounded-full bg-Ghost-White shadow-3xl p-2 cursor-pointer"
@@ -908,12 +907,12 @@ const BuidlDetails = () => {
                   </svg>
                 </a>
               </div>
-              <div className="flex  !w-full justify-center sm:w-auto flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
+              <div className="flex !w-full justify-center sm:w-auto flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
                 <div
-                  className="  w-4/6 justify-between rounded-2xl border border-slate-800  flex items-center"
+                  className=" w-4/6 justify-between rounded-2xl border border-slate-800  flex-col sm:flex-row  flex items-center"
                   style={{ borderColor: "#8080804d", borderRadius: "18.5px" }}
                 >
-                  <div className="  px-4 py-2 flex items-center">
+                  <div className=" px-4 py-2 flex items-center">
                     <input
                       className="outline-none max-w-[124px]  "
                       placeholder="Enter amount"
@@ -922,10 +921,9 @@ const BuidlDetails = () => {
                     />
                     {/* <img src={`/assets/icons/${selectedCrypto}.svg`} alt={selectedCrypto} /> */}
                   </div>
-
-                  <Menu as="div" className="relative">
+                  <Menu as="div" className="relative ">
                     <div>
-                      <Menu.Button className="flex md:inline-flex justify-between items-center  space-x-2 sm:space-x-4 w-full  text-Light-Slate-Gray ">
+                      <Menu.Button className="flex md:inline-flex  justify-between items-center  space-x-2 sm:space-x-4 w-full  text-Light-Slate-Gray ">
                         <div
                           className="gap-2 rounded-2xl border border-slate-800  px-4 py-2 flex items-center"
                           style={{
