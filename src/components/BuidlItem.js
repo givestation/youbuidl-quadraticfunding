@@ -37,7 +37,7 @@ const BuidlItem = ({ project, tag }) => {
           alt="code"
         />
       </div>
-      <div className="p-3 space-y-2 flex-1 gap-2 flex flex-col">
+      <div className="p-3 space-y-2 flex-1 gap-1 sm:gap-2 flex flex-col">
         <div className="flex items-center justify-between gap-2">
           <div className="flex-1">
             <div className="flex items-center gap-2 ">
@@ -115,14 +115,19 @@ const BuidlItem = ({ project, tag }) => {
           </p>
         </div>
 
-        <div className="bg-[#3EA7E1]/20 p-4 rounded-lg flex ">
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="flex flex-col items-center justify-center">
+        <div className="bg-[#3EA7E1]/20 p-2 sm:p-4 rounded-lg flex sm:gap-6 justify-around ">
+          <div className="flex-1 flex flex-col items-start sm:items-center justify-center">
+            <div className="flex flex-col items-start sm:items-center justify-center">
               <div className="flex gap-1 items-center justify-center">
-                <h2>{}</h2>
+                <h2 className="text-[#3EA7E1] text-lg sm:text-xl">
+                  {" "}
+                  ${"2,661"}
+                </h2>
                 <div className="w-2 h-2 rounded-full bg-[#12D69B]"></div>
               </div>
-              <h3 className="text-[#707070] font-medium">Raised</h3>
+              <h3 className="text-[#707070] font-medium text-sm sm:text-base">
+                Raised
+              </h3>
             </div>
             <div className="flex items-center gap-2 mt-2">
               <svg
@@ -139,10 +144,10 @@ const BuidlItem = ({ project, tag }) => {
               <h3 className="text-[#707070] font-semibold">$10,000</h3>
             </div>
           </div>
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="flex flex-col items-center justify-center">
+          <div className="flex-1 flex flex-col items-end sm:items-center justify-center">
+            <div className="flex flex-col items-end sm:items-center justify-center">
               <div>
-                <h2 className="text-[#12D69B] text-xl">
+                <h2 className="text-[#12D69B] text-lg sm:text-xl">
                   $
                   {project
                     ? project.chainId === bscId
@@ -151,7 +156,9 @@ const BuidlItem = ({ project, tag }) => {
                     : 0}
                 </h2>
               </div>
-              <h3 className="text-[#707070] font-medium">QF Matching</h3>
+              <h3 className="text-[#707070] font-medium text-sm sm:text-base">
+                QF Matching
+              </h3>
             </div>
             <div className="flex items-center gap-2 mt-2">
               <svg
@@ -173,18 +180,18 @@ const BuidlItem = ({ project, tag }) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex flex-1 items-center gap-2">
+        <div className="flex items-center flex-col gap-1 sm:flex-row justify-between">
+          <div className="flex flex-1 justify-start w-full sm:w-auto items-center gap-2">
             <img
               className="w-5 h-5 rounded-full object-contain"
               src={"/assets/icons/identicon.svg"}
               alt="creator"
             />
-            <h2 className="text-[#ADADAD]">
+            <h2 className=" text-[#ADADAD]">
               By {project?.creator?.slice(0, 8)}
             </h2>
           </div>
-          <button className="bg-[#3EA7E1] rounded-md text-white py-2 px-4">
+          <button className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4">
             Donate Now
           </button>
         </div>
