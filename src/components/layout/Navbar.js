@@ -383,7 +383,7 @@ const NavbarData = {
           />
         </svg>
       ),
-      isBeta: true
+      isBeta: true,
     },
     {
       label: "Docs",
@@ -453,94 +453,63 @@ const NavbarData = {
   ],
   "Follow Us": [
     {
-      label: "",
-      href: "#",
+      href: "https://discord.gg/givestation",
       icon: (
-        <>
-          <>
-            <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="#00a4ff"
-                class="bi bi-discord"
-                viewBox="0 0 16 16"
-              >
-                {" "}
-                <path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z" />{" "}
-              </svg>
-              <span class="sr-only">Icon description</span>
-            </span>
-            <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-blue-800  rounded-full dark:bg-gray-700 dark:text-blue-400">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={25}
-                height={24}
-                fill="none"
-              >
-                <path
-                  fill="#00a4ff"
-                  fillRule="evenodd"
-                  d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span class="sr-only">Icon description</span>
-            </span>
-            <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                fill="none"
-              >
-                <path
-                  fill="#00A4FF"
-                  d="M20 6.5c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4 0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H4c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4c.7-.5 1.3-1.1 1.7-1.8Z"
-                />
-              </svg>
-              <span class="sr-only">Icon description</span>
-            </span>
-          </>
-        </>
+        <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="#00a4ff"
+            class="bi bi-discord"
+            viewBox="0 0 16 16"
+          >
+            {" "}
+            <path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z" />{" "}
+          </svg>
+          <span class="sr-only">Icon description</span>
+        </span>
       ),
-      activeIcon: (
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect width="24" height="24" fill="white" />
-          <path
-            d="M10.1389 13C9.55121 13 9.08627 13.5059 9.19686 14.0831C9.52893 15.8163 10.2677 17.4049 11.3108 18.7462C11.6637 19.2 12.3363 19.2 12.6892 18.7462C13.7322 17.4049 14.471 15.8164 14.8031 14.0831C14.9137 13.5059 14.4488 13 13.8611 13H10.1389Z"
-            fill="#00A4FF"
-          />
-          <path
-            d="M17.8887 13C17.3659 13 16.9355 13.4037 16.8589 13.9209C16.5112 16.267 15.5367 18.409 14.1119 20.1704C13.8039 20.5512 13.848 21.1177 14.2353 21.4176C14.4402 21.5762 14.7079 21.6325 14.9555 21.556C18.3845 20.4967 21.0255 17.6424 21.781 14.0908C21.904 13.5124 21.4376 13 20.8463 13H17.8887Z"
-            fill="#00A4FF"
-          />
-          <path
-            d="M3.15352 13C2.56218 13 2.09582 13.5124 2.21886 14.0908C3.00142 17.7696 5.80689 20.7002 9.41564 21.6629C9.66029 21.7281 9.91894 21.6492 10.0955 21.4678C10.3689 21.1868 10.3695 20.7413 10.1148 20.4433C8.56666 18.6322 7.50675 16.3896 7.14096 13.9209C7.06432 13.4037 6.63392 13 6.11108 13H3.15352Z"
-            fill="#00A4FF"
-          />
-          <path
-            d="M21.7811 9.90948C21.9041 10.4879 21.4377 11.0003 20.8464 11.0003H17.8889C17.366 11.0003 16.9356 10.5965 16.859 10.0793C16.5113 7.73322 15.5368 5.59121 14.112 3.82984C13.804 3.44901 13.8481 2.88253 14.2354 2.58267C14.4403 2.42406 14.708 2.36775 14.9556 2.44423C18.3846 3.50359 21.0256 6.35783 21.7811 9.90948Z"
-            fill="#00A4FF"
-          />
-          <path
-            d="M14.8031 9.91699C14.9137 10.4942 14.4488 11.0001 13.8611 11.0001H10.1389C9.55121 11.0001 9.08627 10.4942 9.19686 9.91699C9.52893 8.18377 10.2677 6.5952 11.3108 5.25388C11.6637 4.80011 12.3363 4.80011 12.6892 5.25389C13.7323 6.5952 14.4711 8.18377 14.8031 9.91699Z"
-            fill="#00A4FF"
-          />
-          <path
-            d="M9.04277 2.44467C9.29111 2.3679 9.55976 2.42471 9.76494 2.58429C10.1512 2.88472 10.1947 3.45048 9.88695 3.83098C8.46272 5.59213 7.48852 7.73368 7.14096 10.0793C7.06432 10.5965 6.63392 11.0002 6.11108 11.0002H3.15352C2.56218 11.0002 2.09581 10.4878 2.21885 9.90943C2.97422 6.35833 5.61452 3.50441 9.04277 2.44467Z"
-            fill="#00A4FF"
-          />
-        </svg>
+    },
+    {
+      href: "https://github.com/givestation",
+      icon: (
+        <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-blue-800  rounded-full dark:bg-gray-700 dark:text-blue-400">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={25}
+            height={24}
+            fill="none"
+          >
+            <path
+              fill="#00a4ff"
+              fillRule="evenodd"
+              d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span class="sr-only">Icon description</span>
+        </span>
       ),
-      isComing: true,
+    },
+    {
+      href: "https://x.com/givestation",
+      icon: (
+        <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={24}
+            height={24}
+            fill="none"
+          >
+            <path
+              fill="#00A4FF"
+              d="M20 6.5c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4 0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H4c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4c.7-.5 1.3-1.1 1.7-1.8Z"
+            />
+          </svg>
+          <span class="sr-only">Icon description</span>
+        </span>
+      ),
     },
   ],
 };
@@ -551,39 +520,51 @@ const Navbar = ({ setShowSideBar }) => {
       {Object.entries(NavbarData).map(([key, value]) => (
         <div key={key} className="space-y-2.5">
           <h1 className="text-Quick-Silver font-medium text-base">{key}</h1>
-          <div>
-            {value?.map((NavBarItem) => {
-              return (
-                <div key={NavBarItem.href}>
-                  {NavBarItem?.isComing ? (
-                    <div
-                      className={`flex relative cursor-pointer items-center justify-between w-full rounded-xl py-2.5 space-x-4 text-Light-Slate-Gray`}
-                    >
-                      <div>{NavBarItem?.icon}</div>
-                      <h1 className={`flex-1 text-base font-normal`}>
-                        {NavBarItem?.label}
-                      </h1>
-                    </div>
-                  ) : NavBarItem?.isBeta ? (
-                    <div
-                      className={`flex relative items-center justify-between w-full rounded-xl py-2.5 space-x-4 text-Light-Slate-Gray`}
-                    >
-                      <div>{NavBarItem?.icon}</div>
-                      <h1 className={`flex-1 text-base font-normal`}>
-                        {NavBarItem?.label}
-                      </h1>
-                      <div className="float-right rounded-2xl text-sm px-2 bg-[#00a4ff] w-fit text-white">Beta</div>
-                    </div>
-                  ) : (
-                    <NavItem
-                      setShowSideBar={setShowSideBar}
-                      NavItemData={NavBarItem}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          {key === "Follow Us" ? (
+            <div className="flex items-center gap-2">
+              {value?.map((icon) => (
+                <a href={icon.href} target="_blank" rel="noreferrer">
+                  {icon.icon}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div>
+              {value?.map((NavBarItem) => {
+                return (
+                  <div key={NavBarItem.href}>
+                    {NavBarItem?.isComing ? (
+                      <div
+                        className={`flex relative cursor-pointer items-center justify-between w-full rounded-xl py-2.5 space-x-4 text-Light-Slate-Gray`}
+                      >
+                        <div>{NavBarItem?.icon}</div>
+                        <h1 className={`flex-1 text-base font-normal`}>
+                          {NavBarItem?.label}
+                        </h1>
+                      </div>
+                    ) : NavBarItem?.isBeta ? (
+                      <div
+                        className={`flex relative items-center justify-between w-full rounded-xl py-2.5 space-x-4 text-Light-Slate-Gray`}
+                      >
+                        <div>{NavBarItem?.icon}</div>
+                        <h1 className={`flex-1 text-base font-normal`}>
+                          {NavBarItem?.label}
+                        </h1>
+                        <div className="float-right rounded-2xl text-sm px-2 bg-[#00a4ff] w-fit text-white">
+                          Beta
+                        </div>
+                      </div>
+                    ) : (
+                      <NavItem
+                        setShowSideBar={setShowSideBar}
+                        NavItemData={NavBarItem}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       ))}
     </div>
