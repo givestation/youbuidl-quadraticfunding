@@ -1,9 +1,7 @@
 import { useState, Fragment, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import {
-  useContractRead,
-} from "wagmi";
+import { useContractRead } from "wagmi";
 import {
   readContract,
   writeContract,
@@ -40,7 +38,7 @@ const BuidlDetails = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showloader, setshowloader] = useState(false);
   // Details Modal State
-  const [showDescModal, setShowDescModal] = useState(false);
+  const [showFullDesc, setShowFullDesc] = useState(false);
   // Loading modal
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   // Congrats Approved Modal State
@@ -59,7 +57,7 @@ const BuidlDetails = () => {
   const [contributedNumAmount, setContributedNumAmount] = useState(0);
   const [rewardCalculat, setRewardCalculat] = useState(0);
   const [selectedCrypto, setSelectedCrypto] = useState("USDC");
-  const [projectDetails, setProjectDetails] = useState(undefined)
+  const [projectDetails, setProjectDetails] = useState(undefined);
   const [selectedCryptoAddress, setSelectedCryptoAddress] = useState("");
 
   const [crowdFundingConf, setCrowdFundingConf] = useState({});
@@ -105,7 +103,7 @@ const BuidlDetails = () => {
 
   const onContributedAmount = (e) => {
     setContributedAmount(
-      parseUnits(e.target.value, (chain?.id === bscId ? 18 : 6))
+      parseUnits(e.target.value, chain?.id === bscId ? 18 : 6)
     );
     setContributedNumAmount(e.target.value);
 
@@ -173,18 +171,18 @@ const BuidlDetails = () => {
     const daysLeft = Math.floor(
       (Number(projectDetails?.projectDeadline) -
         Number(timestampMillis / 1000)) /
-      (24 * 60 * 60)
+        (24 * 60 * 60)
     );
     const hoursLeft = Math.floor(
       ((Number(projectDetails?.projectDeadline) -
         Number(timestampMillis / 1000)) %
         (24 * 60 * 60)) /
-      3600
+        3600
     );
     console.log(daysLeft, hoursLeft, "data of total");
     // let hours = dataObj.getUTCHours();
     setRestDays(daysLeft);
-    setRestHours(hoursLeft)
+    setRestHours(hoursLeft);
   };
 
   const approveToken = async () => {
@@ -214,7 +212,7 @@ const BuidlDetails = () => {
       functionName: "allowance",
       args: [address, projectContractAddress],
     });
-    const amount = formatUnits(allowance, chain?.id === bscId ? 18 : 6)
+    const amount = formatUnits(allowance, chain?.id === bscId ? 18 : 6);
 
     if (+amount >= contributedNumAmount) setIsApproved(true);
     else setIsApproved(false);
@@ -227,13 +225,14 @@ const BuidlDetails = () => {
   };
 
   useEffect(() => {
-    if (chain != undefined && chains.filter((chn) => chn.id == chain.id).length > 0) {
-      setSelectedCryptoAddress(contriTokens[chain?.id][1]?.address)
-      initProjectDetails()
-    }
-    else
-      navigate(-1)
-  }, [chain])
+    if (
+      chain != undefined &&
+      chains.filter((chn) => chn.id == chain.id).length > 0
+    ) {
+      setSelectedCryptoAddress(contriTokens[chain?.id][1]?.address);
+      initProjectDetails();
+    } else navigate(-1);
+  }, [chain]);
 
   useEffect(() => {
     if (projectDetails) calculatingDate();
@@ -257,9 +256,9 @@ const BuidlDetails = () => {
       setERC20Conf({
         address: selectedCryptoAddress,
         abi: Erc20Json,
-      })
+      });
     }
-  }, [chain, selectedCryptoAddress])
+  }, [chain, selectedCryptoAddress]);
 
   useEffect(() => {
     if (chain && erc20Conf) {
@@ -403,9 +402,7 @@ const BuidlDetails = () => {
                 </div>
               )}
               <div className="flex justify-center ">
-                <h2 className="font-medium text-base flex-1 ">
-                  USDT Reward
-                </h2>
+                <h2 className="font-medium text-base flex-1 ">USDT Reward</h2>
                 <h2 className="font-medium text-base flex-1 text-right">
                   {projectDetails?.isVerified ? rewardCalculat : 0} USDT
                 </h2>
@@ -450,9 +447,7 @@ const BuidlDetails = () => {
               ) : (
                 <button
                   disabled={contributedAmount === 0n ? true : false}
-                  onClick={
-                    approveToken
-                  }
+                  onClick={approveToken}
                   className="bg-Chinese-Blue flex-1 border border-Chinese-Blue text-Pure-White py-2 rounded-4xl"
                 >
                   Approve
@@ -462,33 +457,11 @@ const BuidlDetails = () => {
             <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
           </div>
         </div>
-      </Modals >
-
-      <Modals showModal={showDescModal} setShowModal={setShowDescModal}>
-        <div className=" max-w-md  rounded-2xl bg-Pure-White">
-          <div className="px-3 pt-3 pb-1.5 space-y-4">
-            <h1 className="flex items-center  text-Rich-Black font-normal text-lg font-semibold	">
-              <span> {projectDetails?.title}</span>:
-            </h1>
-            <div className="overflow-y-scroll overflow-y-hidden scroll-smooth overflow-hidden w-[400px] h-[200px] mx-auto space-y-4">
-              {projectDetails?.desc}
-            </div>
-            <div className="flex items-center space-x-4 font-semibold text-base">
-              <button
-                onClick={() => setShowDescModal(false)}
-                className="text-Chinese-Blue border-2 border-Chinese-Blue flex-1 py-2 rounded-4xl"
-              >
-                Cancel
-              </button>
-            </div>
-            <hr className="h-1 mx-auto w-4/12 rounded-full bg-Pure-Black" />
-          </div>
-        </div>
       </Modals>
 
       {/* Approved Modal loading and congratulation */}
       <Loader showModal={isApproving} setShowModal={setShowLoadingModal} />
-      {approveSucc &&
+      {approveSucc && (
         <Modals
           showModal={approvedCongratsModal}
           setShowModal={setApprovedCongratsModal}
@@ -520,7 +493,7 @@ const BuidlDetails = () => {
             </button>
           </CongratsModalWrapper>
         </Modals>
-      }
+      )}
       {/* Contributed Modal loading and congratulation*/}
       {isContributing && (
         <Loader showModal={true} setShowModal={setShowLoadingModal} />
@@ -790,18 +763,31 @@ const BuidlDetails = () => {
             </div>
             <div>
               <p className="text-Nickle font-normal text-sm sm:text-base">
-                {projectDetails?.desc.slice(0, 500)}...
+                {projectDetails?.desc.length < 500 ? (
+                  <>{projectDetails?.desc}</>
+                ) : (
+                  <>
+                    {showFullDesc ? (
+                      <>{projectDetails?.desc}</>
+                    ) : (
+                      <>{projectDetails?.desc.slice(0, 500)}...</>
+                    )}
+                  </>
+                )}
+
                 <br />
-                <span className="text-Vampire-Black font-semibold cursor-pointer text-base ">
-                  <button
-                    className="underline"
-                    onClick={() => {
-                      setShowDescModal(true);
-                    }}
-                  >
-                    Read more
-                  </button>
-                </span>
+                {projectDetails?.desc.length > 500 && (
+                  <span className="text-Vampire-Black font-semibold cursor-pointer text-base ">
+                    <button
+                      className="underline"
+                      onClick={() => {
+                        setShowFullDesc((prev) => !prev);
+                      }}
+                    >
+                      {showFullDesc ? "Hide" : " Read more"}
+                    </button>
+                  </span>
+                )}
               </p>
             </div>
 
@@ -974,10 +960,11 @@ const BuidlDetails = () => {
                         className={`absolute w-full overflow-hidden mt-1 origin-top-right shadow-details bg-Pure-White bottom-14`}
                       >
                         <div className="font-medium text-sm text-Light-Slate-Gray">
-                          {
-                            (contriTokens[chain?.id] ?? []).map((crypto, index) => crypto.name !== selectedCrypto &&
-                              (
-                                <Menu.Item key={crypto.name}
+                          {(contriTokens[chain?.id] ?? []).map(
+                            (crypto, index) =>
+                              crypto.name !== selectedCrypto && (
+                                <Menu.Item
+                                  key={crypto.name}
                                   onClick={() => {
                                     setSelectedCrypto(crypto.name);
                                     setSelectedCryptoAddress(crypto.address);
@@ -985,11 +972,13 @@ const BuidlDetails = () => {
                                   as="div"
                                   className=" cursor-pointer hover:bg-Light-Slate-Gray/5 py-1 flex items-center justify-between space-x-4 border-l-4 border-Pure-White duration-300 hover:border-Chinese-Blue"
                                 >
-                                  <img src={`/assets/icons/${crypto.name}.svg`} alt={crypto.name} />
+                                  <img
+                                    src={`/assets/icons/${crypto.name}.svg`}
+                                    alt={crypto.name}
+                                  />
                                 </Menu.Item>
                               )
-                            )
-                          }
+                          )}
                         </div>
                       </Menu.Items>
                     </Transition>
@@ -1056,8 +1045,8 @@ const BuidlDetails = () => {
                 {wrChecking?.[0] !== "" && realContributors !== 0n
                   ? "you can vote about Withdrawal request for this campaign"
                   : realContributors === 0n
-                    ? "Fund this project to be able to vote"
-                    : "Creator didn't request for withdraw"}
+                  ? "Fund this project to be able to vote"
+                  : "Creator didn't request for withdraw"}
               </span>
               <svg
                 width="16"
