@@ -6,10 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Modals from "./modals";
 import CongratsModalWrapper from "./modals/CongratsModalWrapper";
 import LoadingModalWrapper from "./modals/LoadingModalWrapper";
-import {
-  writeContract,
-  waitForTransaction
-} from "@wagmi/core";
+import { writeContract, waitForTransaction } from "@wagmi/core";
 import { useNetwork } from "wagmi";
 
 import CrowdFundingContractInterface from "../abi/Crowdfunding.json";
@@ -48,51 +45,69 @@ const MultiStepForm = () => {
 
   const handleSubmit = async () => {
     if (formData.isAgree) {
-      setShowLoadingModal(true)
+      setShowLoadingModal(true);
       try {
-        const { hash } =
-          await writeContract({
-            mode: "recklesslyUnprepared",
-            ...crowdFundingConf,
-            functionName: "createProject",
-            args: [
-              parseInt((new Date(formData.projectDate).getTime() / 1000).toFixed(0)),
-              parseUnits(formData.projectTarget, (chain?.id === bscId ? 18 : 6)) ,
-              formData.title,
-              formData.description,
-              formData.website,
-              formData.twitter,
-              formData.github,
-              formData.imageUrl,
-              formData.category,
-              ...contriTokens[chain?.id]?.map((crypto, index) => crypto?.address)
-            ],
-          })
+        const { hash } = await writeContract({
+          mode: "recklesslyUnprepared",
+          ...crowdFundingConf,
+          functionName: "createProject",
+          args: [
+            parseInt(
+              (new Date(formData.projectDate).getTime() / 1000).toFixed(0)
+            ),
+            parseUnits(formData.projectTarget, chain?.id === bscId ? 18 : 6),
+            formData.title,
+            formData.description,
+            formData.website,
+            formData.twitter,
+            formData.github,
+            formData.imageUrl,
+            formData.category,
+            ...contriTokens[chain?.id]?.map((crypto, index) => crypto?.address),
+          ],
+        });
         const data = await waitForTransaction({ hash });
-        if (data.status == "success") setShowCongratsModal(true);
-      }
-      catch (e) {
+        if (data.status == "success") {
+          setShowLoadingModal(false);
+          setShowCongratsModal(true);
+        }
+      } catch (e) {
         console.log(e);
       }
-      setShowLoadingModal(false)
+
+      setShowLoadingModal(false);
     }
   };
 
   useEffect(() => {
-    if (chain != undefined && chains.filter((chn) => chn.id == chain.id).length > 0) {
+    if (
+      chain != undefined &&
+      chains.filter((chn) => chn.id == chain.id).length > 0
+    ) {
       setCrowdFundingConf({
         address: contractAddresses[chain?.id],
         abi: CrowdFundingContractInterface,
       });
-    }
-    else
-      navigate(-1)
+    } else navigate(-1);
   }, [chain]);
 
   return (
     <>
       {/* Loading Modal */}
-      <Loader showModal={showLoadingModal} setShowModal={setShowLoadingModal} />
+
+      <Modals showModal={showLoadingModal} setShowModal={setShowLoadingModal}>
+        <LoadingModalWrapper>
+          {" "}
+          <div className="space-y-2 pt-4 pb-10">
+            <h1 className="text-Bright-Gray font-medium text-xl">
+              Please wait....
+            </h1>
+            <h4 className="text-Bright-Gray/90 font-normal text-sm">
+              Your project is being submitted.
+            </h4>
+          </div>
+        </LoadingModalWrapper>
+      </Modals>
       {/* Congrats Modal */}
       <Modals showModal={showCongratsModal} setShowModal={setShowCongratsModal}>
         <CongratsModalWrapper>
@@ -106,7 +121,10 @@ const MultiStepForm = () => {
             </h4>
           </div>
           <button
-            onClick={() => {setShowCongratsModal(false); navigate("/");}}
+            onClick={() => {
+              setShowCongratsModal(false);
+              navigate("/");
+            }}
             className="bg-Pure-White text-Pure-Black text-sm font-medium rounded-xl py-2 px-6"
           >
             Explore Buidls
@@ -128,45 +146,51 @@ const MultiStepForm = () => {
             </div>
           </div>
           <div
-            className={` sm:flex-1 w-1.5 h-10 sm:w-auto sm:h-1.5 rounded-md ${step > 1 ? "bg-[#00A4FF]" : "bg-[#EFF0F6]"
-              }`}
+            className={` sm:flex-1 w-1.5 h-10 sm:w-auto sm:h-1.5 rounded-md ${
+              step > 1 ? "bg-[#00A4FF]" : "bg-[#EFF0F6]"
+            }`}
           ></div>
           <div className="flex items-center gap-2  min-w-fit">
             <div
-              className={`w-6 h-6 rounded-full    font-bold text-md flex items-center justify-center ${step >= 2
-                ? "bg-[#00A4FF] text-white"
-                : "bg-[#E1E1E6] text-[#8D8D99]"
-                }`}
+              className={`w-6 h-6 rounded-full    font-bold text-md flex items-center justify-center ${
+                step >= 2
+                  ? "bg-[#00A4FF] text-white"
+                  : "bg-[#E1E1E6] text-[#8D8D99]"
+              }`}
             >
               <h2>2</h2>
             </div>
             <div className="flex-1">
               <h2
-                className={`font-semibold  text-lg  ${step >= 2 ? "text-[#323238]" : "text-[#8D8D99]"
-                  } min-w-fit`}
+                className={`font-semibold  text-lg  ${
+                  step >= 2 ? "text-[#323238]" : "text-[#8D8D99]"
+                } min-w-fit`}
               >
                 Target & Date
               </h2>
             </div>
           </div>
           <div
-            className={` sm:flex-1 w-1.5 h-10 sm:w-auto sm:h-1.5 rounded-md ${step > 2 ? "bg-[#00A4FF]" : "bg-[#EFF0F6]"
-              }`}
+            className={` sm:flex-1 w-1.5 h-10 sm:w-auto sm:h-1.5 rounded-md ${
+              step > 2 ? "bg-[#00A4FF]" : "bg-[#EFF0F6]"
+            }`}
           ></div>
 
           <div className="flex items-center gap-2  min-w-fit">
             <div
-              className={`w-6 h-6 rounded-full    font-bold text-md flex items-center justify-center ${step >= 3
-                ? "bg-[#00A4FF] text-white"
-                : "bg-[#E1E1E6] text-[#8D8D99]"
-                }`}
+              className={`w-6 h-6 rounded-full    font-bold text-md flex items-center justify-center ${
+                step >= 3
+                  ? "bg-[#00A4FF] text-white"
+                  : "bg-[#E1E1E6] text-[#8D8D99]"
+              }`}
             >
               <h2>3</h2>
             </div>
             <div className="flex-1">
               <h2
-                className={`font-semibold  text-lg  ${step >= 3 ? "text-[#323238]" : "text-[#8D8D99]"
-                  } min-w-fit`}
+                className={`font-semibold  text-lg  ${
+                  step >= 3 ? "text-[#323238]" : "text-[#8D8D99]"
+                } min-w-fit`}
               >
                 Social Links
               </h2>
@@ -174,9 +198,7 @@ const MultiStepForm = () => {
           </div>
         </div>
 
-        <div
-          className="space-y-6 mt-5 flex-1 w-full flex flex-col"
-        >
+        <div className="space-y-6 mt-5 flex-1 w-full flex flex-col">
           <div className="flex-1 w-full space-y-3">
             {step === 1 && (
               <FirstStep formData={formData} setFormData={setFormData} />
@@ -189,8 +211,9 @@ const MultiStepForm = () => {
             )}
           </div>
           <div
-            className={`flex items-center ${step > 1 ? "justify-between" : "justify-end"
-              }`}
+            className={`flex items-center ${
+              step > 1 ? "justify-between" : "justify-end"
+            }`}
           >
             {step > 1 && (
               <button
@@ -231,7 +254,6 @@ const FirstStep = ({ formData, setFormData }) => {
   const [image, setImage] = useState(null);
 
   const handleImageUpload = async (e) => {
-    
     if (e.target.files) {
       // setImage(e.target.files[0]);
       setLoading(true);
