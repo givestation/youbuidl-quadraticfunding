@@ -146,7 +146,12 @@ const Rewards = () => {
 
                   {contriDetail?.totalBuidlPointRewards > 0 ? (
                     <p>
-                      You have received {contriDetail?.totalBuidlPointRewards} Points for funding{" "}
+                      You have received {formatUnits(
+                        contriDetail
+                          ? contriDetail.totalBuidlPointRewards
+                          : 0,
+                        18
+                      )} Points for funding{" "}
                       {contriDetail?.contributions.length} projects.
                     </p>
                   ) : (
@@ -207,7 +212,10 @@ const Rewards = () => {
                 <div>
                   <h1 className="font-bold text-2xl">Contribution Rewards</h1>
                   <p>
-                    You have received {contriDetail?.totalUSDTRewards} USDT for funding{" "}
+                    You have received {formatUnits(
+                      contriDetail?.totalUSDTRewards,
+                      chain?.id === bscId ? 18 : 6
+                    )} USDT for funding{" "}
                     {contriDetail?.contributions.length} projects.
                   </p>
                 </div>
@@ -281,7 +289,9 @@ const Rewards = () => {
                 </div>
                 <div className=" flex justify-between  items-center gap-4  xl:gap-2 2xl:gap-4">
                   <h2 className="font-bold text-xl">
-                    {contriDetail?.claimableBuidlPointReferralRewards || "10"}
+                    {formatUnits(
+                      contriDetail?.claimableBuidlPointReferralRewards, 18
+                    )}
                   </h2>
                   <div className="flex sm:items-center gap-4 flex-1 xl:gap-2 2xl:gap-4 flex-col sm:flex-row xl:items-start 2xl:items-center 2xl:flex-row ">
                     <button
