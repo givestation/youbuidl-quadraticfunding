@@ -213,7 +213,7 @@ const Rewards = () => {
                   <h1 className="font-bold text-2xl">Contribution Rewards</h1>
                   <p>
                     You have received {formatUnits(
-                      contriDetail?.totalUSDTRewards,
+                      contriDetail ? contriDetail.totalUSDTRewards : 0,
                       chain?.id === bscId ? 18 : 6
                     )} USDT for funding{" "}
                     {contriDetail?.contributions.length} projects.
@@ -290,7 +290,7 @@ const Rewards = () => {
                 <div className=" flex justify-between  items-center gap-4  xl:gap-2 2xl:gap-4">
                   <h2 className="font-bold text-xl">
                     {formatUnits(
-                      contriDetail?.claimableBuidlPointReferralRewards, 18
+                      contriDetail ? contriDetail.claimableBuidlPointReferralRewards : 0, 18
                     )}
                   </h2>
                   <div className="flex sm:items-center gap-4 flex-1 xl:gap-2 2xl:gap-4 flex-col sm:flex-row xl:items-start 2xl:items-center 2xl:flex-row ">
