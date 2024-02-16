@@ -5,7 +5,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { polygon, arbitrum, bsc, optimism, optimismGoerli } from "wagmi/chains";
+import { polygon, arbitrum, bsc, optimism } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 import Layout from "./components/layout";
@@ -25,7 +25,7 @@ import SubmitProject from "./pages/SubmitProject";
 
 const { chains, publicClient } = configureChains(
   // [polygon, bsc, optimism, arbitrum],
-  [optimismGoerli],
+  [optimism],
   [publicProvider()]
 );
 

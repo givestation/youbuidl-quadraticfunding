@@ -2,8 +2,7 @@ export const arbitrumId = 42161;
 export const bscId = 56;
 export const polygonId = 137;
 export const mainnetId = 1;
-export const optimismId = 420 ;
-// export const optimismId = 10;
+export const optimismId = 10;
 
 export const chainLogos = {
     [mainnetId]: "/assets/images/polygon.png",
@@ -33,7 +32,7 @@ export const contractAddresses = {
     [bscId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [polygonId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [arbitrumId]: "0x26BCc65416366110c0A07aF49CD4C531614cf034",
-    [optimismId]: "0x85Dec1DC30F6160cc2152E9045c7F007f5bbFEE3"
+    [optimismId]: "0x187a9763FCC7EcFFA9bc50B0fE5BbAe71cDA7b59"
 }
 
 export const qfRoundsAddresses = {
@@ -41,7 +40,7 @@ export const qfRoundsAddresses = {
     [bscId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [polygonId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [arbitrumId]: "0x789f71868a6fa58f1354e1226f807c51edbee3d6",
-    [optimismId]: "0x600e75ddF33c5367217Dd6d40bB234c17a58e826"
+    [optimismId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4"
 }
 
 export const defaultEthLink = {
@@ -83,11 +82,11 @@ export const contriTokens = {
     [optimismId]: [
         {
             "name": "USDT",
-            "address": "0x38E9CFCF6e40FFdFBD4d1C221395A5954c51182d"
+            "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58"
         },
         {
             "name": "USDC",
-            "address": "0x37178C857780e63aaD3209C7312dDF4D9f722882"
+            "address": "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85"
         }
     ],
     [arbitrumId]: [
