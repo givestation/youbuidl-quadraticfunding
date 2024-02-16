@@ -128,7 +128,8 @@ const BuidlItem = ({ project, tag }) => {
               <div className="flex gap-1 items-center justify-center">
                 <h2 className="text-[#3EA7E1] text-lg sm:text-xl">
                   {" "}
-                  ${formatUnits(
+                  $
+                  {formatUnits(
                     project?.currentAmount,
                     project?.chainId == bscId ? 18 : 6
                   )}
@@ -151,10 +152,13 @@ const BuidlItem = ({ project, tag }) => {
                   d="M21.955 12.116c0-.567-.463-1.027-1.035-1.027-.572 0-1.036.46-1.036 1.027h2.071Zm-10.977-8.83c.572 0 1.035-.46 1.035-1.027s-.463-1.027-1.035-1.027v2.054Zm6.006 8.83c0-.567-.463-1.027-1.035-1.027-.572 0-1.036.46-1.036 1.027h2.071Zm-6.006-3.902c.572 0 1.035-.46 1.035-1.026 0-.568-.463-1.027-1.035-1.027v2.053Zm5.126.073a1.02 1.02 0 0 0 0-1.452 1.042 1.042 0 0 0-1.465 0l1.465 1.452Zm-5.859 2.904a1.02 1.02 0 0 0 0 1.452c.405.401 1.06.401 1.465 0l-1.465-1.452Zm11.72-6.68.732.727a1.02 1.02 0 0 0 .25-1.05 1.033 1.033 0 0 0-.836-.693l-.147 1.017ZM18.01 8.433l-.328.975c.373.123.783.027 1.06-.248l-.732-.727Zm-3.515-3.485-.732-.726a1.02 1.02 0 0 0-.25 1.051l.982-.325Zm3.954-3.92 1.025-.145a1.03 1.03 0 0 0-.697-.83 1.042 1.042 0 0 0-1.06.249l.732.726ZM15.374 7.56l-.983.325c.103.307.346.547.655.65l.328-.975Zm3.515-3.485-1.026.145c.066.452.424.807.88.872l.146-1.017Zm.995 8.04c0 4.877-3.988 8.83-8.906 8.83V23c6.063 0 10.977-4.873 10.977-10.884h-2.07Zm-8.906 8.83c-4.92 0-8.907-3.953-8.907-8.83H0C0 18.127 4.915 23 10.978 23v-2.054Zm-8.907-8.83c0-4.877 3.988-8.83 8.907-8.83V1.232C4.915 1.232 0 6.105 0 12.116h2.071Zm12.842 0c0 2.155-1.762 3.902-3.935 3.902v2.053c3.317 0 6.006-2.666 6.006-5.955h-2.07Zm-3.935 3.902c-2.174 0-3.936-1.747-3.936-3.902H4.971c0 3.29 2.69 5.955 6.007 5.955v-2.053Zm-3.936-3.902c0-2.155 1.762-3.902 3.936-3.902V6.161c-3.318 0-6.007 2.666-6.007 5.955h2.071Zm7.597-5.28-4.394 4.355 1.465 1.452 4.394-4.356-1.465-1.452Zm6.593-3.05-3.954 3.92 1.464 1.453 3.955-3.921-1.465-1.452Zm-6.005 1.888 3.955-3.921L17.717.3l-3.954 3.92 1.464 1.453Zm3.11 1.784-2.636-.87-.655 1.947 2.636.872.655-1.949Zm-1.981-.221-.879-2.614-1.965.65.88 2.613 1.964-.65Zm1.068-6.065.44 3.05 2.05-.291-.44-3.05-2.05.291Zm1.318 3.92 3.076.436.293-2.033-3.076-.435-.293 2.033Z"
                 />
               </svg>
-              <h3 className="text-[#707070] font-semibold">${formatUnits(
-                project?.goalAmount,
-                project?.chainId == bscId ? 18 : 6
-              )}</h3>
+              <h3 className="text-[#707070] font-semibold">
+                $
+                {formatUnits(
+                  project?.goalAmount,
+                  project?.chainId == bscId ? 18 : 6
+                )}
+              </h3>
             </div>
           </div>
           <div className="flex-1 flex flex-col items-end sm:items-center justify-center">
@@ -196,7 +200,7 @@ const BuidlItem = ({ project, tag }) => {
           </div>
         </div>
 
-        <div className="flex items-center flex-col gap-1 sm:flex-row justify-between">
+        <div className="flex items-center  gap-1 flex-row justify-between">
           <div className="flex flex-1 justify-start w-full sm:w-auto items-center gap-2">
             <img
               className="w-5 h-5 rounded-full object-contain"
@@ -204,7 +208,7 @@ const BuidlItem = ({ project, tag }) => {
               alt="creator"
             />
             <h2 className=" text-[#ADADAD]">
-              By {project?.creator?.slice(0, 8)}
+              By {project?.creator?.slice(0, 4)}
             </h2>
           </div>
 
@@ -217,12 +221,10 @@ const BuidlItem = ({ project, tag }) => {
               Contribute
             </div>
           )}
-          {isConnected && chain.id == project?.chainId && (
+          {isConnected && chain.id === project?.chainId && (
             <>
               {!project?.isOnQF && project?.isFinished && (
-                <div
-                  className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4"
-                >
+                <div className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4">
                   Contribute
                 </div>
               )}
