@@ -36,7 +36,7 @@ const Sidebar = ({ showSideBar, setShowSideBar }) => {
           />
           <Navbar setShowSideBar={setShowSideBar} />
         </div>
-        <button className='flex items-center space-x-2 font-medium text-xl text-Chinese-Blue'>
+        <button className='flex items-center space-x-2 font-medium text-lg text-Chinese-Blue'>
           <svg
             width='24'
             height='24'
