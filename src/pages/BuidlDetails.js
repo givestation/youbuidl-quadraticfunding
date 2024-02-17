@@ -171,13 +171,13 @@ const BuidlDetails = () => {
     const daysLeft = Math.floor(
       (Number(projectDetails?.projectDeadline) -
         Number(timestampMillis / 1000)) /
-        (24 * 60 * 60)
+      (24 * 60 * 60)
     );
     const hoursLeft = Math.floor(
       ((Number(projectDetails?.projectDeadline) -
         Number(timestampMillis / 1000)) %
         (24 * 60 * 60)) /
-        3600
+      3600
     );
     console.log(daysLeft, hoursLeft, "data of total");
     // let hours = dataObj.getUTCHours();
@@ -764,11 +764,19 @@ const BuidlDetails = () => {
             <div className="pb-10">
               <p className="text-Nickle font-normal text-sm sm:text-base">
                 {projectDetails?.desc.length < 100 ? (
-                  <>{projectDetails?.desc}</>
+                  <>
+                    {projectDetails?.desc.split("\n").map((i, key) => {
+                      return <div key={key}>{i}</div>;
+                    })}
+                  </>
                 ) : (
                   <>
                     {showFullDesc ? (
-                      <>{projectDetails?.desc}</>
+                      <>
+                        {projectDetails?.desc.split("\n").map((i, key) => {
+                          return <div key={key}>{i}</div>;
+                        })}
+                      </>
                     ) : (
                       <>{projectDetails?.desc.slice(0, 100)}...</>
                     )}
@@ -1043,8 +1051,8 @@ const BuidlDetails = () => {
                 {wrChecking?.[0] !== "" && realContributors !== 0n
                   ? "you can vote about Withdrawal request for this campaign"
                   : realContributors === 0n
-                  ? "Fund this project to be able to vote"
-                  : "Creator didn't request for withdraw"}
+                    ? "Fund this project to be able to vote"
+                    : "Creator didn't request for withdraw"}
               </span>
               <svg
                 width="16"
