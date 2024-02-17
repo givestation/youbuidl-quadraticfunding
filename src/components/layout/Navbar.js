@@ -311,7 +311,7 @@ const NavbarData = {
       ),
     },
     {
-      label: "Mint a domain",
+      label: "Mint domain",
       href: "/mint-domain",
       icon: (
         <svg
