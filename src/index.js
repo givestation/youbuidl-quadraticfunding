@@ -25,7 +25,7 @@ import SubmitProject from "./pages/SubmitProject";
 
 const { chains, publicClient } = configureChains(
   // [polygon, bsc, optimism, arbitrum],
-  [optimism, arbitrum],
+  [optimism, arbitrum, polygon],
   [publicProvider()]
 );
 
