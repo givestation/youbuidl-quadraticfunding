@@ -4,6 +4,7 @@ export const polygonId = 137;
 export const mainnetId = 1;
 export const optimismId = 10;
 
+export const adminWallet = "0x48ede9a182e23a3c7da3fae3a92f85214dcb926e"
 export const chainLogos = {
     [mainnetId]: "/assets/images/polygon.png",
     [bscId]: "/assets/images/polygon.png",
