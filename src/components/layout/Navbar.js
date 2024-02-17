@@ -37,7 +37,7 @@ const NavbarData = {
       ),
     },
     {
-      label: "Explore Rounds",
+      label: "QF Rounds",
       href: "/explorerounds",
       icon: (
         <svg
@@ -159,7 +159,7 @@ const NavbarData = {
       ),
     },
     {
-      label: "Bridge Tokens",
+      label: "Bridge",
       href: "/bridge",
       icon: (
         <svg
