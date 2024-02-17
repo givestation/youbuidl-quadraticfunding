@@ -29,7 +29,7 @@ export const categoryIcons = {
 
 export const contractAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
-    [bscId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
+    [bscId]: "0x34f6C5ac104568E98535Cb8c91C5c23AB2d26cAb",
     [polygonId]: "0x34f6C5ac104568E98535Cb8c91C5c23AB2d26cAb",
     [arbitrumId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4",
     [optimismId]: "0x187a9763FCC7EcFFA9bc50B0fE5BbAe71cDA7b59"
@@ -52,7 +52,7 @@ export const defaultEthLink = {
 }
 
 export const subgraphURLs = {
-    // [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
+    [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
     [polygonId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildpolygon",
     [optimismId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuidl-optimism",
     [arbitrumId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildarbitrum",
