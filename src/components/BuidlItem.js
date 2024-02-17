@@ -30,7 +30,7 @@ const BuidlItem = ({ project, tag }) => {
   const textURI = encodeURIComponent(
     `Support my project '${project.title}' on Youbuidl and earn BuildPoints rewards.`
   );
-  const urlURI = encodeURIComponent("https://youbuidl.dev/");
+  const urlURI = encodeURIComponent(`https://youbuidl.dev/${project.id}/0`);
   const tweetIntent = `https://twitter.com/intent/tweet?text=${textURI}&url=${urlURI}`;
 
   return (tag === project?.filterTags || tag === "popular") && isRevealed ? (
