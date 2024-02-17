@@ -77,3 +77,23 @@ input[type="number"] {
 .sm-min-h {
   min-height: calc(100vh - 140px);
 }
+
+iframe {
+  width: 100% !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+}
+
+.send-form__from,
+.form-card__header,
+.mobile-header[_ngcontent-qfn-c168],
+.container-fluid,
+.container,
+.form-card__header,
+.send-form__to,
+.form-card__content,
+.form-card__footer,
+[_nghost-ipk-c174] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
