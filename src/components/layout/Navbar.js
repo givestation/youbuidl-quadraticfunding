@@ -37,7 +37,7 @@ const NavbarData = {
       ),
     },
     {
-      label: "Explore Rounds",
+      label: "QF Rounds",
       href: "/explorerounds",
       icon: (
         <svg
@@ -159,7 +159,7 @@ const NavbarData = {
       ),
     },
     {
-      label: "Bridge Tokens",
+      label: "Bridge",
       href: "/bridge",
       icon: (
         <svg
@@ -311,7 +311,7 @@ const NavbarData = {
       ),
     },
     {
-      label: "Mint a domain",
+      label: "Mint domain",
       href: "/mint-domain",
       icon: (
         <svg
@@ -387,7 +387,7 @@ const NavbarData = {
     },
     {
       label: "Docs",
-      href: "/docs",
+      href: "https://givestation.gitbook.io/youbuidl/",
       icon: (
         <svg
           fill="#D8D8D8"
