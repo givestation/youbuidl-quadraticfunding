@@ -31,7 +31,7 @@ export const contractAddresses = {
     [mainnetId]: "0x1cC5Ccd855Eb55311b03734ff3A0fF67ce54b713",
     [bscId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
     [polygonId]: "0x0d6e573e58CD1Ebb1F366F4d39a9DBb6c7F29B6d",
-    [arbitrumId]: "0x26BCc65416366110c0A07aF49CD4C531614cf034",
+    [arbitrumId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4",
     [optimismId]: "0x187a9763FCC7EcFFA9bc50B0fE5BbAe71cDA7b59"
 }
 
@@ -55,7 +55,7 @@ export const subgraphURLs = {
     // [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
     // [polygonId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildpolygon",
     [optimismId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuidl-optimism",
-    // [arbitrumId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildarbitrum",
+    [arbitrumId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildarbitrum",
 }
 
 export const contriTokens = {
