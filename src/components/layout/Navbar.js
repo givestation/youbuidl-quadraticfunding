@@ -387,7 +387,7 @@ const NavbarData = {
     },
     {
       label: "Docs",
-      href: "/docs",
+      href: "https://givestation.gitbook.io/youbuidl/",
       icon: (
         <svg
           fill="#D8D8D8"
