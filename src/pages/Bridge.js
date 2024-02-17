@@ -70,9 +70,7 @@ const Rewards = () => {
 
   //==============main functions===========
   const onEtherRmount = (e) => {
-    setEtherRAmount(
-      parseUnits(e.target.value, chain?.id === bscId ? 18 : 6)
-    );
+    setEtherRAmount(parseUnits(e.target.value, chain?.id === bscId ? 18 : 6));
     if (chain?.id === 56) {
       getPriceBNB(e.target.value);
     } else if (chain?.id === 1) {
@@ -133,6 +131,7 @@ const Rewards = () => {
     script.src = "https://app.debridge.finance/assets/scripts/widget.js";
     script.async = true;
 
+    script.classList.add("!w-full");
     // Append the script to the document body
     document.body.appendChild(script);
 
@@ -143,6 +142,11 @@ const Rewards = () => {
         element: "debridgeWidget",
         // ... (rest of your configuration)
       });
+
+      const sendFormForm = document.querySelector(".send-form__from");
+      console.log({ sendFormForm });
+      if (sendFormForm) {
+      }
     };
 
     // Cleanup function to remove the script when the component unmounts
@@ -295,7 +299,7 @@ const Rewards = () => {
           </h1>
         </div>
 
-        <div id="debridgeWidget"></div>
+        <div className="w-full" id="debridgeWidget"></div>
 
         {/* <div className="w-full flex flex-col  lg:flex-row items-stretch space-y-6 lg:space-y-0 lg:space-x-4">
           <div className="flex-1 border border-Bright-Gray rounded-2xl p-6 pl-0 pb-0 flex flex-col overflow-hidden space-y-4">
