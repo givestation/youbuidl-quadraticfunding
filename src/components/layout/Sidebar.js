@@ -54,7 +54,7 @@ const Sidebar = ({ showSideBar, setShowSideBar }) => {
             />
           </svg>
 
-          <span onClick={openAccountModal}>Logout</span>
+          <span onClick={openAccountModal}>Disconnect</span>
         </button>
       </div>
     </div>
