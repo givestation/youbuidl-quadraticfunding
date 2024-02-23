@@ -10,7 +10,7 @@ const CategoriesSelector = ({ onSubmit }) => {
         <div className="bg-Pure-White rounded-full flex items-center justify-center w-10 h-10 shadow-2xl">
           <img src="/assets/icons/popular.svg" alt="popular" />
         </div>
-        <h3 className="text-Spanish-Gray">Popular</h3>
+        <h3 className="text-Spanish-Gray">Hackathons</h3>
       </button>
       <button className="flex items-center space-x-4"
         onClick={() => { onSubmit('ai') }}>
