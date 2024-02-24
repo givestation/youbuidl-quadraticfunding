@@ -30,7 +30,7 @@ const BuidlItem = ({ project, tag }) => {
   const textURI = encodeURIComponent(
     `Support my project '${project.title}' on Youbuidl and earn BuildPoints rewards.`
   );
-  const urlURI = encodeURIComponent("https://youbuidl.dev/");
+  const urlURI = encodeURIComponent(`https://youbuidl.dev/${project.id}/${project.index}`);
   const tweetIntent = `https://twitter.com/intent/tweet?text=${textURI}&url=${urlURI}`;
 
   return (tag === project?.filterTags || tag === "popular") && isRevealed ? (
@@ -218,14 +218,14 @@ const BuidlItem = ({ project, tag }) => {
               className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4"
               onClick={contribute}
             >
-              Contribute
+              Donate Now
             </div>
           )}
-          {isConnected && chain.id === project?.chainId && (
+          {isConnected && chain.id == project?.chainId && (
             <>
               {!project?.isOnQF && project?.isFinished && (
                 <div className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4">
-                  Contribute
+                  Donate Now
                 </div>
               )}
               {(project?.isOnQF || !project?.isFinished) && (
@@ -234,7 +234,7 @@ const BuidlItem = ({ project, tag }) => {
                   to={`/buidls/${project?.id}/${project?.index}`}
                 >
                   {" "}
-                  Contribute
+                  Donate Now
                 </Link>
               )}
             </>

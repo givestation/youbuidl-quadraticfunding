@@ -24,8 +24,7 @@ import Withdraw from "./pages/Withdraw";
 import SubmitProject from "./pages/SubmitProject";
 
 const { chains, publicClient } = configureChains(
-  // [polygon, bsc, optimism, arbitrum],
-  [optimism, arbitrum, polygon],
+  [polygon, bsc, optimism, arbitrum],
   [publicProvider()]
 );
 

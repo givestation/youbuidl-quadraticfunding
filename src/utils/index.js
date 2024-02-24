@@ -1,5 +1,5 @@
 import axios from "axios";
-import { bscId, subgraphURLs } from "./constant";
+import { adminWallet, bscId, subgraphURLs } from "./constant";
 import { formatUnits } from "viem";
 
 const getDataFromSubgraph = async (query, subgraphURL) => {
@@ -44,6 +44,8 @@ export const getProjects = async () => {
       }`;
     try {
         let projects = []
+        let adminProjects = []
+        let otherProjects = []
         await Promise.all(
             Object.entries(subgraphURLs).map(async ([key, value]) => {
                 const res = await getDataFromSubgraph(query, value);
@@ -57,19 +59,25 @@ export const getProjects = async () => {
                         const currentTime = Math.floor(Date.now() / 1000)
                         const isFinished = currentTime >= +(project.projectDeadline);
 
+                        let projectData;
                         if (qfRound && qfRound.id == project.qfRoundID) {
                             const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
-                            return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: qfRound.totalRootSum == 0 ? 0 : project.qfMatched / qfRound.totalRootSum * qfRound.amount }
+                            projectData = { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: qfRound.totalRootSum == 0 ? 0 : project.qfMatched / qfRound.totalRootSum * qfRound.amount };
+
                         }
 
-                        return { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: false, matchingPool: 0, qfRaised: 0 }
+                        projectData = { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: false, matchingPool: 0, qfRaised: 0 }
+
+                        if (project.creator == adminWallet)
+                            adminProjects.push(projectData);
+                        else
+                            otherProjects.push(projectData)
                     }
                     )
-                    projects = projects.concat(projectsList);
                 }
             })
         )
-
+        projects = adminProjects.concat(otherProjects);
         return projects
     } catch (e) {
         console.log(e, "=========error in get projects============")

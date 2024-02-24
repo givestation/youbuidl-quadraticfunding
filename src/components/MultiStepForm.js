@@ -351,7 +351,7 @@ const FirstStep = ({ formData, setFormData }) => {
         <option disabled selected value="" className="text-[#8D8D99]">
           Select a category
         </option>{" "}
-        <option value="popular">Popular</option>
+        <option value="popular">Hackathon</option>
         <option value="ai">AI</option>
         <option value="web3">Web3</option>
         <option value="defi">DeFi</option>

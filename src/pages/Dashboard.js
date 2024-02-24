@@ -45,9 +45,9 @@ const Dashboard = () => {
               <div className="flex items-center  justify-between">
                 <div className="space-y-4 xl:space-y-0">
                   <h1 className="flex-1 text-Bright-Gray font-bold text-xl sm:text-2xl xl:text-4xl">
-                    YouBuidl Quadratic Funding
+                    Buidl today, Fund tomorrow.
                     <br />
-                    Round 1. Matching Pool - $10,000
+                    
                   </h1>
                   <h6 className="text-Philipine-Silver font-normal text-xs md:text-sm xl:text-base">
                     YouBuidl is crowdfunding web3 tool created by GiveStation
