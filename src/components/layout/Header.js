@@ -1,13 +1,13 @@
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { Link } from 'react-router-dom';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { GiHamburgerMenu } from "react-icons/gi";
+import { Link } from "react-router-dom";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-const iconStyle = { color: '#364C6F', fontSize: '2rem', background: '#fffff' };
+const iconStyle = { color: "#364C6F", fontSize: "2rem", background: "#fffff" };
 
 const Header = ({ setShowSideBar }) => {
   return (
-    <div className='bg-Pure-White flex items-center space-x-2  w-full p-3 md:rounded-2xl'>
-      <div className='md:hidden '>
+    <div className="bg-Pure-White flex items-center space-x-2  w-full p-3 md:rounded-2xl">
+      <div className="md:hidden ">
         <GiHamburgerMenu
           onClick={() => {
             setShowSideBar(true);
@@ -15,17 +15,18 @@ const Header = ({ setShowSideBar }) => {
           style={iconStyle}
         />
       </div>
-      <div className='flex-1 flex items-center  space-x-4 lg:space-x-8'>
-        <div className='flex-1 sm:flex-none'>
-          <Link to={'/'}>
+      <div className="flex-1 flex items-center  space-x-4 lg:space-x-8">
+        <div className="flex-1 sm:flex-none">
+          <Link to={"/"}>
             <img
-              className='cursor-pointer'
-              src='/assets/icons/youbuild.svg'
-              alt='youbuild'
+              className="cursor-pointer"
+              src="/assets/icons/youbuild.svg"
+              alt="youbuild"
             />
           </Link>
         </div>
-        <div className='bg-Anti-Flash-White rounded-4xl flex-1 hidden sm:flex items-center space-x-2 p-4'>
+        <div className="flex-1"></div>
+        {/* <div className='bg-Anti-Flash-White rounded-4xl flex-1 hidden sm:flex items-center space-x-2 p-4'>
           <svg
             width='13'
             height='13'
@@ -54,7 +55,7 @@ const Header = ({ setShowSideBar }) => {
             className='bg-[transparent] w-full outline-none font-normal text-sm placeholder-Nickle'
             placeholder='search'
           />
-        </div>
+        </div> */}
         {/* <div className='relative cursor-pointer'>
           <svg
             width='35'
@@ -89,8 +90,8 @@ const Header = ({ setShowSideBar }) => {
             +8
           </h5>
         </div> */}
-        <div className='flex items-center md:space-x-4'>
-          <div className='hidden md:block text-right'>
+        <div className="flex items-center md:space-x-4">
+          <div className="hidden md:block text-right">
             {/* <ConnectButton /> */}
             {/* <h2 className='text-Gray text-lg font-medium'>0XDEre34fr..</h2>
             <h6 className='text-Spanish-Gray font-normal text-xs'>
