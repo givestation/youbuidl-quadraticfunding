@@ -6,7 +6,7 @@ const CategoriesSelector = ({ onSubmit }) => {
   return (
     <div className="flex items-center overflow-x-auto flex-nowrap space-x-8 lg:space-x-10 xlspace-x-20">
       <button className="flex items-center space-x-4"
-        onClick={() => { onSubmit('popular') }}>
+        onClick={() => { onSubmit('hackathons') }}>
         <div className="bg-Pure-White rounded-full flex items-center justify-center w-10 h-10 shadow-2xl">
           <img src="/assets/icons/popular.svg" alt="popular" />
         </div>
