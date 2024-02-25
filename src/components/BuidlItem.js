@@ -120,8 +120,8 @@ const BuidlItem = ({ project, tag }) => {
         </div>
 
         <div className="bg-[#3EA7E1]/20 p-2 sm:p-4 rounded-lg flex sm:gap-6 justify-around ">
-          <div className="flex-1 flex flex-col items-start sm:items-center justify-center">
-            <div className="flex flex-col items-start sm:items-center justify-center">
+          <div className="flex-1 flex flex-col items-start justify-center">
+            <div className="flex flex-col items-start justify-center">
               <div className="flex gap-1 items-center justify-center">
                 <h2 className="text-[#3EA7E1] text-lg sm:text-xl">
                   {" "}
@@ -158,9 +158,9 @@ const BuidlItem = ({ project, tag }) => {
               </h3>
             </div>
           </div>
-          <div className="flex-1 flex flex-col items-end sm:items-center justify-center">
+          <div className="flex-1 flex flex-col items-end  justify-center">
             {project.isOnQF && (
-              <div className="flex flex-col items-end sm:items-center justify-center">
+              <div className="flex flex-col items-end justify-center">
                 <div>
                   <h2 className="text-[#12D69B] text-lg sm:text-xl">
                     $
