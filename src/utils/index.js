@@ -59,14 +59,16 @@ export const getProjects = async () => {
                         const currentTime = Math.floor(Date.now() / 1000)
                         const isFinished = currentTime >= +(project.projectDeadline);
 
+                        let data = project;
+                        if (data.filterTags == "popular") data.filterTags = "hackathons"
                         let projectData;
-                        if (qfRound && qfRound.id == project.qfRoundID) {
+                        if (qfRound && qfRound.id == data.qfRoundID) {
                             const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
-                            projectData = { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: qfRound.totalRootSum == 0 ? 0 : project.qfMatched / qfRound.totalRootSum * qfRound.amount };
+                            projectData = { ...data, chainId: key, index: index++, isFinished: isFinished, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: qfRound.totalRootSum == 0 ? 0 : data.qfMatched / qfRound.totalRootSum * qfRound.amount };
 
                         }
 
-                        projectData = { ...project, chainId: key, index: index++, isFinished: isFinished, isOnQF: false, matchingPool: 0, qfRaised: 0 }
+                        projectData = { ...data, chainId: key, index: index++, isFinished: isFinished, isOnQF: false, matchingPool: 0, qfRaised: 0 }
 
                         if (project.creator == adminWallet)
                             adminProjects.push(projectData);
@@ -120,15 +122,17 @@ export const getProject = async (projectContractAddress, chainId) => {
         if (res.isSuccess) {
             const project = res.data.project;
             if (project) {
+                const data = project;
+                if (data.filterTags == "popular") data.filterTags = "hackathons"
                 const qfRounds = res.data.qfrounds;
                 const qfRound = qfRounds.length > 0 ? qfRounds[0] : null;
-                if (qfRound && qfRound.id == project.qfRoundID) {
+                if (qfRound && qfRound.id == data.qfRoundID) {
                     const currentTime = Math.floor(Date.now() / 1000)
                     const isOnQF = currentTime >= +(qfRound.startTime) && currentTime <= +(qfRound.endTime);
-                    return { ...project, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: qfRound.totalRootSum == 0 ? 0 : project.qfMatched / qfRound.totalRootSum * qfRound.amount }
+                    return { ...data, isOnQF: isOnQF, matchingPool: qfRound.amount, qfRaised: qfRound.totalRootSum == 0 ? 0 : data.qfMatched / qfRound.totalRootSum * qfRound.amount }
                 }
 
-                return { ...project, isOnQF: false, matchingPool: 0 };
+                return { ...data, isOnQF: false, matchingPool: 0 };
             }
             return null
         }

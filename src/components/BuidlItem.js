@@ -6,9 +6,6 @@ import { useSwitchNetwork } from "wagmi";
 import {
   bscId,
   categoryIcons,
-  defaultEthLink,
-  mainnetId,
-  polygonId,
 } from "../utils/constant";
 
 const BuidlItem = ({ project, tag }) => {
