@@ -14,7 +14,7 @@ export const chainLogos = {
 }
 
 export const categoryIcons = {
-    "popular": "/assets/icons/popular.svg",
+    "hackathons": "/assets/icons/popular.svg",
     "ai": "/assets/icons/icons8-ai-64.png",
     "web3": "/assets/icons/icons8-web3-64.png",
     "defi": "/assets/icons/gaming.svg",
