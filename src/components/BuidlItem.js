@@ -212,7 +212,7 @@ const BuidlItem = ({ project, tag }) => {
           {!isConnected && <Account />}
           {isConnected && chain.id != project?.chainId && (
             <div
-              className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4"
+              className="bg-[#3EA7E1] w-auto rounded-md text-white py-2 px-4"
               onClick={contribute}
             >
               Donate Now
@@ -221,16 +221,15 @@ const BuidlItem = ({ project, tag }) => {
           {isConnected && chain.id == project?.chainId && (
             <>
               {!project?.isOnQF && project?.isFinished && (
-                <div className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4">
+                <div className="bg-[#3EA7E1] w-auto rounded-md text-white py-2 px-4">
                   Donate Now
                 </div>
               )}
               {(project?.isOnQF || !project?.isFinished) && (
                 <Link
-                  className="bg-[#3EA7E1] w-full sm:w-auto rounded-md text-white py-2 px-4"
+                  className="bg-[#3EA7E1] w-auto rounded-md text-white py-2 px-4"
                   to={`/buidls/${project?.id}/${project?.index}`}
                 >
-                  {" "}
                   Donate Now
                 </Link>
               )}
