@@ -36,7 +36,6 @@ const MultiStepForm = () => {
     website: "",
     github: "",
     twitter: "",
-    discord: "",
     isAgree: false,
   });
 
@@ -575,22 +574,6 @@ const ThirdStep = ({ formData, setFormData }) => {
             setFormData({
               ...formData,
               twitter: e.target.value,
-            });
-          }}
-          className="bg-transparent flex-1 h-full outline-none border-none border-0 focus:outline-none"
-          placeholder="https://discord.gg/project"
-        />
-      </div>
-      <div className="gap-2 w-full overflow-hidden bg-transparent border border-[#E1E1E6] flex items-center justify-between placeholder-[#8D8D99] rounded-md pr-4 pl-2 py-1 outline-none focus:ring-0 focus:outline-none">
-        <div className="bg-[#00A4FF] min-w-24 sm:min-w-32 text-center text-white px-4 py-1.5 rounded-md">
-          Discord
-        </div>
-        <input
-          value={formData?.discord}
-          onChange={(e) => {
-            setFormData({
-              ...formData,
-              discord: e.target.value,
             });
           }}
           className="bg-transparent flex-1 h-full outline-none border-none border-0 focus:outline-none"
