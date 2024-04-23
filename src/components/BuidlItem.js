@@ -225,7 +225,7 @@ const BuidlItem = ({ project, tag }) => {
                   Donate Now
                 </div>
               )}
-              {(project?.isOnQF || !project?.isFinished) && (
+              {(project?.isOnQF || project?.isFinished) && (
                 <Link
                   className="bg-[#3EA7E1] w-auto rounded-md text-white py-2 px-4"
                   to={`/buidls/${project?.id}/${project?.index}`}

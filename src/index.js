@@ -25,7 +25,7 @@ import SubmitProject from "./pages/SubmitProject";
 import { optimism } from "./utils/networks";
 
 const { chains, publicClient } = configureChains(
-  [polygon, bsc, optimism, arbitrum],
+  [bsc, polygon, optimism, arbitrum],
   [publicProvider()]
 );
 

@@ -33,7 +33,7 @@ export const contractAddresses = {
     [bscId]: "0x34f6C5ac104568E98535Cb8c91C5c23AB2d26cAb",
     [polygonId]: "0x34f6C5ac104568E98535Cb8c91C5c23AB2d26cAb",
     [arbitrumId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4",
-    [optimismId]: "0x187a9763FCC7EcFFA9bc50B0fE5BbAe71cDA7b59"
+    [optimismId]: "0x187a9763FCC7EcFFA9bc50B0fE5BbAe71cDA7b59",
 }
 
 export const qfRoundsAddresses = {
@@ -41,7 +41,7 @@ export const qfRoundsAddresses = {
     [bscId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [polygonId]: "0x5eFb24436C00938d3b7c4e1c5EBB1CD0AC99Dc0b",
     [arbitrumId]: "0x789f71868a6fa58f1354e1226f807c51edbee3d6",
-    [optimismId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4"
+    [optimismId]: "0xcFB8Bf1d64bf4baE08582B5EF464E53326E5bCd4",
 }
 
 export const defaultEthLink = {

@@ -99,6 +99,7 @@ const BuidlDetails = () => {
     args: [projectId],
   });
 
+  console.log(wrChecking, "==============")
   //==========main functions==============
 
   const onContributedAmount = (e) => {
@@ -981,7 +982,7 @@ const BuidlDetails = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          {address === projectDetails?.creator ? (
+          {address.toLowerCase() === projectDetails?.creator ? (
             <Link
               to={
                 wrChecking?.[0] === undefined || wrChecking?.[0] === ""
