@@ -21,7 +21,7 @@ export const categoryIcons = {
     "nfts": "/assets/icons/icons8-nft-64.png",
     "tools": "assets/icons/icons8-tools-64.png",
     "public goods": "/assets/icons/icons8-publicgoods-47.png",
-    "scholarships": "//assets/icons/icons8-scholarship-64.png",
+    "scholarships": "/assets/icons/icons8-scholarship-64.png",
     "infrastructure": "/assets/icons/icons8-infrastructure-64.png",
     "entertainment": "icons8-entertainment-64.png",
     "events": "/assets/icons/icons8-events-48.png",
@@ -53,10 +53,10 @@ export const defaultEthLink = {
 }
 
 export const subgraphURLs = {
-    [bscId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuild-bsc",
-    [polygonId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildpolygon",
-    [optimismId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuidl-optimism",
-    [arbitrumId]: "https://api.thegraph.com/subgraphs/name/kilros0817/youbuildarbitrum",
+    [bscId]: "https://api.studio.thegraph.com/query/72239/youbuild-bsc/v0.0.1",
+    [polygonId]: "https://api.studio.thegraph.com/proxy/72239/youbuildpolygon/v0.0.1",
+    [optimismId]: "https://api.studio.thegraph.com/proxy/72239/youbuidl-optimism/v0.0.1",
+    [arbitrumId]: "https://api.studio.thegraph.com/proxy/72239/youbuildarbitrum/v0.0.1",
 }
 
 export const contriTokens = {

@@ -4,10 +4,13 @@ import { formatUnits } from "viem";
 
 const getDataFromSubgraph = async (query, subgraphURL) => {
     try {
+        console.log(subgraphURL, "=========subgraph")
         const result = await axios.post(subgraphURL, {
             query,
         });
+        console.log(result)
 
+        console.log(result.data.data, "=============hey")
         return { isSuccess: true, data: result.data.data };
     } catch (error) {
         return { isSuccess: false, data: "" };
