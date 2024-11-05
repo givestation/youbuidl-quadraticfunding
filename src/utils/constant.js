@@ -54,9 +54,9 @@ export const defaultEthLink = {
 
 export const subgraphURLs = {
     [bscId]: "https://api.studio.thegraph.com/query/72239/youbuild-bsc/v0.0.1",
-    [polygonId]: "https://api.studio.thegraph.com/proxy/72239/youbuildpolygon/v0.0.1",
-    [optimismId]: "https://api.studio.thegraph.com/proxy/72239/youbuidl-optimism/v0.0.1",
-    [arbitrumId]: "https://api.studio.thegraph.com/proxy/72239/youbuildarbitrum/v0.0.1",
+    [polygonId]: "https://api.studio.thegraph.com/query/72239/youbuildpolygon/v0.0.1",
+    [optimismId]: "https://api.studio.thegraph.com/query/72239/youbuidl-optimism/v0.0.1",
+    [arbitrumId]: "https://api.studio.thegraph.com/query/72239/youbuildarbitrum/v0.0.1",
 }
 
 export const contriTokens = {
